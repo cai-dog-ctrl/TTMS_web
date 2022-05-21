@@ -1,6 +1,10 @@
 package mysql
 
-import "TTMS/models"
+import (
+	"TTMS/models"
+
+	"github.com/gin-gonic/gin"
+)
 
 //有关用户的持久化代码
 
@@ -19,3 +23,4 @@ func InsertUser(p *models.User) error {
 	_,err:=db.Exec(sqlStr,p.ID,p.Username,p.Password,p.Email,p.PhoneNumber)
 	return err
 }
+

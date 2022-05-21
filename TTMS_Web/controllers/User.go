@@ -9,7 +9,7 @@ import (
 )
 
 //有关用户的controller代码
-
+const RootPath="./img/"
 func Login(c *gin.Context){
 	p:=new(models.ParamsLogin)
 	err:=c.ShouldBind(&p)
@@ -50,4 +50,13 @@ func Register(c *gin.Context){
 		return
 	}
 	ResponseSuccess(c,"注册成功")
+}
+func GetPictureByFileName(c *gin.Context){
+	img:=c.Param("img")
+	if img==""{
+		ResponseError(c,CodeInvalidParams)
+		zap.L().Error("GetFile Vaild param")
+		return
+	}
+	c.File(RootPath+img)
 }
