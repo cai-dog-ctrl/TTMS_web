@@ -65,7 +65,7 @@
             <div style="height:30px;margin-top: 20px;margin-left: 10px;"><a class="recommend_a" href="#"
                 style="color:#219FFF;text-decoration:none">《 {{ item.name }} 》</a></div>
             <div style="margin-left:80px">
-              <h2 style="margin-top:12px;color: #FFC600;">{{ item.socre }}</h2>
+              <h2 style="margin-top:12px;color: ;">{{ item.socre }}</h2>
             </div>
           </div>
         </el-card>

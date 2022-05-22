@@ -4,8 +4,8 @@ import HomePage from '../views/HomePage.vue'
 import FirstPage from '../views/FirstPage.vue'
 // import { ElLoadingComponent } from 'element-ui/types/loading'
 import Login from '../views/Login.vue'
-import SignIn from '../views/SignIn'
-
+import SignIn from '../views/SignIn.vue'
+import MovieInfo from '../views/MovieInfo.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,6 +29,10 @@ const routes = [
       {
         path:"/first",
         component:FirstPage
+      },
+      {
+        path:"/movie/:id",
+        component:MovieInfo
       }
     ]
   }
