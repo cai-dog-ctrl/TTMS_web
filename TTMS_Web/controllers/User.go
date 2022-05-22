@@ -8,12 +8,13 @@ import (
 	"go.uber.org/zap"
 )
 
-// Login 登录
-func Login(c *gin.Context) {
-	p := new(models.ParamsLogin)
-	err := c.ShouldBind(&p)
-	if err != nil {
-		ResponseError(c, CodeInvalidParams)
+//有关用户的controller代码
+const RootPath="./img/"
+func Login(c *gin.Context){
+	p:=new(models.ParamsLogin)
+	err:=c.ShouldBind(&p)
+	if err!=nil{
+		ResponseError(c,CodeInvalidParams)
 		zap.L().Error("Login ShouldBind Error")
 		return
 	}
@@ -132,4 +133,13 @@ func UpdateMsg(c *gin.Context) {
 		return
 	}
 	ResponseSuccess(c, "修改成功")
+}
+func GetPictureByFileName(c *gin.Context){
+	img:=c.Param("img")
+	if img==""{
+		ResponseError(c,CodeInvalidParams)
+		zap.L().Error("GetFile Vaild param")
+		return
+	}
+	c.File(RootPath+img)
 }

@@ -20,7 +20,8 @@ func SetupRouter() *gin.Engine {
 	{
 
 	}
-
+	g.GET("/frontPage",controllers.GetFrontPage)
+	g.GET("/movieInfo",controllers.GetMovieInfo)
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"msg": "404",
