@@ -3,7 +3,7 @@ package mysql
 import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
-	"github.com/gin-gonic/gin"
+	//"github.com/gin-gonic/gin"
 )
 
 // GetUserByUsername 获取所有信息

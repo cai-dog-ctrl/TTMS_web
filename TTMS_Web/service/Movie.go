@@ -14,7 +14,7 @@ func GetFrontPage(p *models.ParamsFrontPage) (*models.FrontPage, error) {
 	if err != nil {
 		return nil, err
 	}
-	front_page.ShowingList_, err = mysql.GetShowingList(p.ShowingNUm, 1)
+	front_page.ShowingList_, err = mysql.GetShowingList(p.ShowingNum, 1)
 	if err != nil {
 		return nil, err
 	}
@@ -33,8 +33,8 @@ func GetFrontPage(p *models.ParamsFrontPage) (*models.FrontPage, error) {
 	return front_page, nil
 }
 
-func GetMovieInfo(p *models.ParamsMovie) (*models.MovieInfo, error) {
-	movie, err := mysql.GetMovieInfo(p.Id)
+func GetMovieInfoByID(p *models.ParamsMovie) (*models.MovieInfo, error) {
+	movie, err := mysql.GetMovieInfoByID(p.Id)
 	if err != nil {
 		return nil, err
 	}
