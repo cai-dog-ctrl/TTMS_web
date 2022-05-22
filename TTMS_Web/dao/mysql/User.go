@@ -3,7 +3,6 @@ package mysql
 import (
 	"TTMS/models"
 
-	"github.com/gin-gonic/gin"
 )
 
 //有关用户的持久化代码

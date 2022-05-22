@@ -4,11 +4,10 @@
             <div class="item">
                 <img :src="dataList[currentIndex]">
             </div>
-            <div class="page" v-if="this.dataList.length > 1">
+            <div class="page" v-if="this.dataList.length>1">
                 <ul>
                     <li @click="gotoPage(prevIndex)">&lt;</li>
-                    <li v-for="(item, index) in dataList" @click="gotoPage(index)"
-                        :class="{ 'current': currentIndex == index }"> {{ index + 1 }}</li>
+                    <li v-for="(item, index) in dataList" :key="item" @click="gotoPage(index)" :class="{ 'current': currentIndex == index }> {{ index + 1 }}</li>
                     <li @click="gotoPage(nextIndex)">&gt;</li>
                 </ul>
             </div>
@@ -85,17 +84,18 @@
                     </div>
                     <div>
                         <div class="borde_top">
-                            <img src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644" alt="" class="bored_top_img">
+                            <img src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644"
+                                alt="" class="bored_top_img">
                             <div>
-                                <span class="borde_top_name">{{borad_top.name}}</span><br>
-                                <span class="borde_top_pf">{{borad_top.pf}}万</span>
+                                <span class="borde_top_name">{{ borad_top.name }}</span><br>
+                                <span class="borde_top_pf">{{ borad_top.pf }}万</span>
                             </div>
                         </div>
                         <div v-for="(item, index) in borad_list" :key="index" class="bored_item">
                             <span class="bored_item_span">
-                                <i>{{index+2}}</i>&nbsp;&nbsp;&nbsp;
-                                <span class="bored_item_name">{{item.name}}</span>
-                                <span class="bored_item_pf">{{item.pf}}万</span>
+                                <i>{{ index + 2 }}</i>&nbsp;&nbsp;&nbsp;
+                                <span class="bored_item_name">{{ item.name }}</span>
+                                <span class="bored_item_pf">{{ item.pf }}万</span>
                             </span>
                         </div>
                     </div>
@@ -122,10 +122,10 @@ export default {
             currentIndex: 0,   //默认显示图片
             timer: null,   //定时器,
             borad_list: [{ "name": "我和我的祖国", "pf": 123 }, { "name": "喜羊羊与灰太狼", "pf": 122 }, { "name": "海绵宝宝", "pf": 121 }, { "name": "桃花侠大战菊花怪", "pf": 120 }],
-            borad_top:{
-                img:'',
-                name:'坏蛋联盟',
-                pf:'1271.16'
+            borad_top: {
+                img: '',
+                name: '坏蛋联盟',
+                pf: '1271.16'
             }
         }
     },
@@ -177,10 +177,12 @@ export default {
     display: flex;
     cursor: pointer;
 }
-.borde_top:hover{
+
+.borde_top:hover {
     background: #F7F7F7;
 }
-.bored_top_img{
+
+.bored_top_img {
     height: 80px;
     width: 120px;
 }
@@ -188,20 +190,23 @@ export default {
 .borde_top_name {
     font-size: 24px;
 }
+
 .borde_top_pf {
     color: #EF4238;
     font-size: 10px;
 }
+
 .bored_item {
     width: 100%;
     height: 55px;
 }
-.bored_item:hover{
+
+.bored_item:hover {
     cursor: pointer;
     background: #F7F7F7;
 }
 
-.bored_item_pf{
+.bored_item_pf {
     float: right;
     color: #EF4238;
     font-size: 10px;

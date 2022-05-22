@@ -68,13 +68,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-container {
     height: 100%;
 
 }
 
-
+.el-main{
+    width: 100%;
+    padding: 0;
+}
 .el-footer {
     bottom: 0;
 }
