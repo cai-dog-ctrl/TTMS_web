@@ -2,7 +2,9 @@ package mysql
 
 import (
 	"TTMS/models"
+	"TTMS/pkg/utils"
 	"fmt"
+	"go.uber.org/zap"
 	"time"
 )
 
@@ -10,9 +12,10 @@ import (
 
 func GetCarouselList(num int) (*models.CarouselList, error) {
 	carouselList := new(models.CarouselList)
-	sqlStr := "select id, img from movie_info limit ?,?"
+	sqlStr := "select id, img from movie_info"
 	err := db.Select(&carouselList.CarouselList, sqlStr)
 	if err != nil {
+		zap.L().Error(sqlStr)
 		return nil, err
 	}
 	return carouselList, nil
@@ -20,10 +23,14 @@ func GetCarouselList(num int) (*models.CarouselList, error) {
 
 func GetComingList(num int, page_num int) (*models.ComingList, error) {
 	comingList := new(models.ComingList)
-	timenow := time.Now().String()
-	sqlStr := fmt.Sprintf("select id, name, cover_img from movie_info where %v < up_time and is_delete = 0", timenow)
+	day := time.Now().Day()
+	month := utils.ShiftToNum(time.Now().Month().String())
+	year := time.Now().Year()
+	date := day + month*100 + year*100*100
+	sqlStr := fmt.Sprintf("select id, name, cover_img from movie_info where %v < date and is_delete = 0", date)
 	err := db.Select(&comingList.ComingList, sqlStr)
 	if err != nil {
+		zap.L().Error(sqlStr)
 		return nil, err
 	}
 	return comingList, nil
@@ -31,10 +38,14 @@ func GetComingList(num int, page_num int) (*models.ComingList, error) {
 
 func GetShowingList(num int, page_num int) (*models.ShowingList, error) {
 	showingList := new(models.ShowingList)
-	timenow := time.Now().String()
-	sqlStr := fmt.Sprintf("select id, name, score, cover_img from movie_info where %v >= up_time and %v < down_time and is_delete = 0", timenow)
+	day := time.Now().Day()
+	month := int(time.Now().Month())
+	year := time.Now().Year()
+	date := day + month*100 + year*100*100
+	sqlStr := fmt.Sprintf("select id, name, score, cover_img from movie_info where %v >= date and %v < down_time and is_delete = 0", date, date)
 	err := db.Select(&showingList.ShowingList, sqlStr)
 	if err != nil {
+		zap.L().Error(sqlStr)
 		return nil, err
 	}
 	return showingList, nil
@@ -45,6 +56,7 @@ func GetScoreRankingList(num int, page_num int) (*models.ScoreRankingList, error
 	sqlStr := "select id, name, score, cover_img from movie_info order by score desc"
 	err := db.Select(&scoreRankingList.ScoreRankingList, sqlStr)
 	if err != nil {
+		zap.L().Error(sqlStr)
 		return nil, err
 	}
 	return scoreRankingList, nil
@@ -53,18 +65,20 @@ func GetScoreRankingList(num int, page_num int) (*models.ScoreRankingList, error
 func GetBoxOfficeRankingList(num int, page_num int) (*models.BoxOfficeRankingList, error) {
 	boxOfficeRankingList := new(models.BoxOfficeRankingList)
 	sqlStr := "select id, name, pf, cover_img from movie_info order by pf desc"
-	err := db.Get(&boxOfficeRankingList.BoxOfficeRankingList, sqlStr)
+	err := db.Select(&boxOfficeRankingList.BoxOfficeRankingList, sqlStr)
 	if err != nil {
+		zap.L().Error(sqlStr)
 		return nil, err
 	}
 	return boxOfficeRankingList, nil
 }
 
-func GetMovieInfo(id int64) (*models.MovieInfo, error) {
+func GetMovieInfoByID(id int64) (*models.MovieInfo, error) {
 	movie := new(models.MovieInfo)
 	sqlStr := fmt.Sprintf("select * from movie_info where id = %v", id)
 	err := db.Get(movie, sqlStr)
 	if err != nil {
+		zap.L().Error(sqlStr)
 		return nil, err
 	}
 	return movie, nil
