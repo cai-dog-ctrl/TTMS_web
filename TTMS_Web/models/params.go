@@ -14,3 +14,22 @@ type ParamsRegister struct {
 	Email       string `json:"email" form:"email" binding:"required"`
 	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
 }
+
+type ParamsAdminmsg struct {
+	Username    string `json:"username" form:"username" binding:"required"`
+	Password    string `json:"password" form:"password" binding:"required"`
+	Email       string `json:"email" form:"email" binding:"required"`
+	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
+	Identity    int    `json:"identity" from:"identity" binding:"required"`
+}
+
+type ParamsUpdateMsg struct {
+	Id          int64  `json:"id" from:"id" binding:"required"`
+	Username    string `json:"username" form:"username" binding:"required"`
+	Password    string `json:"password" form:"password" binding:"required"`
+	Email       string `json:"email" form:"email" binding:"required"`
+	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
+	IsDelete    int    `json:"is_delete" from:"id_delete" binding:"required"`
+	Identity    int    `json:"identity" from:"identity" binding:"required"`
+	IsLogin     int    `json:"is_login" from:"is_login" binding:"required"`
+}
