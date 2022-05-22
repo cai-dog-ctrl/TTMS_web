@@ -53,10 +53,12 @@ type CarouselList struct {
 }
 
 type ShowingList struct {
+	Number      int        `json:"Showing_num"`
 	ShowingList []*Showing `json:"ShowingList"`
 }
 
 type ComingList struct {
+	Number     int       `json:"Coming_num"`
 	ComingList []*Coming `json:"ComingList"`
 }
 
@@ -69,9 +71,9 @@ type BoxOfficeRankingList struct {
 }
 
 type FrontPage struct {
-	CarouselList_         *CarouselList		`json:"CarouselList"`
-	ShowingList_          *ShowingList	`json:"ShowingList"`
-	ComingList_           *ComingList	`json:"ComingList"`
-	ScoreRankingList_     *ScoreRankingList	`json:"ScoreRankingList"`
-	BoxOfficeRankingList_ *BoxOfficeRankingList	`json:"BoxOfficeRankingList"`
+	CarouselList_         *CarouselList         `json:"CarouselList"`
+	ShowingList_          *ShowingList          `json:"ShowingList"`
+	ComingList_           *ComingList           `json:"ComingList"`
+	ScoreRankingList_     *ScoreRankingList     `json:"ScoreRankingList"`
+	BoxOfficeRankingList_ *BoxOfficeRankingList `json:"BoxOfficeRankingList"`
 }
