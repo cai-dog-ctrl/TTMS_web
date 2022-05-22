@@ -144,7 +144,7 @@
                 </div>
                  <div class="aside">
                     <div class="label">
-                        <h1>票房最佳</h1>
+                        <h1>TOP</h1>
                         <span class="panel-more"><a href="">全部></a></span>
                     </div>
                     <div>

@@ -68,7 +68,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-container {
     height: 100%;
 
@@ -94,5 +94,9 @@ export default {
     margin-right: 25px;
     margin-top: 10px;
     float: right;
+}
+
+.el-main{
+    padding: 0;
 }
 </style>
