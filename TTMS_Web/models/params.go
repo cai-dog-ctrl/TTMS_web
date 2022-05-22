@@ -14,3 +14,15 @@ type ParamsRegister struct {
 	Email       string `json:"email" form:"email" binding:"required"`
 	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
 }
+
+type ParamsFrontPage struct {
+	CarouselNum int ``
+	ShowingNUm int
+	ComingNum int
+	ScoreRankingNum int
+	BoxOfficeRankingNum int
+}
+
+type ParamsMovie struct {
+	Id int64 `json:"id" from:"id" binding:"required"`
+}
