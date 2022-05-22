@@ -98,4 +98,8 @@ export default {
     margin-top: 10px;
     float: right;
 }
+
+.el-main{
+    padding: 0;
+}
 </style>

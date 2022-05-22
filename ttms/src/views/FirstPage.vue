@@ -1,16 +1,13 @@
 <template>
     <el-row>
-        <div class="banner">
-            <div class="item">
-                <img :src="dataList[currentIndex]">
-            </div>
-            <div class="page" v-if="this.dataList.length>1">
-                <ul>
-                    <li @click="gotoPage(prevIndex)">&lt;</li>
-                    <li v-for="(item, index) in dataList" :key="item" @click="gotoPage(index)" :class="{ 'current': currentIndex == index }> {{ index + 1 }}</li>
-                    <li @click="gotoPage(nextIndex)">&gt;</li>
-                </ul>
-            </div>
+        <div id="appaaa">
+            <ul>
+                <li v-for="(item, index) in slideData" :key="index">
+                    <transition>
+                        <img class="imga" :src="item.img" v-if="index === currentIndex" />
+                    </transition>
+                </li>
+            </ul>
         </div>
         <div class="Container">
             <div class="el-col1">
@@ -75,11 +72,79 @@
                         </el-card>
                     </div>
                 </div>
+                <div class="main">
+                    <span class="panel">
+                        <div class="label">
+                            <h1>即将上映</h1>
+                            <span class="panel-more"><a href="">全部></a></span>
+
+                        </div>
+                    </span>
+                    <div class="movie">
+                        <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                                class="image" @click="movie_info_drawer = true">
+                            <div style="padding: 14px;">
+                                <span>预告片 |</span><span> 预售</span>
+                            </div>
+                        </el-card>
+                    </div>
+                    <div class="movie">
+                        <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                                class="image" @click="movie_info_drawer = true">
+                            <div style="padding: 14px;">
+                                <span>预告片 |</span><span> 预售</span>
+                            </div>
+                        </el-card>
+                    </div>
+                    <div class="movie">
+                        <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                                class="image" @click="movie_info_drawer = true">
+                            <div style="padding: 14px;">
+                                <span>预告片 |</span><span> 预售</span>
+                            </div>
+                        </el-card>
+                    </div>
+                    <div class="movie">
+                        <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                                class="image" @click="movie_info_drawer = true">
+                            <div style="padding: 14px;">
+                                <span>预告片 |</span><span> 预售</span>
+                            </div>
+                        </el-card>
+                    </div>
+                </div>
             </div>
             <div class="el-col2">
                 <div class="aside">
                     <div class="label">
                         <h1>票房最佳</h1>
+                        <span class="panel-more"><a href="">全部></a></span>
+                    </div>
+                    <div>
+                        <div class="borde_top">
+                            <img src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644"
+                                alt="" class="bored_top_img">
+                            <div>
+                                <span class="borde_top_name">{{ borad_top.name }}</span><br>
+                                <span class="borde_top_pf">{{ borad_top.pf }}万</span>
+                            </div>
+                        </div>
+                        <div v-for="(item, index) in borad_list" :key="index" class="bored_item">
+                            <span class="bored_item_span">
+                                <i>{{ index + 2 }}</i>&nbsp;&nbsp;&nbsp;
+                                <span class="bored_item_name">{{ item.name }}</span>
+                                <span class="bored_item_pf">{{ item.pf }}万</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="aside">
+                    <div class="label">
+                        <h1>TOP</h1>
                         <span class="panel-more"><a href="">全部></a></span>
                     </div>
                     <div>
@@ -114,57 +179,105 @@
 </template>
 <script>
 export default {
+
     data() {
         return {
             movie_info_drawer: false,
             url: 'https://p0.pipi.cn/mmdb/25bfd69ae7a5bff0ee230fed0210646bfdde9.jpg?imageView2/1/w/160/h/220',
-            dataList: ["https://i1.mifile.cn/a4/xmad_15535933141925_ulkYv.jpg", "https://i1.mifile.cn/a4/xmad_15532384207972_iJXSx.jpg", "https://i1.mifile.cn/a4/xmad_15517939170939_oiXCK.jpg"],
-            currentIndex: 0,   //默认显示图片
-            timer: null,   //定时器,
             borad_list: [{ "name": "我和我的祖国", "pf": 123 }, { "name": "喜羊羊与灰太狼", "pf": 122 }, { "name": "海绵宝宝", "pf": 121 }, { "name": "桃花侠大战菊花怪", "pf": 120 }],
             borad_top: {
                 img: '',
                 name: '坏蛋联盟',
                 pf: '1271.16'
-            }
+            },
+            slideData: [
+                {
+                    id: 1,
+                    img: 'https://img.alicdn.com/imgextra/i2/6000000001117/O1CN01Mn6ES81K7d5SAd6hU_!!6000000001117-0-octopus.jpg'
+                },
+                {
+                    id: 2,
+                    img: 'https://aecpm.alicdn.com/simba/img/TB1XotJXQfb_uJkSnhJSuvdDVXa.jpg'
+                },
+                {
+                    id: 3,
+                    img: 'https://aecpm.alicdn.com/simba/img/TB1JNHwKFXXXXafXVXXSutbFXXX.jpg'
+                }
+            ],
+            currentIndex: 0
         }
+    },
+    created() {
+        this.autoPlay()
     },
     methods: {
-        gotoPage(index) {
-            this.currentIndex = index;
+        // 自动轮播，每隔 1 秒轮播一次
+        autoPlay() {
+            setInterval(() => {
+                this._setIndex()
+            }, 4000)
         },
-        //定时器
-        runInv() {
-            this.timer = setInterval(() => {
-                this.gotoPage(this.nextIndex)
-            }, 1000)
-        }
-    },
-    computed: {
-        //上一张
-        prevIndex() {
-            if (this.currentIndex == 0) {
-                return this.dataList.length - 1;
-            } else {
-                return this.currentIndex - 1;
-            }
-        },
-        //下一张
-        nextIndex() {
-            if (this.currentIndex == this.dataList.length - 1) {
-                return 0;
-            } else {
-                return this.currentIndex + 1;
-            }
+        // 设置当前索引
+        _setIndex() {
+            this.currentIndex++
+            if (this.currentIndex === this.slideData.length) this.currentIndex = 0
         }
     }
+
+
+
 }
 </script>
 
 <style lang="less" scoped>
+.imga {
+    width: 1200px;
+}
+
+#appaaa {
+
+    >ul {
+        left: 50%;
+        transform: translate(-50%);
+        position: relative;
+        text-align: center;
+        width: 1200px;
+        height: 284px;
+        overflow: hidden;
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .v-enter-active,
+        .v-leave-active {
+            transition: transform 0.5s;
+        }
+
+        .v-enter {
+            transform: translateX(100%);
+        }
+
+        .v-enter-to {
+            transform: translateX(0);
+        }
+
+        .v-leave {
+            transform: translateX(0);
+        }
+
+        .v-leave-to {
+            transform: translateX(-100%);
+        }
+    }
+}
+
 .main {
+    margin-bottom: 40px;
     background: #fff;
-    width: 100%;
+    width: 750px;
     float: left;
     height: 100%;
 }
@@ -197,8 +310,9 @@ export default {
 }
 
 .bored_item {
+    margin-top: 40px;
     width: 100%;
-    height: 55px;
+    height: 50px;
 }
 
 .bored_item:hover {
@@ -226,9 +340,10 @@ i {
 }
 
 .aside {
+    margin-bottom: 278px;
     height: 100%;
     background: #fff;
-    width: 100%;
+    width: 400px;
     float: left;
 }
 
@@ -324,37 +439,5 @@ ul li {
     cursor: pointer;
     color: rgba(255, 255, 255, .8);
     font-size: 14px;
-}
-
-.banner {
-    height: 500px;
-    width: 1200px;
-    margin: 0 auto;
-    position: relative;
-    margin-top: 0;
-}
-
-.banner img {
-    margin: auto;
-    width: 100%;
-    display: block;
-    height: 500px;
-}
-
-.banner .page {
-    margin: auto;
-    background: rgba(0, 0, 0, .5);
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-}
-
-.banner .page ul {
-    float: right;
-}
-
-.current {
-    color: #ff6700;
 }
 </style>
