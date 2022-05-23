@@ -25,7 +25,7 @@
               {{ movieInfo.score }}</h1>
           </div>
           <div class="pf" style="color:#fff">累计票房<br>
-            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.box_office }}亿</h1>
+            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.boxoffice }}亿</h1>
           </div>
         </div>
 
@@ -48,7 +48,7 @@
               </div>
 
 
-              {{ movieInfo.description }}
+              {{ movieInfo.descrption }}
             </div>
             <br><br><br><br><br><br>
           </el-card>
@@ -60,12 +60,12 @@
             <span style="font-size:20px;color:#8FDCFE">相似推荐</span>
 
           </div>
-          <div v-for="item in recommend" :key="item" class="item">
+          <div v-for="item in movieInfo.relevantMovies.ShowingList" :key="item" class="item">
             <img :src="item.img" alt="">
             <div style="height:30px;margin-top: 20px;margin-left: 10px;"><a class="recommend_a" href="#"
                 style="color:#219FFF;text-decoration:none">《 {{ item.name }} 》</a></div>
             <div style="margin-left:80px">
-              <h2 style="margin-top:12px;color: #FFC600;">{{ item.socre }}</h2>
+              <h2 style="margin-top:12px;color: #FFC600;">{{ item.score }}</h2>
             </div>
           </div>
         </el-card>
