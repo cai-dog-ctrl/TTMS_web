@@ -114,11 +114,19 @@ func GetMovieInfoByID(id int64) (*models.MovieInfo, error) {
 func InsertMovie(p *models.MovieInfo) error {
 	sqlStr := "insert into movie_info (name, description, tag, movie_time, date, score, pf, img, is_delete, cover_img, down_time) values (?, ?, ?, ?, ?, 0, 0, ?, -1, ?, ?)"
 	_, err := db.Exec(sqlStr, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.CarouselImgPath, p.CoverImgPath, p.Down_time)
-	return err
+	if err != nil {
+		zap.L().Error(sqlStr)
+		return err
+	}
+	return nil
 }
 
 func ModifyMovie(p *models.MovieInfo) error {
 	sqlStr := "update movie_info set name = ?, description = ?, tag = ?, movie_time = ?, date = ?, score = ?, pf = ?, img = ?, is_delete = ?, cover_img = ?, down_time = ? where id = ?"
 	_, err := db.Exec(sqlStr, p.Name, p.Description,p.Tag,p.Duration, p.Up_time, p.Score, p.BoxOffice, p.CarouselImgPath, p.IsDelete, p.CoverImgPath, p.Down_time, p.Id)
-	return err
+	if err != nil {
+		zap.L().Error(sqlStr)
+		return err
+	}
+	return nil
 }
