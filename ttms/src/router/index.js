@@ -7,38 +7,52 @@ import Login from '../views/Login.vue'
 import SignIn from '../views/SignIn.vue'
 import MovieInfo from '../views/MovieInfo.vue'
 import BuyTickets from '../views/BuyTickets.vue'
+import Borad from '../views/Borad.vue'
+import PBorad from '../views/PBorad'
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path:"/",
-    redirect:"/home",
+    path: "/",
+    redirect: "/home",
   },
   {
-    path:"/login",
-    component:Login
+    path: "/login",
+    component: Login
   },
   {
-    path:"/signin",
-    component:SignIn
+    path: "/signin",
+    component: SignIn
   },
+  
   {
-    path:"/home",
-    component:HomePage,
-    redirect:"/first",
-    children:[
+    path: "/home",
+    component: HomePage,
+    redirect: "/first",
+    children: [
       {
-        path:"/first",
-        component:FirstPage
+        path: "/first",
+        component: FirstPage
       },
       {
-        path:"/movie/:id",
-        component:MovieInfo
+        path: "/movie/:id",
+        component: MovieInfo
       },
       {
-        path:"/buytickets/:id",
-        component:BuyTickets
-      }
+        path: "/buytickets/:id",
+        component: BuyTickets
+      },
+      {
+        path: "/borad",
+        component: Borad,
+        redirect: "/pfborad",
+        children: [
+          {
+            path: "/pfborad",
+            component: PBorad
+          }
+        ]
+      },
     ]
   }
 ]
