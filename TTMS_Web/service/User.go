@@ -53,7 +53,7 @@ func AddAdmin(p *models.ParamsAdminmsg) error {
 	User.Password = p.Password
 	User.Email = p.Email
 	User.PhoneNumber = p.PhoneNumber
-	User.Identity = p.Identity
+
 	User.ID = snowflake.GenID()
 	err := mysql.InsertAdmin(User)
 	if err != nil {

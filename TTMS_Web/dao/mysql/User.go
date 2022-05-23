@@ -30,8 +30,7 @@ func GetUserById(Id string) (*models.User, error) {
 
 func GetAllUser() (*models.UserList, error) {
 	users := new(models.UserList)
-
-	sqlStr := "select id, username, password, phone_number, email, identity, avatar, is_login from user where is_delete = 0"
+	sqlStr := "select id, username, password, email, phone_number, is_login, identity from user where is_delete = -1"
 	err := db.Select(&users.List, sqlStr)
 	if err != nil {
 		return nil, err
@@ -49,8 +48,8 @@ func InsertUser(p *models.User) error {
 
 // InsertAdmin 添加一个管理员
 func InsertAdmin(p *models.User) error {
-	sqlStr := "insert into user (id, username, password, email, phone_number, identity)values (?, ?, ?, ?, ?, ?)"
-	_, err := db.Exec(sqlStr, p.ID, p.Username, p.Password, p.Email, p.PhoneNumber, p.Identity)
+	sqlStr := "insert into user (id, username, password, email, phone_number, identity)values (?, ?, ?, ?, ?, 1)"
+	_, err := db.Exec(sqlStr, p.ID, p.Username, p.Password, p.Email, p.PhoneNumber)
 	return err
 }
 

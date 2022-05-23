@@ -4,6 +4,8 @@ import (
 	"TTMS/models"
 	"TTMS/service"
 	"errors"
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -12,6 +14,7 @@ import (
 const RootPath="./img/"
 func Login(c *gin.Context){
 	p:=new(models.ParamsLogin)
+	fmt.Println(p)
 	err:=c.ShouldBind(&p)
 	if err!=nil{
 		ResponseError(c,CodeInvalidParams)
@@ -19,7 +22,7 @@ func Login(c *gin.Context){
 		return
 	}
 	p1, err := service.Login(p)
-	if p1.IsLogin == 1 && p1.IsDelete == 1 {
+	if p1.IsLogin == -1 && p1.IsDelete == 1 {
 		ResponseErrorWithMsg(c, CodeInvalidPassword, "登录失败")
 		return
 	}
@@ -91,11 +94,10 @@ func GetAllMsg(c *gin.Context) {
 
 // GetUserMsgById 获取所有信息
 func GetUserMsgById(c *gin.Context) {
-	var p string
-	err := c.ShouldBind(&p)
-	if err != nil {
+	p:=c.Param("id")
+	if p == "" {
 		ResponseError(c, CodeInvalidParams)
-		zap.L().Error("GetUserMsgById ShouldBind Error")
+		zap.L().Error("GetUserMsgById getid Error")
 		return
 	}
 	p1, err := service.GetMsgById(p)
@@ -122,8 +124,9 @@ func UpdateMsg(c *gin.Context) {
 	p := new(models.ParamsUpdateMsg)
 	err := c.ShouldBind(&p)
 	if err != nil {
+		fmt.Println("AAAAAAAAAAAAA")
 		ResponseError(c, CodeInvalidParams)
-		zap.L().Error("UpdateMsg ShouldBind Error")
+		zap.L().Error("UpdateMsg ShouldBind Error", zap.Error(err))
 		return
 	}
 	err = service.UpdateMsg(p)
@@ -134,6 +137,8 @@ func UpdateMsg(c *gin.Context) {
 	}
 	ResponseSuccess(c, "修改成功")
 }
+
+
 func GetPictureByFileName(c *gin.Context){
 	img:=c.Param("img")
 	if img==""{
