@@ -17,7 +17,6 @@ func GetFrontPage(c *gin.Context) {
 	p.ComingNum = utils.ShiftToNum(c.Query("ComingNum"))
 	p.ScoreRankingNum = utils.ShiftToNum(c.Query("ScoreRankingNum"))
 	p.BoxOfficeRankingNum = utils.ShiftToNum(c.Query("BoxOfficeRankingNum"))
-
 	front_page, err := service.GetFrontPage(p)
 	if err != nil {
 		zap.L().Error("", zap.Error(err))
