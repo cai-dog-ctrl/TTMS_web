@@ -16,6 +16,11 @@ func SetupRouter() *gin.Engine {
 	g := r.Group("/api")
 	g.POST("/login", controllers.Login)
 	g.POST("/register", controllers.Register)
+	g.POST("/addadmin", controllers.AddAdmin)
+	g.GET("/getallmsg", controllers.GetAllMsg)
+	g.GET("/getusermsgbyid/:id", controllers.GetUserMsgById)
+	g.GET("/getpicturebyfilename/:img", controllers.GetPictureByFileName)
+	g.PUT("/updatemsg", controllers.UpdateMsg)
 	g.Use()
 	{
 
@@ -26,6 +31,9 @@ func SetupRouter() *gin.Engine {
 	g.GET("/GetAllComingMovies", controllers.GetComingMovies)
 	g.GET("/GetAllScoreRankingMovies", controllers.GetScoreRankingMovies)
 	g.GET("/GetAllBoxOfficeRankingMovies", controllers.GetBoxOfficeRankingMovies)
+
+	g.POST("/AddNewMovie", controllers.AddNewMovie)
+	g.PUT("/ModifyMovie", controllers.ModifyMovieByID)
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"msg": "404",
