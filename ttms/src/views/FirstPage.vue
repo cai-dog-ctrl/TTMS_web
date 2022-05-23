@@ -21,12 +21,12 @@
                     <div v-for="item in first_page_info.ShowingList.ShowingList" :key="item.id" class="movie">
                         <el-card :body-style="{ padding: '0px' }" shadow="hover">
                             <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                                class="image" @click="gotoinfo(123)">
+                                class="image" @click="gotoinfo(item.id)">
                             <div style="padding: 14px;">
                                 <span>{{ item.name }}</span>
                                 <div class="bottom clearfix">
 
-                                    <el-button type="text" class="button" @click="gotoinfo(1)">特惠购买</el-button>
+                                    <el-button type="text" class="button" @click="gotoinfo(item.id)">特惠购买</el-button>
                                 </div>
                             </div>
                         </el-card>
