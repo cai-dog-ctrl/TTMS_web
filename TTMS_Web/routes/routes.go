@@ -16,6 +16,11 @@ func SetupRouter() *gin.Engine {
 	g := r.Group("/api")
 	g.POST("/login", controllers.Login)
 	g.POST("/register", controllers.Register)
+	g.POST("/addadmin", controllers.AddAdmin)
+	g.GET("/getallmsg", controllers.GetAllMsg)
+	g.GET("/getusermsgbyid/:id", controllers.GetUserMsgById)
+	g.GET("/getpicturebyfilename/:img", controllers.GetPictureByFileName)
+	g.PUT("/updatemsg", controllers.UpdateMsg)
 	g.Use()
 	{
 
