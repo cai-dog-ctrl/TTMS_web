@@ -11,10 +11,10 @@ log:
   max_age: 30
   max_backips: 7
 mysql:
-  host: "127.0.0.1"
-  port: 3306
+  host: "rm-bp12t787hp20lv1omjo.mysql.rds.aliyuncs.com"
+  port: 2828
   user: "root"
-  password: "19174cxz.NB"
+  password: "LHlh1296643805"
   dbname: "ttms"
   max_open_conns: 200
   max_idle_conns: 50
