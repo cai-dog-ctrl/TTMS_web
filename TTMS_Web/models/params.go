@@ -24,7 +24,7 @@ type ParamsFrontPage struct {
 }
 
 type ParamsMovie struct {
-	Id int64 `json:"id" from:"id" binding:"required"`
+	Id int64 `json:"id" form:"id" binding:"required"`
 }
 
 type ParamsAdminmsg struct {
@@ -64,4 +64,30 @@ type ParamsGetScoreRankingMovies struct {
 type ParamsGetBoxOfficeRankingMovies struct {
 	Num      int `json:"page" form:"num" binding:"required"`
 	Page_num int `json:"page_num" form:"page_num" binding:"required"`
+}
+
+type ParamsAddNewMovie struct {
+	Name            string `json:"name" form:"name" binding:"required"`
+	Description     string `json:"description" form:"description" binding:"required"`
+	Tag             string `json:"tag" form:"tag" binding:"required"`
+	Duration        int    `json:"duration" form:"duration" binding:"required"`
+	Up_time         int    `json:"up_time" form:"up_time" binding:"required"`
+	Down_time       int    `json:"down_time" form:"down_time" binding:"required"`
+	CoverImgPath    string `json:"coverImgPath" form:"coverImgPath" binding:"required"`
+	CarouselImgPath string `json:"carouselImgPath" form:"carouselImgPath" binding:"required"`
+}
+
+type ParamsModifyMovie struct {
+	Id              int64   `json:"id" form:"id" binding:"required"`
+	Name            string  `json:"name" form:"name" binding:"required"`
+	Description     string  `json:"description" form:"description" binding:"required"`
+	Tag             string  `json:"tag" form:"tag" binding:"required"`
+	Duration        int     `json:"duration" form:"duration" binding:"required"`
+	Up_time         int     `json:"up_Time" form:"up_time" binding:"required"`
+	Score           float64 `json:"score" form:"score" binding:"required"`
+	BoxOffice       float64 `json:"box_office" form:"box_office" binding:"required"`
+	CoverImgPath    string  `json:"cover_img_path" form:"cover_img_path" binding:"required"`
+	IsDelete        int     `json:"isDelete" form:"isDelete" binding:"required"`
+	CarouselImgPath string  `json:"carousel_img_path" form:"carousel_img_path" binding:"required"`
+	Down_time       int     `json:"down_Time" form:"down_time" binding:"required"`
 }

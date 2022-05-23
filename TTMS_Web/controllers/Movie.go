@@ -84,3 +84,37 @@ func GetBoxOfficeRankingMovies(c *gin.Context) {
 	}
 	ResponseSuccess(c, movie)
 }
+
+func AddNewMovie(c *gin.Context) {
+	p := new(models.ParamsAddNewMovie)
+	err := c.ShouldBind(&p)
+	if err != nil{
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("AddNewMovie ShouldBind Error", zap.Error(err))
+		return
+	}
+	err = service.AddNewMovie(p)
+	if err != nil{
+		ResponseError(c, CodeServerBusy)
+		zap.L().Error("service.AddNewMovie Error", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, "add new movie successful.")
+}
+
+func ModifyMovieByID(c *gin.Context) {
+	p := new(models.ParamsModifyMovie)
+	err := c.ShouldBind(p)
+	if err != nil{
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("ModifyMovieByID ShouldBind Error", zap.Error(err))
+		return
+	}
+	err = service.ModifyMovieByID(p)
+	if err != nil{
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("service.ModifyMovieByID Error", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, "modify movie successful.")
+}
