@@ -22,12 +22,12 @@
                     <div class="movie">
                         <el-card :body-style="{ padding: '0px' }" shadow="hover">
                             <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                                class="image" @click="movie_info_drawer = true">
+                                class="image" @click="gotoinfo(123)">
                             <div style="padding: 14px;">
                                 <span>好吃的汉堡</span>
                                 <div class="bottom clearfix">
 
-                                    <el-button type="text" class="button">特惠购买</el-button>
+                                    <el-button type="text" class="button" @click="gotoinfo(123476)">特惠购买</el-button>
                                 </div>
                             </div>
                         </el-card>
@@ -171,7 +171,7 @@
         <el-drawer title="我是标题" :visible.sync="movie_info_drawer" :with-header="false" size="80%">
             <div>
                 <div class="drawer_picture">
-                    <el-image style="width: 432px; height: 600px" :src="url" :fit="fill"></el-image>
+                    <el-image style="width: 432px; height: 600px" :src="url"></el-image>
                 </div>
             </div>
         </el-drawer>
@@ -221,6 +221,9 @@ export default {
         _setIndex() {
             this.currentIndex++
             if (this.currentIndex === this.slideData.length) this.currentIndex = 0
+        },
+        gotoinfo(id) {
+            this.$router.push('/movie/'+id);
         }
     }
 

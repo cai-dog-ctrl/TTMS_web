@@ -45,3 +45,23 @@ type ParamsUpdateMsg struct {
 	Identity    int    `json:"identity" from:"identity" binding:"required"`
 	IsLogin     int    `json:"is_login" from:"is_login" binding:"required"`
 }
+
+type ParamsGetShowingMovies struct {
+	Num      int `json:"page" form:"num" binding:"required"`
+	Page_num int `json:"page_num" form:"page_num" binding:"required"`
+}
+
+type ParamsGetComingMovies struct {
+	Num      int `json :"page" form:"num" binding:"required"`
+	Page_num int `json:"page_num" form:"page_num" binding:"required"`
+}
+
+type ParamsGetScoreRankingMovies struct {
+	Num      int `json :"page" form:"num" binding:"required"`
+	Page_num int `json:"page_num" form:"page_num" binding:"required"`
+}
+
+type ParamsGetBoxOfficeRankingMovies struct {
+	Num      int `json :"page" form:"num" binding:"required"`
+	Page_num int `json:"page_num" form:"page_num" binding:"required"`
+}
