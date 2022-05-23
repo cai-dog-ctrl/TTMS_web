@@ -4,6 +4,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -29,12 +30,17 @@ func GetFrontPage(c *gin.Context) {
 func GetMovieInfoByID(c *gin.Context) {
 	p := new(models.ParamsMovie)
 	p.Id = utils.ShiftToNum64(c.Param("Id"))
+	fmt.Println(p)
 	movie, err := service.GetMovieInfoByID(p)
 	if err != nil {
 		zap.L().Error("", zap.Error(err))
 		return
 	}
-	ResponseSuccess(c, movie)
+	relevantMovies, err := service.GetRelevantMovies(movie.Tag)
+	ResponseSuccess(c, gin.H{
+		"movieInfo":      movie,
+		"relevantMovies": relevantMovies,
+	})
 }
 
 func GetShowingMovies(c *gin.Context) {
@@ -83,4 +89,38 @@ func GetBoxOfficeRankingMovies(c *gin.Context) {
 		return
 	}
 	ResponseSuccess(c, movie)
+}
+
+func AddNewMovie(c *gin.Context) {
+	p := new(models.ParamsAddNewMovie)
+	err := c.ShouldBind(&p)
+	if err != nil {
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("AddNewMovie ShouldBind Error", zap.Error(err))
+		return
+	}
+	err = service.AddNewMovie(p)
+	if err != nil {
+		ResponseError(c, CodeServerBusy)
+		zap.L().Error("service.AddNewMovie Error", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, "add new movie successful.")
+}
+
+func ModifyMovieByID(c *gin.Context) {
+	p := new(models.ParamsModifyMovie)
+	err := c.ShouldBind(p)
+	if err != nil {
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("ModifyMovieByID ShouldBind Error", zap.Error(err))
+		return
+	}
+	err = service.ModifyMovieByID(p)
+	if err != nil {
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("service.ModifyMovieByID Error", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, "modify movie successful.")
 }

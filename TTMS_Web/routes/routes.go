@@ -31,6 +31,9 @@ func SetupRouter() *gin.Engine {
 	g.GET("/GetAllComingMovies", controllers.GetComingMovies)
 	g.GET("/GetAllScoreRankingMovies", controllers.GetScoreRankingMovies)
 	g.GET("/GetAllBoxOfficeRankingMovies", controllers.GetBoxOfficeRankingMovies)
+
+	g.POST("/AddNewMovie", controllers.AddNewMovie)
+	g.PUT("/ModifyMovie", controllers.ModifyMovieByID)
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"msg": "404",
