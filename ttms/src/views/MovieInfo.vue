@@ -6,12 +6,12 @@
             src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644" alt="">
         </div>
         <div class="name">
-          <h1>坏蛋联盟</h1>
-          <span>喜剧&nbsp; &nbsp; &nbsp; 电影</span>
+          <h1>{{ movieInfo.name }}</h1>
+          <span>{{ movieInfo.tag }}&nbsp; &nbsp; &nbsp; 电影</span>
           <br><br>
-          <span>中国/100分钟</span>
+          <span>中国/{{ movieInfo.duration }}分钟</span>
           <br><br>
-          <span>2022-4-29 西安邮电大学上映</span>
+          <span>{{ movieInfo.up_Time }} 西安邮电大学上映</span>
           <br><br>
           <div class="btns">
             <el-button type="info" size="small" icon="el-icon-bell"> 想看 &nbsp;&nbsp;&nbsp; </el-button>
@@ -21,10 +21,11 @@
           <div class="buy_btn" @click="buyTickets(123)">特惠购票</div>
         </div>
         <div style="margin-top:120px;margin-left: 80px;">
-          <div class="score" style="color:#fff">西邮评分<h1 style="color:#FFC600;font-size:30px;margin-top:10px">9.1</h1>
+          <div class="score" style="color:#fff">西邮评分<h1 style="color:#FFC600;font-size:30px;margin-top:10px">
+              {{ movieInfo.score }}</h1>
           </div>
           <div class="pf" style="color:#fff">累计票房<br>
-            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">26.3亿</h1>
+            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.boxoffice }}亿</h1>
           </div>
         </div>
 
@@ -47,8 +48,7 @@
               </div>
 
 
-              马丽魏翔携手演绎高口碑爆笑喜剧！《夏洛特烦恼》《西虹市首富》导演闫非、彭大魔监制，邢文雄执导，马丽、魏翔等喜剧人主演，携手打造爆笑“杀手奇遇”！小人物龙套演员魏成功（魏翔 饰）得到当红女星米兰（马丽
-              饰）“赏识”，被邀请出演男一号神秘杀手，却没想到这一切竟是一场危机四伏的“戏中戏”、“局中局”。被蒙在鼓里的魏成功数次凭借自己的演技和好运化险为夷，而这场阴谋却逐渐失控，残酷的真相也离他越来越近……
+              {{ movieInfo.descrption }}
             </div>
             <br><br><br><br><br><br>
           </el-card>
@@ -60,12 +60,12 @@
             <span style="font-size:20px;color:#8FDCFE">相似推荐</span>
 
           </div>
-          <div v-for="item in recommend" :key="item" class="item">
+          <div v-for="item in movieInfo.relevantMovies.ShowingList" :key="item" class="item">
             <img :src="item.img" alt="">
             <div style="height:30px;margin-top: 20px;margin-left: 10px;"><a class="recommend_a" href="#"
                 style="color:#219FFF;text-decoration:none">《 {{ item.name }} 》</a></div>
             <div style="margin-left:80px">
-              <h2 style="margin-top:12px;color: #FFC600;">{{ item.socre }}</h2>
+              <h2 style="margin-top:12px;color: #FFC600;">{{ item.score }}</h2>
             </div>
           </div>
         </el-card>
@@ -75,21 +75,36 @@
 
 </template>
 <script>
+import { removeDotSegments } from 'uri-js'
+
 export default {
   data() {
+
     return {
       recommend: [{ "name": "这个杀手不太冷", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.5 },
       { "name": "这个杀手冷不冷", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.4 },
       { "name": "这个杀手有点冷", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.3 },
-      { "name": "这个杀手冷死了", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.1 },]
+      { "name": "这个杀手冷死了", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.1 },],
+      movieInfo: {}
     }
   },
   created() {
-
+    this.getMovieInfo()
   },
   methods: {
+    async getMovieInfo() {
+      var id = this.$route.params.id
+      const { data: res } = await this.$http.get('GetMovieInfoById/' + id)
+      if (res.code !== 1000) {
+        this.$message.error("获取电影详情失败")
+        this.$router.push("/home")
+        return
+      }
+      this.movieInfo = res.data
+    },
+
     buyTickets(id) {
-      this.$router.push('/buytickets/'+id);
+      this.$router.push('/buytickets/' + id);
     }
   }
 }
@@ -191,9 +206,7 @@ export default {
     width: 70px;
   }
 
-  a {}
 
-  a:hover {}
 }
 
 .item:hover {

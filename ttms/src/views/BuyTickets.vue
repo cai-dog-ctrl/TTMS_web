@@ -31,14 +31,14 @@
             <div class="main">
                 <div class="schedule">
                     <div class="schedule_btu">
-                        <span>观影时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>今天</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>明天</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>后天</span>
+                        <div class="schedule_btu_word"><span>观影日期</span></div>
+                        <div class="schedule_btu_itme" v-for="item in dateList">
+                            <span >{{item}}</span>
+                        </div>
                     </div>
                     <div class="list">
-                        <el-table :data="tableData" stripe style="width: 100%">
-                            <el-table-column prop="date" label="日期" width="180">
+                        <el-table :data="tableData" stripe style="width: 100%" >
+                            <el-table-column prop="date" label="时间" width="180" >
                             </el-table-column>
                             <el-table-column prop="type" label="类型" width="180">
                             </el-table-column>
@@ -47,7 +47,7 @@
                             <el-table-column prop="price" label="售价(元)">
                             </el-table-column>
                             <el-table-column  label="选座购票">
-                                <el-button type="danger" round size="mini">在线选票</el-button>
+                                <el-button type="primary" round size="mini">在线选票</el-button>
                             </el-table-column>
                         </el-table>
                     </div>
@@ -83,7 +83,8 @@ export default {
                 type: '3D',
                 address: '4号放映厅',
                 price: '40'
-            }]
+            }],
+            dateList: ['2022-10-09','2022-10-23']
         }
     }
 }
@@ -161,10 +162,24 @@ export default {
     width: 2400px;
 }
 .schedule_btu {
+    color: #000;
     cursor: pointer;
-
-    :nth-child(1) {
-        color: rgb(170, 173, 166);
+    display: flex;
+    .schedule_btu_word{
+        padding-top: 2px;
+    }
+    .schedule_btu_itme{
+        
+        text-align: center;
+        height: 25px;
+        width: 100px;
+        margin-left: 20px;
+        border-radius: 13px;
+        padding-top: 2px;
+    }
+    .schedule_btu_itme:hover{
+        color: #fff;
+        background: #409EFF;
     }
 }
 </style>

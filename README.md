@@ -1,5 +1,5 @@
 # First Usage
-* git clone https://github.com/z3256854313/TTMS_Web.git
+* git clone git@github.com:cai-dog-ctrl/TTMS_web.git
 * cd TTMS_Web
 * git checkout -b dev
 * git branch --set-upstream-to=origin/dev dev
