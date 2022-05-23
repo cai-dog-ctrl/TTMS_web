@@ -6,6 +6,7 @@ import FirstPage from '../views/FirstPage.vue'
 import Login from '../views/Login.vue'
 import SignIn from '../views/SignIn.vue'
 import MovieInfo from '../views/MovieInfo.vue'
+import BuyTickets from '../views/BuyTickets.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -33,6 +34,10 @@ const routes = [
       {
         path:"/movie/:id",
         component:MovieInfo
+      },
+      {
+        path:"/buytickets/:id",
+        component:BuyTickets
       }
     ]
   }
