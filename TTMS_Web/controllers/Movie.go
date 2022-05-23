@@ -32,13 +32,43 @@ func GetMovieInfoByID(c *gin.Context) {
 	fmt.Println(p)
 	movie, err := service.GetMovieInfoByID(p)
 	if err != nil {
-		zap.L().Error("", zap.Error(err))
+		zap.L().Error("service.GetMovieInfoByID ERROR", zap.Error(err))
 		return
 	}
 	relevantMovies, err := service.GetRelevantMovies(movie.Tag)
+	if err != nil {
+		zap.L().Error("service.GetRelevantMovies ERROR", zap.Error(err))
+		return
+	} 
+	uptime := ""
+	uptime += utils.ShiftToStringFromInt64(int64(movie.Up_time/10000))
+	uptime += "-"
+	uptemtime := movie.Up_time%10000
+	uptime += utils.ShiftToStringFromInt64(int64(uptemtime/100))
+	uptime += "-"
+	uptime += utils.ShiftToStringFromInt64(int64(uptemtime%100))
+
+	downtime := ""
+	downtime += utils.ShiftToStringFromInt64(int64(movie.Down_time/10000))
+	downtime += "-"
+	downtemtime := movie.Down_time%10000
+	downtime += utils.ShiftToStringFromInt64(int64(downtemtime/100))
+	downtime += "-"
+	downtime += utils.ShiftToStringFromInt64(int64(downtemtime%100))
 	ResponseSuccess(c, gin.H{
-		"movieInfo":      movie,
-		"relevantMovies": relevantMovies,
+		"id":              movie.Id,
+		"name":            movie.Name,
+		"descrption":      movie.Description,
+		"tag":             movie.Tag,
+		"duration":        movie.Duration,
+		"up_time":         uptime,
+		"down_time":       downtime,
+		"score":           movie.Score,
+		"boxoffice":       movie.BoxOffice,
+		"carouselImgPath": movie.CarouselImgPath,
+		"coverImgPath":    movie.CoverImgPath,
+		"is_delete":       movie.IsDelete,
+		"relevantMovies":  relevantMovies,
 	})
 }
 

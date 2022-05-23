@@ -6,25 +6,26 @@
             src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644" alt="">
         </div>
         <div class="name">
-          <h1>{{movieInfo.name}}</h1>
-          <span>{{movieInfo.tag}}&nbsp; &nbsp; &nbsp; 电影</span>
+          <h1>{{ movieInfo.name }}</h1>
+          <span>{{ movieInfo.tag }}&nbsp; &nbsp; &nbsp; 电影</span>
           <br><br>
-          <span>中国/{{movieInfo.duration}}分钟</span>
+          <span>中国/{{ movieInfo.duration }}分钟</span>
           <br><br>
-          <span>{{movieInfo.up_Time}} 西安邮电大学上映</span>
+          <span>{{ movieInfo.up_Time }} 西安邮电大学上映</span>
           <br><br>
           <div class="btns">
             <el-button type="info" size="small" icon="el-icon-bell"> 想看 &nbsp;&nbsp;&nbsp; </el-button>
             <el-button type="info" size="small" icon="el-icon-star-off"> 评分&nbsp;&nbsp;&nbsp; </el-button>
           </div>
           <br>
-          <div class="buy_btn">特惠购票</div>
+          <div class="buy_btn" @click="buyTickets(123)">特惠购票</div>
         </div>
         <div style="margin-top:120px;margin-left: 80px;">
-          <div class="score" style="color:#fff">西邮评分<h1 style="color:#FFC600;font-size:30px;margin-top:10px">{{movieInfo.score}}</h1>
+          <div class="score" style="color:#fff">西邮评分<h1 style="color:#FFC600;font-size:30px;margin-top:10px">
+              {{ movieInfo.score }}</h1>
           </div>
           <div class="pf" style="color:#fff">累计票房<br>
-            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{movieInfo.box_office}}亿</h1>
+            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.box_office }}亿</h1>
           </div>
         </div>
 
@@ -47,7 +48,7 @@
               </div>
 
 
-              {{movieInfo.description}}
+              {{ movieInfo.description }}
             </div>
             <br><br><br><br><br><br>
           </el-card>
@@ -78,28 +79,32 @@ import { removeDotSegments } from 'uri-js'
 
 export default {
   data() {
-    
+
     return {
       recommend: [{ "name": "这个杀手不太冷", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.5 },
       { "name": "这个杀手冷不冷", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.4 },
       { "name": "这个杀手有点冷", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.3 },
       { "name": "这个杀手冷死了", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.1 },],
-      movieInfo:{}
+      movieInfo: {}
     }
   },
   created() {
-      this.getMovieInfo()
+    this.getMovieInfo()
   },
   methods: {
-    async getMovieInfo(){
-     var id = this.$route.params.id
-      const {data:res}=await this.$http.get('GetMovieInfoById/'+id)
-      if(res.code !==1000){
+    async getMovieInfo() {
+      var id = this.$route.params.id
+      const { data: res } = await this.$http.get('GetMovieInfoById/' + id)
+      if (res.code !== 1000) {
         this.$message.error("获取电影详情失败")
         this.$router.push("/home")
         return
       }
-      this.movieInfo=res.data
+      this.movieInfo = res.data
+    },
+
+    buyTickets(id) {
+      this.$router.push('/buytickets/' + id);
     }
   }
 }
