@@ -118,3 +118,8 @@ func ModifyMovieByID(p *models.ParamsModifyMovie) error {
 	movie.Down_time = p.Down_time
 	return mysql.ModifyMovie(movie)
 }
+
+func GetRelevantMovies(tag string)(*models.ShowingList, error) {
+	//TODO
+	return GetShowingMovies(6, 0)
+}
