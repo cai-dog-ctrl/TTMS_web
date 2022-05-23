@@ -2,7 +2,6 @@ package mysql
 
 import (
 	"TTMS/models"
-	"TTMS/pkg/utils"
 	"fmt"
 	"go.uber.org/zap"
 	"time"
@@ -12,7 +11,7 @@ import (
 
 func GetCarouselList(num int) (*models.CarouselList, error) {
 	carouselList := new(models.CarouselList)
-	sqlStr := "select id, img from movie_info"
+	sqlStr := fmt.Sprintf("select id, img from movie_info limit 0, %v", num)
 	err := db.Select(&carouselList.CarouselList, sqlStr)
 	if err != nil {
 		zap.L().Error(sqlStr)
@@ -24,10 +23,11 @@ func GetCarouselList(num int) (*models.CarouselList, error) {
 func GetComingList(num int, page_num int) (*models.ComingList, error) {
 	comingList := new(models.ComingList)
 	day := time.Now().Day()
-	month := utils.ShiftToNum(time.Now().Month().String())
+	month := int(time.Now().Month())
 	year := time.Now().Year()
 	date := day + month*100 + year*100*100
 	sqlStr1 := fmt.Sprintf("select count(*) from movie_info where %v < date and is_delete = 0", date)
+	fmt.Println(sqlStr1)
 	err := db.Get(&comingList.Number, sqlStr1)
 	if err != nil {
 		zap.L().Error(sqlStr1)
@@ -35,6 +35,7 @@ func GetComingList(num int, page_num int) (*models.ComingList, error) {
 	}
 	startIdx := num * page_num
 	sqlStr2 := fmt.Sprintf("select id, name, cover_img from movie_info where %v < date and is_delete = 0 limit %v, %v", date, startIdx, num)
+	fmt.Println(sqlStr2)
 	err = db.Select(&comingList.ComingList, sqlStr2)
 	if err != nil {
 		zap.L().Error(sqlStr2)
@@ -56,7 +57,9 @@ func GetShowingList(num int, page_num int) (*models.ShowingList, error) {
 		return nil, err
 	}
 	startIdx := num * page_num
-	sqlStr2 := fmt.Sprintf("select id, name, score, cover_img from movie_info where %v >= date and %v < down_time and is_delete = 0 limit %v, %v", date, startIdx, page_num, num)
+	fmt.Println(sqlStr1)
+	sqlStr2 := fmt.Sprintf("select id, name, score, cover_img from movie_info where %v >= date and %v < down_time and is_delete = 0 limit %v, %v", date, date, startIdx, num)
+	fmt.Println(sqlStr2)
 	err = db.Select(&showingList.ShowingList, sqlStr2)
 	if err != nil {
 		zap.L().Error(sqlStr2)
@@ -68,7 +71,11 @@ func GetShowingList(num int, page_num int) (*models.ShowingList, error) {
 func GetScoreRankingList(num int, page_num int) (*models.ScoreRankingList, error) {
 	scoreRankingList := new(models.ScoreRankingList)
 	startIdx := num * page_num
-	sqlStr := fmt.Sprintf("select id, name, score, cover_img from movie_info order by score desc limit %v, %v", startIdx, num)
+	day := time.Now().Day()
+	month := int(time.Now().Month())
+	year := time.Now().Year()
+	date := day + month*100 + year*100*100
+	sqlStr := fmt.Sprintf("select id, name, score, cover_img from movie_info where %v >= date and %v < down_time and is_delete = 0 order by score desc limit %v, %v", date, date, startIdx, num)
 	err := db.Select(&scoreRankingList.ScoreRankingList, sqlStr)
 	if err != nil {
 		zap.L().Error(sqlStr)
@@ -80,7 +87,11 @@ func GetScoreRankingList(num int, page_num int) (*models.ScoreRankingList, error
 func GetBoxOfficeRankingList(num int, page_num int) (*models.BoxOfficeRankingList, error) {
 	boxOfficeRankingList := new(models.BoxOfficeRankingList)
 	startIdx := num * page_num
-	sqlStr := fmt.Sprintf("select id, name, pf, cover_img from movie_info order by pf desc limit %v, %v", startIdx, num)
+	day := time.Now().Day()
+	month := int(time.Now().Month())
+	year := time.Now().Year()
+	date := day + month*100 + year*100*100
+	sqlStr := fmt.Sprintf("select id, name, pf, cover_img from movie_info where %v >= date and %v < down_time and is_delete = 0 order by pf desc limit %v, %v", date, date, startIdx, num)
 	err := db.Select(&boxOfficeRankingList.BoxOfficeRankingList, sqlStr)
 	if err != nil {
 		zap.L().Error(sqlStr)

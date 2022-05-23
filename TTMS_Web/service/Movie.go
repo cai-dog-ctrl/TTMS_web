@@ -41,23 +41,23 @@ func GetMovieInfoByID(p *models.ParamsMovie) (*models.MovieInfo, error) {
 	return movie, nil
 }
 
-func GetAllShowingMovies(p *models.ParamsGetShowingMovies) (*models.ShowingList, error){
-	return GetShowingMovies(p.Num, p.Page_num)
+func GetAllShowingMovies(p *models.ParamsGetShowingMovies) (*models.ShowingList, error) {
+	return GetShowingMovies(p.Num, p.Page_num-1)
 }
 
-func GetAllComingMovies(p *models.ParamsGetComingMovies) (*models.ComingList, error){
-	return GetComingMovies(p.Num, p.Page_num)
+func GetAllComingMovies(p *models.ParamsGetComingMovies) (*models.ComingList, error) {
+	return GetComingMovies(p.Num, p.Page_num-1)
 }
 
-func GetAllScoreRankingMovies(p *models.ParamsGetScoreRankingMovies) (*models.ScoreRankingList, error){
-	return GetScoreRankingList(p.Num, p.Page_num)
+func GetAllScoreRankingMovies(p *models.ParamsGetScoreRankingMovies) (*models.ScoreRankingList, error) {
+	return GetScoreRankingList(p.Num, p.Page_num-1)
 }
 
-func GetAllBoxOfficeRankingMovies(p *models.ParamsGetBoxOfficeRankingMovies) (*models.BoxOfficeRankingList, error){
-	return GetBoxOfficeRankingList(p.Num, p.Page_num)
+func GetAllBoxOfficeRankingMovies(p *models.ParamsGetBoxOfficeRankingMovies) (*models.BoxOfficeRankingList, error) {
+	return GetBoxOfficeRankingList(p.Num, p.Page_num-1)
 }
 
-func GetShowingMovies(num int, page_num int) (*models.ShowingList, error){
+func GetShowingMovies(num int, page_num int) (*models.ShowingList, error) {
 	showingList, err := mysql.GetShowingList(num, page_num)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func GetShowingMovies(num int, page_num int) (*models.ShowingList, error){
 	return showingList, nil
 }
 
-func GetComingMovies(num int, page_num int) (*models.ComingList, error){
+func GetComingMovies(num int, page_num int) (*models.ComingList, error) {
 	comingList, err := mysql.GetComingList(num, page_num)
 	if err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func GetComingMovies(num int, page_num int) (*models.ComingList, error){
 	return comingList, nil
 }
 
-func GetScoreRankingList(num int, page_num int) (*models.ScoreRankingList, error){
+func GetScoreRankingList(num int, page_num int) (*models.ScoreRankingList, error) {
 	scoreRankingList, err := mysql.GetScoreRankingList(num, page_num)
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func GetScoreRankingList(num int, page_num int) (*models.ScoreRankingList, error
 	return scoreRankingList, nil
 }
 
-func GetBoxOfficeRankingList(num int, page_num int) (*models.BoxOfficeRankingList, error){
+func GetBoxOfficeRankingList(num int, page_num int) (*models.BoxOfficeRankingList, error) {
 	boxOfficeRankingList, err := mysql.GetBoxOfficeRankingList(num, page_num)
 	if err != nil {
 		return nil, err

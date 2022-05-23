@@ -16,7 +16,7 @@ type ParamsRegister struct {
 }
 
 type ParamsFrontPage struct {
-	CarouselNum         int `json:"carouse_num" form:"carouse_num" binding:"required"`
+	CarouselNum         int `json:"carousel_num" form:"carousel_num" binding:"required"`
 	ShowingNum          int `json:"showing_num" form:"showing_num" binding:"required"`
 	ComingNum           int `json:"coming_num" form:"coming_num" binding:"required"`
 	ScoreRankingNum     int `json:"scoreRanking_num" form:"scoreRanking_num" binding:"required"`
@@ -52,16 +52,16 @@ type ParamsGetShowingMovies struct {
 }
 
 type ParamsGetComingMovies struct {
-	Num      int `json :"page" form:"num" binding:"required"`
+	Num      int `json:"page" form:"num" binding:"required"`
 	Page_num int `json:"page_num" form:"page_num" binding:"required"`
 }
 
 type ParamsGetScoreRankingMovies struct {
-	Num      int `json :"page" form:"num" binding:"required"`
+	Num      int `json:"page" form:"num" binding:"required"`
 	Page_num int `json:"page_num" form:"page_num" binding:"required"`
 }
 
 type ParamsGetBoxOfficeRankingMovies struct {
-	Num      int `json :"page" form:"num" binding:"required"`
+	Num      int `json:"page" form:"num" binding:"required"`
 	Page_num int `json:"page_num" form:"page_num" binding:"required"`
 }

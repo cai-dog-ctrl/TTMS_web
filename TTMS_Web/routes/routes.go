@@ -20,12 +20,12 @@ func SetupRouter() *gin.Engine {
 	{
 
 	}
-	g.GET("/frontPage", controllers.GetFrontPage)
-	g.GET("/movieInfo", controllers.GetMovieInfoByID)
-	g.GET("/allShowingMovies", controllers.GetShowingMovies)
-	g.GET("/allComingMovies", controllers.GetComingMovies)
-	g.GET("/allScoreRankingMovies", controllers.GetScoreRankingMovies)
-	g.GET("/allBoxOfficeRankingMovies", controllers.GetBoxOfficeRankingMovies)
+	g.GET("/GetFrontPage", controllers.GetFrontPage)
+	g.GET("/GetMovieInfoById/:Id", controllers.GetMovieInfoByID)
+	g.GET("/GetAllShowingMovies", controllers.GetShowingMovies)
+	g.GET("/GetAllComingMovies", controllers.GetComingMovies)
+	g.GET("/GetAllScoreRankingMovies", controllers.GetScoreRankingMovies)
+	g.GET("/GetAllBoxOfficeRankingMovies", controllers.GetBoxOfficeRankingMovies)
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"msg": "404",
