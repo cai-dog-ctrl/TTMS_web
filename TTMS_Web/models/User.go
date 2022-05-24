@@ -25,5 +25,6 @@ type Data struct {
 }
 
 type UserList struct {
+	Total int 	`json:"Total"`
 	List []Data `json:"list"`
 }

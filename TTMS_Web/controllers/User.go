@@ -5,7 +5,7 @@ import (
 	"TTMS/service"
 	"errors"
 	"fmt"
-
+	"TTMS/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -81,7 +81,11 @@ func AddAdmin(c *gin.Context) {
 // GetAllMsg 获取所有用户信息
 func GetAllMsg(c *gin.Context) {
 
-	p1, err := service.GetAllMsg()
+	pageNum := utils.ShiftToNum(c.Query("page_num"))
+	pageSize := utils.ShiftToNum(c.Query("page_size"))
+	key_word := c.Query("key_word")
+
+	p1, err := service.GetAllMsg(pageNum,pageSize,key_word)
 
 	if err != nil {
 		zap.L().Error("service.GetAllMsg error", zap.Error(err))

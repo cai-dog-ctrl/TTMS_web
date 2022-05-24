@@ -63,8 +63,11 @@ func AddAdmin(p *models.ParamsAdminmsg) error {
 }
 
 // GetAllMsg 获取所有用户信息
-func GetAllMsg() (p *models.UserList, err error) {
-	p1, err := mysql.GetAllUser()
+func GetAllMsg(page_num, page_size int, key_word string) (p *models.UserList, err error) {
+	
+	p1, err := mysql.GetAllUser(page_num,page_size,key_word)
+	
+	
 	if err != nil {
 		return nil, err
 	}
