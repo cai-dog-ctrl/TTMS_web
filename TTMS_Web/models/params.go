@@ -45,6 +45,13 @@ type ParamsUpdateMsg struct {
 	IsLogin     int    `json:"is_login" form:"is_login" binding:"required"`
 }
 
+type ParamAddSchedule struct {
+	CinemaId  int64 `json:"cinema_id" form:"cinema_id" binding:"required"`
+	MovieId   int64 `json:"movie_id" form:"movie_id" binding:"required"`
+	DateDay   int64 `json:"date_day" form:"date_dat" binding:"required"`
+	StartTime int64 `json:"start_time" form:"start_time" binding:"required"`
+}
+
 type ParamsGetShowingMovies struct {
 	Num      int `json:"page" form:"num" binding:"required"`
 	Page_num int `json:"page_num" form:"page_num" binding:"required"`
