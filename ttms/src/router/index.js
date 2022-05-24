@@ -10,6 +10,7 @@ import BuyTickets from '../views/BuyTickets.vue'
 import MangerHome from '../views/MangerHome.vue'
 import MangerUser from '../views/MangerUser.vue'
 import MangerWelcome from '../views/MangerWelcome.vue'
+import SBorad from '../views/SBorad.vue'
 
 import Borad from '../views/Borad.vue'
 import PBorad from '../views/PBorad'
@@ -77,6 +78,10 @@ const routes = [
           {
             path: "/pfborad",
             component: PBorad
+          },
+          {
+            path: "/sborad",
+            component: SBorad
           }
         ]
       },

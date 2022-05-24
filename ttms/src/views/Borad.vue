@@ -2,8 +2,8 @@
     <el-container>
         <el-header>
             <el-menu :default-active="active1" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-                <el-menu-item :index="active1">票房榜</el-menu-item>
-                <el-menu-item :index="active2">评分榜</el-menu-item>
+                <el-menu-item :index="active1" @click="topBorad">票房榜</el-menu-item>
+                <el-menu-item :index="active2" @click="tosBroad">评分榜</el-menu-item>
             </el-menu>
         </el-header>
 
@@ -17,13 +17,20 @@
 <script>
 export default {
     name: 'WorkspaceJsonBorad',
-
     data() {
         return {
             active1:'pborad',
-            active2:''
+            active2:'sborad'
             
         };
+    },
+    methods: {
+        tosBroad() {
+            this.$router.push('/sborad');
+        },
+        topBorad() {
+            this.$router.push('/borad');
+        }
     },
 };
 </script>
