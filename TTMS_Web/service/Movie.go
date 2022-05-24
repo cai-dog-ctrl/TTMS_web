@@ -88,3 +88,38 @@ func GetBoxOfficeRankingList(num int, page_num int) (*models.BoxOfficeRankingLis
 	}
 	return boxOfficeRankingList, nil
 }
+
+func AddNewMovie(p *models.ParamsAddNewMovie) error {
+	NewMovie := new(models.MovieInfo)
+	NewMovie.Name = p.Name
+	NewMovie.Description = p.Description
+	NewMovie.Tag = p.Tag
+	NewMovie.Duration = p.Duration
+	NewMovie.Up_time = p.Up_time
+	NewMovie.Down_time = p.Down_time
+	NewMovie.CoverImgPath = p.CoverImgPath
+	NewMovie.CarouselImgPath = p.CarouselImgPath
+	return mysql.InsertMovie(NewMovie) 
+}
+
+func ModifyMovieByID(p *models.ParamsModifyMovie) error {
+	movie := new(models.MovieInfo)
+	movie.Id = p.Id
+	movie.Name = p.Name
+	movie.Description = p.Description
+	movie.Tag = p.Tag
+	movie.Duration = p.Duration
+	movie.Up_time = p.Up_time
+	movie.Score = p.Score
+	movie.BoxOffice = p.BoxOffice
+	movie.CoverImgPath = p.CoverImgPath
+	movie.IsDelete = p.IsDelete
+	movie.CarouselImgPath = p.CarouselImgPath
+	movie.Down_time = p.Down_time
+	return mysql.ModifyMovie(movie)
+}
+
+func GetRelevantMovies(tag string)(*models.ShowingList, error) {
+	//TODO
+	return GetShowingMovies(6, 0)
+}

@@ -4,8 +4,9 @@ import (
 	"TTMS/controllers"
 	"TTMS/logger"
 	"TTMS/middleware"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
@@ -25,12 +26,25 @@ func SetupRouter() *gin.Engine {
 	{
 
 	}
+	//cat front page / movie info / showing movies / coming movies / scoreRanking movies / boxofficeRanking movies
 	g.GET("/GetFrontPage", controllers.GetFrontPage)
 	g.GET("/GetMovieInfoById/:Id", controllers.GetMovieInfoByID)
 	g.GET("/GetAllShowingMovies", controllers.GetShowingMovies)
 	g.GET("/GetAllComingMovies", controllers.GetComingMovies)
 	g.GET("/GetAllScoreRankingMovies", controllers.GetScoreRankingMovies)
 	g.GET("/GetAllBoxOfficeRankingMovies", controllers.GetBoxOfficeRankingMovies)
+
+	//manage movie
+	g.POST("/AddNewMovie", controllers.AddNewMovie)
+	g.PUT("/ModifyMovie", controllers.ModifyMovieByID)
+	
+	//manage cinema
+	g.POST("/AddNewCinema", controllers.AddNewCinema)
+	g.PUT("/ModifyCinemaByID", controllers.ModifyCinemaByID)
+	
+	//manage seat
+	g.GET("/GetSeatByCinemaID", controllers.GetSeatByCinemaID)
+	g.PUT("/ModifySeat", controllers.ModifySeat)
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"msg": "404",

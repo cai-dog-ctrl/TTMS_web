@@ -4,6 +4,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -17,7 +18,6 @@ func GetFrontPage(c *gin.Context) {
 	p.ComingNum = utils.ShiftToNum(c.Query("ComingNum"))
 	p.ScoreRankingNum = utils.ShiftToNum(c.Query("ScoreRankingNum"))
 	p.BoxOfficeRankingNum = utils.ShiftToNum(c.Query("BoxOfficeRankingNum"))
-
 	front_page, err := service.GetFrontPage(p)
 	if err != nil {
 		zap.L().Error("", zap.Error(err))
@@ -29,12 +29,47 @@ func GetFrontPage(c *gin.Context) {
 func GetMovieInfoByID(c *gin.Context) {
 	p := new(models.ParamsMovie)
 	p.Id = utils.ShiftToNum64(c.Param("Id"))
+	fmt.Println(p)
 	movie, err := service.GetMovieInfoByID(p)
 	if err != nil {
-		zap.L().Error("", zap.Error(err))
+		zap.L().Error("service.GetMovieInfoByID ERROR", zap.Error(err))
 		return
 	}
-	ResponseSuccess(c, movie)
+	relevantMovies, err := service.GetRelevantMovies(movie.Tag)
+	if err != nil {
+		zap.L().Error("service.GetRelevantMovies ERROR", zap.Error(err))
+		return
+	} 
+	uptime := ""
+	uptime += utils.ShiftToStringFromInt64(int64(movie.Up_time/10000))
+	uptime += "-"
+	uptemtime := movie.Up_time%10000
+	uptime += utils.ShiftToStringFromInt64(int64(uptemtime/100))
+	uptime += "-"
+	uptime += utils.ShiftToStringFromInt64(int64(uptemtime%100))
+
+	downtime := ""
+	downtime += utils.ShiftToStringFromInt64(int64(movie.Down_time/10000))
+	downtime += "-"
+	downtemtime := movie.Down_time%10000
+	downtime += utils.ShiftToStringFromInt64(int64(downtemtime/100))
+	downtime += "-"
+	downtime += utils.ShiftToStringFromInt64(int64(downtemtime%100))
+	ResponseSuccess(c, gin.H{
+		"id":              movie.Id,
+		"name":            movie.Name,
+		"descrption":      movie.Description,
+		"tag":             movie.Tag,
+		"duration":        movie.Duration,
+		"up_time":         uptime,
+		"down_time":       downtime,
+		"score":           movie.Score,
+		"boxoffice":       movie.BoxOffice,
+		"carouselImgPath": movie.CarouselImgPath,
+		"coverImgPath":    movie.CoverImgPath,
+		"is_delete":       movie.IsDelete,
+		"relevantMovies":  relevantMovies,
+	})
 }
 
 func GetShowingMovies(c *gin.Context) {
@@ -83,4 +118,38 @@ func GetBoxOfficeRankingMovies(c *gin.Context) {
 		return
 	}
 	ResponseSuccess(c, movie)
+}
+
+func AddNewMovie(c *gin.Context) {
+	p := new(models.ParamsAddNewMovie)
+	err := c.ShouldBind(&p)
+	if err != nil {
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("AddNewMovie ShouldBind Error", zap.Error(err))
+		return
+	}
+	err = service.AddNewMovie(p)
+	if err != nil {
+		ResponseError(c, CodeServerBusy)
+		zap.L().Error("service.AddNewMovie Error", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, "add new movie successful.")
+}
+
+func ModifyMovieByID(c *gin.Context) {
+	p := new(models.ParamsModifyMovie)
+	err := c.ShouldBind(p)
+	if err != nil {
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("ModifyMovieByID ShouldBind Error", zap.Error(err))
+		return
+	}
+	err = service.ModifyMovieByID(p)
+	if err != nil {
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("service.ModifyMovieByID Error", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, "modify movie successful.")
 }

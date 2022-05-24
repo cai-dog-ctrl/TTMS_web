@@ -1,12 +1,12 @@
 <template>
     <el-container>
-
+                
         <el-header>
 
             <el-menu :default-active="url1" class="el-menu-demo" mode="horizontal">
                 <el-menu-item :index="url1" class="left1">首页</el-menu-item>
                 <el-menu-item :index="url2" class="left1">电影</el-menu-item>
-                <el-menu-item :index="url3" class="left1">榜单</el-menu-item>
+                <el-menu-item :index="url3" class="left1" @click="toBorad()">榜单</el-menu-item>
 
                 <el-dropdown>
                     <img class="img" src="https://p0.meituan.net/movie/7dd82a16316ab32c8359debdb04396ef2897.png" alt="">
@@ -62,8 +62,11 @@ export default {
         logout() {
             window.sessionStorage.removeItem('token');
             this.IsLogin = false
+        },
+        toBorad() {
+            this.$router.push('/borad');
         }
-    }
+         }
 
 }
 </script>
