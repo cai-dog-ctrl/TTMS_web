@@ -24,7 +24,7 @@ type ParamsFrontPage struct {
 }
 
 type ParamsMovie struct {
-	Id int64 `json:"id" form:"id" binding:"required"`
+	Id string `json:"id" form:"id" binding:"required"`
 }
 
 type ParamsAdminmsg struct {
@@ -35,7 +35,7 @@ type ParamsAdminmsg struct {
 }
 
 type ParamsUpdateMsg struct {
-	Id          int64  `json:"id" form:"id" binding:"required"`
+	Id          string  `json:"id" form:"id" binding:"required"`
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`

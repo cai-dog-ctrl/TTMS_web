@@ -5,6 +5,7 @@ package service
 import (
 	"TTMS/dao/mysql"
 	"TTMS/models"
+	"TTMS/pkg/utils"
 )
 
 func GetFrontPage(p *models.ParamsFrontPage) (*models.FrontPage, error) {
@@ -34,7 +35,7 @@ func GetFrontPage(p *models.ParamsFrontPage) (*models.FrontPage, error) {
 }
 
 func GetMovieInfoByID(p *models.ParamsMovie) (*models.MovieInfo, error) {
-	movie, err := mysql.GetMovieInfoByID(p.Id)
+	movie, err := mysql.GetMovieInfoByID(utils.ShiftToNum64(p.Id))
 	if err != nil {
 		return nil, err
 	}

@@ -5,6 +5,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/jwt"
 	"TTMS/pkg/snowflake"
+	"TTMS/pkg/utils"
 	"errors"
 )
 
@@ -90,7 +91,7 @@ func UpdateMsg(p *models.ParamsUpdateMsg) error {
 	User.IsDelete = p.IsDelete
 	User.Identity = p.Identity
 	User.IsLogin = p.IsLogin
-	User.ID = p.Id
+	User.ID = utils.ShiftToNum64(p.Id)
 	err := mysql.UpdateMsg(User)
 	if err != nil {
 		return err
