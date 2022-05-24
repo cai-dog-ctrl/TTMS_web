@@ -11,12 +11,14 @@ import MangerHome from '../views/MangerHome.vue'
 import MangerUser from '../views/MangerUser.vue'
 import MangerWelcome from '../views/MangerWelcome.vue'
 
+import Borad from '../views/Borad.vue'
+import PBorad from '../views/PBorad'
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path:"/",
-    redirect:"/home",
+    path: "/",
+    redirect: "/home",
   },
 
   {
@@ -41,32 +43,47 @@ const routes = [
   // },
 
   {
-    path:"/login",
-    component:Login
+    path: "/login",
+    component: Login
   },
 
   {
-    path:"/signin",
-    component:SignIn
+    path: "/signin",
+    component: SignIn
   },
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 39a2d86443aa3664d65e3740ef33c5d3d380e7fb
   {
-    path:"/home",
-    component:HomePage,
-    redirect:"/first",
-    children:[
+    path: "/home",
+    component: HomePage,
+    redirect: "/first",
+    children: [
       {
-        path:"/first",
-        component:FirstPage
+        path: "/first",
+        component: FirstPage
       },
       {
-        path:"/movie/:id",
-        component:MovieInfo
+        path: "/movie/:id",
+        component: MovieInfo
       },
       {
-        path:"/buytickets/:id",
-        component:BuyTickets
-      }
+        path: "/buytickets/:id",
+        component: BuyTickets
+      },
+      {
+        path: "/borad",
+        component: Borad,
+        redirect: "/pfborad",
+        children: [
+          {
+            path: "/pfborad",
+            component: PBorad
+          }
+        ]
+      },
     ]
   }
 ]
