@@ -1,9 +1,9 @@
 <template>
     <el-container>
         <el-header>
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-                <el-menu-item index="2-1">票房榜</el-menu-item>
-                <el-menu-item index="2-2">评分榜</el-menu-item>
+            <el-menu :default-active="active1" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+                <el-menu-item :index="active1">票房榜</el-menu-item>
+                <el-menu-item :index="active2">评分榜</el-menu-item>
             </el-menu>
         </el-header>
 
@@ -13,6 +13,20 @@
     </el-container>
 
 </template>
+
+<script>
+export default {
+    name: 'WorkspaceJsonBorad',
+
+    data() {
+        return {
+            active1:'pborad',
+            active2:''
+            
+        };
+    },
+};
+</script>
 
 
 
