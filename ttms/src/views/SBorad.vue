@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="model" v-for="(item, index) in boxOfficeRankingList" :key="item.id">
+        <div class="model" v-for="(item, index) in scoreRankingList" :key="item.id">
             <div class="model_max">
                 <div class="idx">
                     {{ index + 1 }}
@@ -14,7 +14,7 @@
                         <span>{{ item.name }}</span>
                     </div>
                     <div class="sco">
-                        <span>{{ item.box_office }}</span>
+                        <span>{{ item.score }}</span>
                     </div>
                 </div>
             </div>
@@ -31,11 +31,11 @@ export default {
                 Num:'2',
                 Page_num:'2'
             },
-            boxOfficeRankingList: [
+            scoreRankingList: [
                 {
                     id: '',
                     name: '',
-                    box_office: '',
+                    score: '',
                     cover_img_path: ''
                 }
             ]
@@ -46,13 +46,13 @@ export default {
     },
     methods: {
         async get_pBorad() {
-            const { data: res } = await this.$http.get('GetAllBoxOfficeRankingMovies', { params: this.form })
+            const { data: res } = await this.$http.get('GetAllScoreRankingMovies', { params: this.form })
             console.log(res);
             if (res.code !== 1000) {
                 this.$message.error("获取信息失败")
                 return
             }
-            this.boxOfficeRankingList = res.data.BoxOfficeRankingList
+            this.scoreRankingList = res.data.ScoreRankingList
         }
     }
 }
