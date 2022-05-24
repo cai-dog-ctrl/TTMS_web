@@ -29,7 +29,7 @@ export default {
             this.$router.push('/sborad');
         },
         topBorad() {
-            this.$router.push('/pborad');
+            this.$router.push('/borad');
         }
     },
 };
