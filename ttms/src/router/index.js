@@ -51,11 +51,7 @@ const routes = [
     path: "/signin",
     component: SignIn
   },
-<<<<<<< HEAD
-
-=======
   
->>>>>>> 39a2d86443aa3664d65e3740ef33c5d3d380e7fb
   {
     path: "/home",
     component: HomePage,
