@@ -8,7 +8,7 @@ import (
 
 //有关演出计划的业务逻辑代码
 
-//
+//AddSchedule 添加演出计划
 func AddSchedule(p *models.ParamAddSchedule) error {
 	Sche := new(models.ScheduleOut)
 	Sche.ID = snowflake.GenID()
@@ -25,3 +25,8 @@ func AddSchedule(p *models.ParamAddSchedule) error {
 	}
 	return nil
 }
+
+// // DeleteSchedule 删除演出计划
+// func DeleteSchedule(p int) error {
+
+// }

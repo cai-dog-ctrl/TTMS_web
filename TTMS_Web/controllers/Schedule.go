@@ -3,6 +3,7 @@ package controllers
 import (
 	"TTMS/models"
 	"TTMS/service"
+	//"TTMS/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -27,13 +28,21 @@ func AddSchedule(c *gin.Context) {
 	ResponseSuccess(c, "添加成功")
 }
 
-//
-//// DeleteSchedule 删除演出计划
-//func DeleteSchedule() error {
-//
-//}
-//
-//// UpdateSchedule 修改演出计划
-//func UpdateSchedule() error {
-//
-//}
+
+// // DeleteSchedule 删除演出计划
+// func DeleteSchedule(c *gin.Context) {
+// 	p := utils.ShiftToNum(c.Query("id"))
+
+// 	err := service.DeleteSchedule(p)
+// 	if err != nil {
+// 		zap.L().Error("service.DeleteSchedule error", zap.Error(err))
+// 		ResponseError(c, CodeServerBusy)
+// 		return
+// 	}
+// 	ResponseSuccess(c, "删除成功")
+// }
+
+// // UpdateSchedule 修改演出计划
+// func UpdateSchedule(c *gin.Context) {
+
+// }
