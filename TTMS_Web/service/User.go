@@ -5,6 +5,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/jwt"
 	"TTMS/pkg/snowflake"
+	"TTMS/pkg/utils"
 	"errors"
 )
 
@@ -63,8 +64,11 @@ func AddAdmin(p *models.ParamsAdminmsg) error {
 }
 
 // GetAllMsg 获取所有用户信息
-func GetAllMsg() (p *models.UserList, err error) {
-	p1, err := mysql.GetAllUser()
+func GetAllMsg(page_num, page_size int, key_word string) (p *models.UserList, err error) {
+	
+	p1, err := mysql.GetAllUser(page_num,page_size,key_word)
+	
+	
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +94,7 @@ func UpdateMsg(p *models.ParamsUpdateMsg) error {
 	User.IsDelete = p.IsDelete
 	User.Identity = p.Identity
 	User.IsLogin = p.IsLogin
-	User.ID = p.Id
+	User.ID = utils.ShiftToNum64(p.Id)
 	err := mysql.UpdateMsg(User)
 	if err != nil {
 		return err

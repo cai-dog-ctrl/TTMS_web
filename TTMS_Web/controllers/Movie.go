@@ -4,7 +4,6 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -28,8 +27,7 @@ func GetFrontPage(c *gin.Context) {
 
 func GetMovieInfoByID(c *gin.Context) {
 	p := new(models.ParamsMovie)
-	p.Id = utils.ShiftToNum64(c.Param("Id"))
-	fmt.Println(p)
+	p.Id = c.Param("Id")
 	movie, err := service.GetMovieInfoByID(p)
 	if err != nil {
 		zap.L().Error("service.GetMovieInfoByID ERROR", zap.Error(err))
