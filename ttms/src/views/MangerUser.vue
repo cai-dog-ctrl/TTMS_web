@@ -11,7 +11,7 @@
             <!-- 搜索与添加区 -->
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getUserList">
+                    <el-input placeholder="请输入内容" v-model="queryInfo.key_word" clearable @clear="getUserList">
                         <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
                     </el-input>
                 </el-col>
@@ -69,8 +69,8 @@
                 <el-form-item label="邮箱" prop="email">
                     <el-input v-model="addForm.email"></el-input>
                 </el-form-item>
-                <el-form-item label="手机号" prop="mobile">
-                    <el-input v-model="addForm.mobile"></el-input>
+                <el-form-item label="手机号" prop="phone_number">
+                    <el-input v-model="addForm.phone_number"></el-input>
                 </el-form-item>
             </el-form>
             <!--底部区域-->
@@ -82,15 +82,25 @@
 
         <!-- 修改用户的对话框 -->
         <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%">
+
             <el-form :model="editForm" :rules="editFormRules" ref="editFormRuleForm" label-width="70px">
-                <el-form-item label="用户名">
-                    <el-input v-model="editForm.username" disabled></el-input>
+                <el-form-item label="ID">
+                    <el-input v-model="editForm.id" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="用户名" prop="username">
+                    <el-input v-model="editForm.username" ></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="editForm.password" ></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
                     <el-input v-model="editForm.email"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="phone_number">
                     <el-input v-model="editForm.phone_number"></el-input>
+                </el-form-item>
+                <el-form-item label="角色" prop="identity">
+                    <el-input v-model="editForm.identity"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -132,21 +142,22 @@ export default {
 
         return {
             queryInfo: {
-                query: '',
+                key_word: '',
                 //当前的页数
-                pagenum: 1,
+                page_num: 1,
                 //当前每页有多少条数据
-                pagesize: 2
+                page_size: 2
             },
             userlist: [],
-            total: 3,
+            total: '',
             //控制添加用户对话框的显示与隐藏
             addDialogVisible: false,
             //添加用户的表单数据
             addForm: {
                 username: '',
                 password: '',
-                email: ''
+                email: '',
+                phone_number: ''
             },
             //添加表单的验证规则对象
             addFormRules: {
@@ -165,7 +176,7 @@ export default {
                     { validator: checkEmail, trigger: 'blur' }
                 ],
 
-                mobile: [
+                phone_number: [
                     { required: true, message: '请输入手机号码', trigger: 'blur' },
                     { validator: checkMobile, trigger: 'blur' }
                 ]
@@ -178,12 +189,20 @@ export default {
             editForm: {},
             //修改表单的验证规则
             editFormRules: {
+                username:[
+                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                    { min: 3, max: 10, message: '用户名的长度在3到10之间', trigger: 'blur' }
+                ],
                 email: [
                     { required: true, message: '请输入用户的邮箱', trigger: 'blur' },
                     { validator: checkEmail, trigger: 'blur' }
                 ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { min: 6, max: 15, message: '密码的长度在6到15之间', trigger: 'blur' }
+                ],
 
-                mobile: [
+                phone_number: [
                     { required: true, message: '请输入用户的手机号码', trigger: 'blur' },
                     { validator: checkMobile, trigger: 'blur' }
                 ]
@@ -208,20 +227,21 @@ export default {
 
             }
             this.userlist = res.data.list
-            // this.total = res.data.total
-            console.log(res)
+
+            this.total = res.data.Total
+            //console.log(res)
         },
         // 监听pagesize
         handleSizeChange(newSize) {
 
             // console.log(newSize)
-            this.queryInfo.pagesize = newSize
+            this.queryInfo.page_size = newSize
             this.getUserList()
         },
         //监听页码值改变的事件
         handleCurrentChange(newPage) {
             // console.log(newPage)
-            this.queryInfo.pagenum = newPage
+            this.queryInfo.page_num = newPage
             this.getUserList()
 
         },
@@ -229,7 +249,7 @@ export default {
         async userStateChanged(userinfo) {
             console.log(userinfo)
             const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
-            if (res.meta.status !== 200) {
+            if (res.code !== 1000) {
                 userinfo.mg_state = !userinfo.mg_state
                 return this.$message.error("更新用户状态失败！")
             }
@@ -251,7 +271,7 @@ export default {
                 //可以发起添加用户的网络请求
                 const { data: res } = await this.$http.post('users', this.addForm)
 
-                if (res.meta.status !== 201) {
+                if (res.code !== 1000) {
                     this.$message.error('添加用户失败！')
                 }
 
@@ -263,17 +283,18 @@ export default {
 
         //展示编辑的对话框
         async showEditDialog(id) {
-        // console.log(id);
-        const { data: res } = await this.$http.get('users/' + id)
+            // console.log(id);
+            const { data: res } = await this.$http.get('getusermsgbyid/' + id)
 
-        if (res.code !== 200) {
-            return this.$message.error('查询用户信息失败！')
+            if (res.code !== 1000) {
+                return this.$message.error('查询用户信息失败！')
+            }
+
+            this.editForm = res.data
+            console.log(this.editForm);
+            this.editDialogVisible = true
+
         }
-
-        this.editForm = res.data
-        this.editDialogVisible = true
-
-    }
     }
 }
 </script>
