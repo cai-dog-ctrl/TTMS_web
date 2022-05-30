@@ -30,7 +30,11 @@
                 <el-table-column label="角色" prop="identity"></el-table-column>
                 <el-table-column label="状态">
                     <template slot-scope="scope">
+<<<<<<< HEAD
                         <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row)"></el-switch>
+=======
+                        <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row.id)" ></el-switch>
+>>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180px">
@@ -85,7 +89,7 @@
         <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
 
             <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
-                <el-form-item label="ID">
+                <el-form-item label="id">
                     <el-input v-model="editForm.id" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="用户名" prop="username">
@@ -209,7 +213,8 @@ export default {
                 ]
 
 
-            }
+            },
+            
 
 
 
@@ -257,14 +262,22 @@ export default {
 
         },
         //监听switch开关状态的改变
-        async userStateChanged(userinfo) {
-            console.log(userinfo)
-            const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
-            if (res.code !== 1000) {
-                userinfo.mg_state = !userinfo.mg_state
-                return this.$message.error("更新用户状态失败！")
+        async userStateChanged(id) {
+            const{data: res} = await this.$http.get('getusermsgbyid/' + id)
+
+            if(res.code !== 1000){
+                return this.$message.error("更新用户信息失败！")
             }
-            return this.$message.success("更新用户状态成功！")
+            
+            if(res.is_login === 1){
+
+                res.is_login = -1
+            }
+            if(res.is_login === -1){
+
+                res.is_login = 1
+            }
+            
 
         },
 
@@ -280,7 +293,7 @@ export default {
                 // console.log(valid)
                 if (!valid) return
                 //可以发起添加用户的网络请求
-                const { data: res } = await this.$http.post('users', this.addForm)
+                const { data: res } = await this.$http.post('addadmin/', this.addForm)
 
                 if (res.code !== 1000) {
                     this.$message.error('添加用户失败！')
@@ -317,7 +330,12 @@ export default {
 
                 if (!vaild) return
                 //发起修改用户信息的数据请求
+<<<<<<< HEAD
                 const { data: res } = await this.$http.put('updatemsg', {
+=======
+                const { data: res } = await this.$http.put('updatemsg/' +
+                    this.editForm.id, {
+>>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
                     id: this.editForm.id,
                     username: this.editForm.username,
                     password: this.editForm.password,
@@ -327,7 +345,11 @@ export default {
                     is_login: this.editForm.is_login,
                     is_delete: this.editForm.is_delete
                 })
+<<<<<<< HEAD
                 console.log(res + '1');
+=======
+                console.log(res.code)
+>>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
                 if (res.code !== 1000) {
                     return this.$message.error('更新用户信息失败！');
                 }
@@ -362,7 +384,7 @@ export default {
 
             const { data: res } = await this.$http.delete('updatemsg/' + id)
 
-            if (res.meta.status !== 200) {
+            if (res.code !== 1000) {
                 return this.$message.error('删除用户失败！')
             }
 
