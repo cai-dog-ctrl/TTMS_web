@@ -3,7 +3,7 @@ package models
 //存放有关用户模型
 
 type User struct {
-	ID          int64  `db:"id" json:"id"`
+	ID          int64  `db:"id" json:"id,string"`
 	Username    string `db:"username" json:"username"`
 	Password    string `db:"password" json:"password"`
 	Email       string `db:"email" json:"email"`
@@ -15,7 +15,7 @@ type User struct {
 }
 
 type Data struct {
-	ID          int64  `db:"id" json:"id"`
+	ID          int64  `db:"id" json:"id,string"`
 	Username    string `db:"username" json:"username"`
 	Password    string `db:"password" json:"password"`
 	Email       string `db:"email" json:"email"`
@@ -25,5 +25,6 @@ type Data struct {
 }
 
 type UserList struct {
+	Total int 	`json:"Total"`
 	List []Data `json:"list"`
 }

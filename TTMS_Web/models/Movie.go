@@ -2,7 +2,7 @@ package models
 
 //存放有关电影模型
 type MovieInfo struct {
-	Id              int64   `json:"id" db:"id"`
+	Id              int64   `json:"id,string" db:"id"`
 	Name            string  `json:"name" db:"name"`
 	Description     string  `json:"description" db:"description"`
 	Tag             string  `json:"tag" db:"tag"`
@@ -17,32 +17,32 @@ type MovieInfo struct {
 }
 
 type Carousel struct {
-	Id              int64  `json:"id" db:"id"`
+	Id              int64  `json:"id,string" db:"id"`
 	CarouselImgPath string `json:"carousel_img_path" db:"img"`
 }
 
 type Showing struct {
-	Id           int64   `json:"id" db:"id"`
+	Id           int64   `json:"id,string" db:"id"`
 	Name         string  `json:"name" db:"name"`
 	Score        float64 `json:"score" db:"score"`
 	CoverImgPath string  `json:"cover_img_path" db:"cover_img"`
 }
 
 type Coming struct {
-	Id           int64  `json:"id" db:"id"`
+	Id           int64  `json:"id,string" db:"id"`
 	Name         string `json:"name" db:"name"`
 	CoverImgPath string `json:"cover_img_path" db:"cover_img"`
 }
 
 type ScoreRanking struct {
-	Id           int64   `json:"id" db:"id"`
+	Id           int64   `json:"id,string" db:"id"`
 	Name         string  `json:"name" db:"name"`
 	Score        float64 `json:"score" db:"score"`
 	CoverImgPath string  `json:"cover_img_path" db:"cover_img"`
 }
 
 type BoxOfficeRanking struct {
-	Id           int64   `json:"id" db:"id"`
+	Id           int64   `json:"id,string" db:"id"`
 	Name         string  `json:"name" db:"name"`
 	BoxOffice    float64 `json:"box_office" db:"pf"`
 	CoverImgPath string  `json:"cover_img_path" db:"cover_img"`

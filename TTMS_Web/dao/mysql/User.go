@@ -3,6 +3,7 @@ package mysql
 import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
+	//"fmt"
 	//"github.com/gin-gonic/gin"
 )
 
@@ -28,10 +29,19 @@ func GetUserById(Id string) (*models.User, error) {
 	return user, nil
 }
 
-func GetAllUser() (*models.UserList, error) {
+func GetAllUser(page_num, page_size int, key_word string) (*models.UserList, error) {
 	users := new(models.UserList)
-	sqlStr := "select id, username, password, email, phone_number, is_login, identity from user where is_delete = -1"
-	err := db.Select(&users.List, sqlStr)
+	sqlStr := "select id, username, password, email, phone_number, is_login, identity from user where is_delete = -1 and username like ? limit ?,?"
+	err := db.Select(&users.List, sqlStr,"%"+key_word+"%",(page_num-1)*page_size, page_size)
+	
+	if err != nil {
+		return nil, err
+	}
+	
+	sqlStr1 := "select count(id) from user where is_delete = -1 and username like ?"
+
+	err = db.Get(&users.Total, sqlStr1, "%" + key_word + "%")
+
 	if err != nil {
 		return nil, err
 	}
