@@ -30,7 +30,7 @@
                 <el-table-column label="角色" prop="identity"></el-table-column>
                 <el-table-column label="状态">
                     <template slot-scope="scope">
-                        <el-switch v-model="scope.row.mg_state" @change="userStateChanged(scope.row)"></el-switch>
+                        <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row.id)" ></el-switch>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180px">
@@ -52,7 +52,7 @@
 
             <!-- 分页区域 -->
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="queryInfo.pagenum" :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.pagesize"
+                :current-page="queryInfo.page_num" :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.page_size"
                 layout="total,sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </el-card>
@@ -85,7 +85,7 @@
         <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
 
             <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
-                <el-form-item label="ID">
+                <el-form-item label="id">
                     <el-input v-model="editForm.id" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="用户名" prop="username">
@@ -209,7 +209,8 @@ export default {
                 ]
 
 
-            }
+            },
+            
 
 
 
@@ -247,14 +248,22 @@ export default {
 
         },
         //监听switch开关状态的改变
-        async userStateChanged(userinfo) {
-            console.log(userinfo)
-            const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
-            if (res.code !== 1000) {
-                userinfo.mg_state = !userinfo.mg_state
-                return this.$message.error("更新用户状态失败！")
+        async userStateChanged(id) {
+            const{data: res} = await this.$http.get('getusermsgbyid/' + id)
+
+            if(res.code !== 1000){
+                return this.$message.error("更新用户信息失败！")
             }
-            return this.$message.success("更新用户状态成功！")
+            
+            if(res.is_login === 1){
+
+                res.is_login = -1
+            }
+            if(res.is_login === -1){
+
+                res.is_login = 1
+            }
+            
 
         },
 
@@ -270,7 +279,7 @@ export default {
                 // console.log(valid)
                 if (!valid) return
                 //可以发起添加用户的网络请求
-                const { data: res } = await this.$http.post('users', this.addForm)
+                const { data: res } = await this.$http.post('addadmin/', this.addForm)
 
                 if (res.code !== 1000) {
                     this.$message.error('添加用户失败！')
@@ -318,6 +327,7 @@ export default {
                     is_login: 1,
                     is_delete: -1
                 })
+                console.log(res.code)
                 if (res.code !== 1000) {
                     return this.$message.error('更新用户信息失败！');
                 }
@@ -352,7 +362,7 @@ export default {
 
             const { data: res } = await this.$http.delete('updatemsg/' + id)
 
-            if (res.meta.status !== 200) {
+            if (res.code !== 1000) {
                 return this.$message.error('删除用户失败！')
             }
 

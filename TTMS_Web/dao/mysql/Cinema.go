@@ -9,7 +9,7 @@ import (
 )
 
 func InsertCinema(p *models.CinemaInfo) error {
-	sqlStr := "insert into cinema_info (roww, coll, tag, is_delete) values (?, ?, ?, -1)"
+	sqlStr := "insert into cinema_info (row, col, tag, is_delete) values (?, ?, ?, -1)"
 	_, err := db.Exec(sqlStr, p.MaxRow, p.MaxCol, p.Tag)
 	if err != nil {
 		zap.L().Error(sqlStr)
@@ -22,28 +22,25 @@ func InsertCinema(p *models.CinemaInfo) error {
 		zap.L().Error(sqlStr1)
 		return err
 	}
-	var num int64
 	for i := 0; i < p.MaxRow; i++{
 		for j := 0; j < p.MaxCol; j++{
 			seatinfo := new(models.SeatInfo)
-			seatinfo.ID = num
-			seatinfo.CinemaID = id
+			seatinfo.ID = id
 			seatinfo.Row = i
 			seatinfo.Col = j
-			seatinfo.Status = 1
+			seatinfo.State = 1
 			err1 := InsertSeat(seatinfo)
 			if err1 != nil {
 				zap.L().Error(sqlStr)
 				return err1
 			}
-			num++
 		}
 	}
 	return nil
 }
 
 func ModifyCinema(p *models.CinemaInfo) error {
-	sqlStr := "update movie_info set roww = ?, coll = ?, tag = ?, is_delete = ? where id = ?"
+	sqlStr := "update movie_info set row = ?, col = ?, tag = ?, is_delete = ? where id = ?"
 	_, err := db.Exec(sqlStr, p.MaxRow, p.MaxCol, p.Tag, p.IsDelete, p.ID)
 	if err != nil {
 		zap.L().Error(sqlStr)
@@ -53,8 +50,8 @@ func ModifyCinema(p *models.CinemaInfo) error {
 }
 
 func InsertSeat(p *models.SeatInfo) error{
-	sqlStr := "insert into seat_info (id, cinema_id, roww, coll, status) values (?, ?, ?, ?, ?)"
-	_, err := db.Exec(sqlStr, p.ID, p.CinemaID, p.Row, p.Col, p.Status)
+	sqlStr := "insert into seat_info (id, row, col, status) values (?, ?, ?, ?)"
+	_, err := db.Exec(sqlStr, p.ID, p.Row, p.Col, p.State)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
@@ -64,14 +61,14 @@ func InsertSeat(p *models.SeatInfo) error{
 
 func GetSeatByCinemaID(id int64) (*models.SeatList, error) {
 	seatList := new(models.SeatList)
-	sqlStr1 := fmt.Sprintf("select roww from cinema_info where id = %v", id)
+	sqlStr1 := fmt.Sprintf("select row from cinema_info where id = %v", id)
 	var row int
 	err := db.Get(&row, sqlStr1)
 	if err != nil {
 		zap.L().Error(sqlStr1)
 		return nil, err
 	}
-	sqlStr2 := fmt.Sprintf("select coll from cinema_info where id = %v", id)
+	sqlStr2 := fmt.Sprintf("select col from cinema_info where id = %v", id)
 	var col int
 	err = db.Get(&col, sqlStr2)
 	if err != nil {
@@ -85,7 +82,7 @@ func GetSeatByCinemaID(id int64) (*models.SeatList, error) {
 	}
 	for i := 0; i < row; i++ {
 		for j := 0; j < col; j++ {
-			sqlStr := fmt.Sprintf("select status from seat_info where id = %v and coll = %v and roww = %v", id, j, i)
+			sqlStr := fmt.Sprintf("select status from seat_info where id = %v and col = %v and row = %v", id, j, i)
 			err = db.Get(&n[i][j], sqlStr)
 			if err != nil {
 				zap.L().Error(sqlStr2)
@@ -99,14 +96,14 @@ func GetSeatByCinemaID(id int64) (*models.SeatList, error) {
 }
 
 func ModifySeat(p *models.SeatList) error{
-	sqlStr1 := fmt.Sprintf("select roww from cinema_info where id = %v", p.ID)
+	sqlStr1 := fmt.Sprintf("select row from cinema_info where id = %v", p.ID)
 	var row int
 	err := db.Get(&row, sqlStr1)
 	if err != nil {
 		zap.L().Error(sqlStr1)
 		return err
 	}
-	sqlStr2 := fmt.Sprintf("select coll from cinema_info where id = %v", p.ID)
+	sqlStr2 := fmt.Sprintf("select col from cinema_info where id = %v", p.ID)
 	var col int
 	err = db.Get(&col, sqlStr2)
 	if err != nil {
@@ -115,7 +112,7 @@ func ModifySeat(p *models.SeatList) error{
 	}
 	for i := 0; i < row; i++{
 		for j := 0; j < col; j++{
-			sqlStr := fmt.Sprintf("update seat_info set status = %v where id = %v, roww = %v, coll = %v", p.SeatList[i][j], p.ID, i, j)
+			sqlStr := fmt.Sprintf("update seat_info set status = %v where id = %v, row = %v, col = %v", p.SeatList[i][j], p.ID, i, j)
 			_, err := db.Exec(sqlStr)
 			if err != nil {
 				zap.L().Error(sqlStr)
