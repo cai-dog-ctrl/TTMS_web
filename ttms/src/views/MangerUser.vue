@@ -30,7 +30,7 @@
                 <el-table-column label="角色" prop="identity"></el-table-column>
                 <el-table-column label="状态">
                     <template slot-scope="scope">
-                        <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row)"></el-switch>
+                        <el-switch v-model="scope.row.mg_state" @change="userStateChanged(scope.row)"></el-switch>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180px">
@@ -52,7 +52,7 @@
 
             <!-- 分页区域 -->
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="queryInfo.page_num" :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.page_size"
+                :current-page="queryInfo.pagenum" :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.pagesize"
                 layout="total,sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </el-card>
@@ -85,7 +85,7 @@
         <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
 
             <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
-                <el-form-item label="id">
+                <el-form-item label="ID">
                     <el-input v-model="editForm.id" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="用户名" prop="username">
@@ -209,8 +209,7 @@ export default {
                 ]
 
 
-            },
-            
+            }
 
 
 
@@ -218,7 +217,6 @@ export default {
     },
     created() {
         this.getUserList()
-
     },
     methods: {
         async getUserList() {
@@ -230,15 +228,6 @@ export default {
 
             }
             this.userlist = res.data.list
-            console.log(this.userlist[1]);
-            for (let i = 0; i <= this.queryInfo.page_size; i++) {
-                if (this.userlist[i].is_login === 1) {
-                    this.userlist[i].is_login = true
-                } else {
-                    this.userlist[i].is_login = false
-                }
-            }
-
 
             this.total = res.data.Total
             //console.log(res)
@@ -258,22 +247,14 @@ export default {
 
         },
         //监听switch开关状态的改变
-        async userStateChanged(id) {
-            const{data: res} = await this.$http.get('getusermsgbyid/' + id)
-
-            if(res.code !== 1000){
-                return this.$message.error("更新用户信息失败！")
+        async userStateChanged(userinfo) {
+            console.log(userinfo)
+            const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
+            if (res.code !== 1000) {
+                userinfo.mg_state = !userinfo.mg_state
+                return this.$message.error("更新用户状态失败！")
             }
-            
-            if(res.is_login === 1){
-
-                res.is_login = -1
-            }
-            if(res.is_login === -1){
-
-                res.is_login = 1
-            }
-            
+            return this.$message.success("更新用户状态成功！")
 
         },
 
@@ -289,7 +270,7 @@ export default {
                 // console.log(valid)
                 if (!valid) return
                 //可以发起添加用户的网络请求
-                const { data: res } = await this.$http.post('addadmin/', this.addForm)
+                const { data: res } = await this.$http.post('users', this.addForm)
 
                 if (res.code !== 1000) {
                     this.$message.error('添加用户失败！')
@@ -303,8 +284,9 @@ export default {
 
         //展示编辑的对话框
         async showEditDialog(id) {
-            //console.log(id);
+            // console.log(id);
             const { data: res } = await this.$http.get('getusermsgbyid/' + id)
+
             if (res.code !== 1000) {
                 return this.$message.error('查询用户信息失败！')
             }
@@ -326,61 +308,16 @@ export default {
 
                 if (!vaild) return
                 //发起修改用户信息的数据请求
-<<<<<<< HEAD
-                const { data: res } = await this.$http.put('updatemsg', {
-=======
-                const { data: res } = await this.$http.put('updatemsg/' +
-                    this.editForm.id, {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
+                const { data: res } = await this.$http.put('updatemsg' , {
                     id: this.editForm.id,
                     username: this.editForm.username,
                     password: this.editForm.password,
                     email: this.editForm.email,
                     phone_number: this.editForm.phone_number,
                     identity: this.editForm.identity,
-                    is_login: this.editForm.is_login,
-                    is_delete: this.editForm.is_delete
+                    is_login: 1,
+                    is_delete: -1
                 })
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                console.log(res + '1');
-=======
-                console.log(res.code)
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
-                console.log(res.code)
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
-                console.log(res.code)
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
-                console.log(res.code)
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
-                console.log(res.code)
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
-                console.log(res.code)
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
                 if (res.code !== 1000) {
                     return this.$message.error('更新用户信息失败！');
                 }
@@ -415,7 +352,7 @@ export default {
 
             const { data: res } = await this.$http.delete('updatemsg/' + id)
 
-            if (res.code !== 1000) {
+            if (res.meta.status !== 200) {
                 return this.$message.error('删除用户失败！')
             }
 
