@@ -1,3 +1,5 @@
 .idea
 TTMS_Web/config
 ttms/node_modules
+TTMS_Web/.idea
+TTMS_Web/web_app.log
