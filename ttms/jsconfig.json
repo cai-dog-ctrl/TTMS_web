@@ -1,5 +1,7 @@
 {
+  "experimentalDecorators": true,
   "compilerOptions": {
+    "experimentalDecorators": true,
     "jsx": "preserve",
     "target": "es5",
     "module": "esnext",

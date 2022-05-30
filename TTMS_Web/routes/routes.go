@@ -54,5 +54,14 @@ func SetupRouter() *gin.Engine {
 			"msg": "404",
 		})
 	})
+
+	//manage schedule
+	g.POST("/addschedule", controllers.AddSchedule)
+	g.PUT("/updateSchedule", controllers.UpdateSchedule)
+	g.GET("/getallschedulemsgbymovieid", controllers.GetAllScheduleMsgByMovieId)
+	g.GET("/getallschedulemsgbycinemaid", controllers.GetAllScheduleMsgByCinemaId)
+	g.GET("/getallschedulebymovieidandday", controllers.GetAllScheduleByMovieIdandDay)
+
+	
 	return r
 }
