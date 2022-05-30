@@ -39,6 +39,7 @@ func Login(c *gin.Context){
 	ResponseSuccess(c, gin.H{
 		"username": p1.Username,
 		"token":    p1.Token,
+		"identity": p1.Identity,
 	})
 }
 
@@ -111,7 +112,9 @@ func GetUserMsgById(c *gin.Context) {
 		ResponseErrorWithMsg(c, CodeServerBusy, "获取失败")
 		return
 	}
+	id:=utils.ShiftToStringFromInt64(p1.ID)
 	ResponseSuccess(c, gin.H{
+		"id":           id,
 		"username":     p1.Username,
 		"token":        p1.Token,
 		"password":     p1.Password,
