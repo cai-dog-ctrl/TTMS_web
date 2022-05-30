@@ -33,7 +33,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row)"></el-switch>
+=======
+                        <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row.id)" ></el-switch>
+>>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
 =======
                         <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row.id)" ></el-switch>
 >>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
@@ -345,6 +349,9 @@ export default {
                     this.editForm.id, {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
+=======
 >>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
 =======
 >>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
@@ -362,7 +369,11 @@ export default {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 console.log(res + '1');
+=======
+                console.log(res.code)
+>>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
 =======
                 console.log(res.code)
 >>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
