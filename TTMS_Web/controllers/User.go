@@ -128,7 +128,6 @@ func UpdateMsg(c *gin.Context) {
 	p := new(models.ParamsUpdateMsg)
 	err := c.ShouldBind(&p)
 	if err != nil {
-		fmt.Println("AAAAAAAAAAAAA")
 		ResponseError(c, CodeInvalidParams)
 		zap.L().Error("UpdateMsg ShouldBind Error", zap.Error(err))
 		return
