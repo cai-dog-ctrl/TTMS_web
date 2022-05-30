@@ -2,12 +2,30 @@ package controllers
 
 import (
 	"TTMS/models"
+	"TTMS/pkg/utils"
 	"TTMS/service"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"golang.org/x/tools/go/analysis/passes/nilfunc"
 )
 
 //有关影院的controller代码
+func GetCinemaByID(c *gin.Context){
+	
+}
+
+func GetAllCinemas(c *gin.Context){
+	p := new(models.ParamsGetAllCinemas)
+	p.Num = utils.ShiftToNum(c.Query("Num"))
+	p.Page_num = utils.ShiftToNum(c.Query("Page_num"))
+	cinema, err := service.GetAllCinemas(p)
+	if err != nil{
+		zap.L().Error("", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, cinema)
+}
 
 func AddNewCinema(c *gin.Context){
 	p := new(models.ParamsAddNewCinema)

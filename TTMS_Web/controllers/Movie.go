@@ -153,3 +153,23 @@ func ModifyMovieByID(c *gin.Context) {
 	}
 	ResponseSuccess(c, "modify movie successful.")
 }
+
+func GetAllmovies(c *gin.Context) {
+	p := new(models.ParamsGetAllMovies)
+	p.Num = utils.ShiftToNum(c.Query("Num"))
+	p.Page_num = utils.ShiftToNum(c.Query("Page_num"))
+	p.FlagOfType = c.Query("FlagOfType")
+	p.FlagOfZone = c.Query("FlagOfZone")
+	p.FlagOfShowing = c.Query("FlagOfShowing")
+	p.FlagOfOrder = c.Query("FlagOfOrder")
+	movie, err := service.GetAllMovies(p)
+	if err != nil {
+		zap.L().Error("", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, movie)
+}
+
+func GetMovieInfoByName(C *gin.Context) {
+	// p := new(models.P)
+}

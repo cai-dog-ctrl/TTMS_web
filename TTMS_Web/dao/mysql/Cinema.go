@@ -8,6 +8,18 @@ import (
 	"go.uber.org/zap"
 )
 
+func GetAllCinemas(num int, page_num int) (*models.CinemaList, error){
+	cinemaList := new(models.CinemaList)
+	sqlStr := "select count(*) from cinema_info where is_delete != 1"
+	err := db.Get(&cinemaList.Number, sqlStr)
+	if err != nil {
+		zap.L().Error(sqlStr)
+		return nil, err
+	}
+	sqlStr1 := fmt.Sprintf("select ")
+	return cinemaList, nil
+}
+
 func InsertCinema(p *models.CinemaInfo) error {
 	sqlStr := "insert into cinema_info (roww, coll, tag, is_delete) values (?, ?, ?, -1)"
 	_, err := db.Exec(sqlStr, p.MaxRow, p.MaxCol, p.Tag)

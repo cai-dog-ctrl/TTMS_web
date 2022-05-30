@@ -1,6 +1,10 @@
 package models
 
 //存放有关电影模型
+
+const (
+	IS_SHOWING = 0
+)
 type MovieInfo struct {
 	Id              int64   `json:"id,string" db:"id"`
 	Name            string  `json:"name" db:"name"`
@@ -46,6 +50,10 @@ type BoxOfficeRanking struct {
 	Name         string  `json:"name" db:"name"`
 	BoxOffice    float64 `json:"box_office" db:"pf"`
 	CoverImgPath string  `json:"cover_img_path" db:"cover_img"`
+}
+
+type MovieList struct {
+	MovieList []*MovieInfo `json:"movieList"`
 }
 
 type CarouselList struct {

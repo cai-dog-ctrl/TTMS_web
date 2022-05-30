@@ -100,7 +100,7 @@ func AddNewMovie(p *models.ParamsAddNewMovie) error {
 	NewMovie.Down_time = p.Down_time
 	NewMovie.CoverImgPath = p.CoverImgPath
 	NewMovie.CarouselImgPath = p.CarouselImgPath
-	return mysql.InsertMovie(NewMovie) 
+	return mysql.InsertMovie(NewMovie)
 }
 
 func ModifyMovieByID(p *models.ParamsModifyMovie) error {
@@ -120,7 +120,24 @@ func ModifyMovieByID(p *models.ParamsModifyMovie) error {
 	return mysql.ModifyMovie(movie)
 }
 
-func GetRelevantMovies(tag string)(*models.ShowingList, error) {
+func GetRelevantMovies(tag string) (*models.ShowingList, error) {
 	//TODO
 	return GetShowingMovies(6, 0)
+}
+
+func GetAllMovies(p *models.ParamsGetAllMovies) (*models.MovieList, error) {
+	so := 0
+	if p.FlagOfType != "" {
+		so |= 1
+	}
+	if p.FlagOfZone != "" {
+		so |= 2
+	}
+	if p.FlagOfShowing != "" {
+		so |= 4
+	}
+	if p.FlagOfOrder != "" {
+		so |= 8
+	}
+	return mysql.GetAllMovies(p, so)
 }

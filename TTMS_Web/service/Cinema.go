@@ -1,10 +1,21 @@
 package service
+
 //有关影院的业务逻辑代码
 
 import (
 	"TTMS/dao/mysql"
 	"TTMS/models"
+
+	"golang.org/x/tools/go/analysis/passes/nilfunc"
 )
+
+func GetAllCinemas(p *models.ParamsGetAllCinemas) error {
+	cinemaList, err := mysql.GetAllCinemas(p.Num, p.Page_num-1)
+	if err != nil{
+		return nil, err
+	}
+	return cinemaList, nil
+}
 
 func AddNewCinema(p *models.ParamsAddNewCinema) error {
 	Cinema := new(models.CinemaInfo)
