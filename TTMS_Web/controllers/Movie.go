@@ -53,8 +53,10 @@ func GetMovieInfoByID(c *gin.Context) {
 	downtime += utils.ShiftToStringFromInt64(int64(downtemtime/100))
 	downtime += "-"
 	downtime += utils.ShiftToStringFromInt64(int64(downtemtime%100))
+
+	movie_id := utils.ShiftToStringFromInt64(movie.Id)
 	ResponseSuccess(c, gin.H{
-		"id":              movie.Id,
+		"id":              movie_id,
 		"name":            movie.Name,
 		"descrption":      movie.Description,
 		"tag":             movie.Tag,
