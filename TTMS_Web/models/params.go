@@ -35,7 +35,7 @@ type ParamsAdminmsg struct {
 }
 
 type ParamsUpdateMsg struct {
-	Id          string  `json:"id" form:"id" binding:"required"`
+	Id          string `json:"id" form:"id" binding:"required"`
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
@@ -53,22 +53,22 @@ type ParamAddSchedule struct {
 }
 
 type ParamsGetShowingMovies struct {
-	Num      int `json:"page" form:"num" binding:"required"`
+	Num      int `json:"num" form:"num" binding:"required"`
 	Page_num int `json:"page_num" form:"page_num" binding:"required"`
 }
 
 type ParamsGetComingMovies struct {
-	Num      int `json:"page" form:"num" binding:"required"`
+	Num      int `json:"num" form:"num" binding:"required"`
 	Page_num int `json:"page_num" form:"page_num" binding:"required"`
 }
 
 type ParamsGetScoreRankingMovies struct {
-	Num      int `json:"page" form:"num" binding:"required"`
+	Num      int `json:"num" form:"num" binding:"required"`
 	Page_num int `json:"page_num" form:"page_num" binding:"required"`
 }
 
 type ParamsGetBoxOfficeRankingMovies struct {
-	Num      int `json:"page" form:"num" binding:"required"`
+	Num      int `json:"num" form:"num" binding:"required"`
 	Page_num int `json:"page_num" form:"page_num" binding:"required"`
 }
 
@@ -98,6 +98,15 @@ type ParamsModifyMovie struct {
 	Down_time       int     `json:"down_time" form:"down_time" binding:"required"`
 }
 
+type ParamsGetCinemaByID struct {
+	ID int64 `json:"id" form:"id" binding:"required"`
+}
+
+type ParamsGetAllCinemas struct {
+	Num      int `json:"num" form:"num" binding:"required"`
+	Page_num int `json:"page_num" form:"page_num" binding:"required"`
+}
+
 type ParamsAddNewCinema struct {
 	ID     int64  `json:"id" form:"id" binding:"required"`
 	MaxRow int    `json:"row" form:"row" binding:"required"`
@@ -118,6 +127,19 @@ type ParamsGetSeatByCinemaID struct {
 }
 
 type ParamsModifySeat struct {
-	ID int64 `json:"id" form:"id" binding:"required"`
+	ID       int64   `json:"id" form:"id" binding:"required"`
 	SeatList [][]int `json:"seat_list" form:"seat_list" binding:"required"`
+}
+
+type ParamsGetAllMovies struct {
+	Num           int `json:"num" form:"num" binding:"required"`
+	Page_num      int `json:"page_num" form:"page_num" binding:"required"`
+	FlagOfType    string `json:"flag_type" form:"flag_type" binding:"required"`
+	FlagOfZone    string `json:"flag_zone" form:"flag_zone" binding:"required"`
+	FlagOfShowing string `json:"flag_showing" form:"flag_showing" binding:"required"`
+	FlagOfOrder   string `json:"flag_order" form:"flag_order" binding:"required"`
+}
+
+type ParamsGetMovieInfoByName struct {
+	Name string `json:"name" form:"name" binding:"required"`
 }
