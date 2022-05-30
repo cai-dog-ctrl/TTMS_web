@@ -28,7 +28,9 @@ func SetupRouter() *gin.Engine {
 	}
 	//cat front page / movie info / showing movies / coming movies / scoreRanking movies / boxofficeRanking movies
 	g.GET("/GetFrontPage", controllers.GetFrontPage)
+	g.GET("/GetMovieInfoByName", controllers.GetMovieInfoByName)
 	g.GET("/GetMovieInfoById/:Id", controllers.GetMovieInfoByID)
+	g.GET("/GetAllmovies", controllers.GetAllmovies)
 	g.GET("/GetAllShowingMovies", controllers.GetShowingMovies)
 	g.GET("/GetAllComingMovies", controllers.GetComingMovies)
 	g.GET("/GetAllScoreRankingMovies", controllers.GetScoreRankingMovies)
@@ -39,6 +41,8 @@ func SetupRouter() *gin.Engine {
 	g.PUT("/ModifyMovie", controllers.ModifyMovieByID)
 	
 	//manage cinema
+	g.GET("/GetCinemaByID", controllers.GetCinemaByID)
+	g.GET("/GetAllCinema", controllers.GetAllCinemas)
 	g.POST("/AddNewCinema", controllers.AddNewCinema)
 	g.PUT("/ModifyCinemaByID", controllers.ModifyCinemaByID)
 	
@@ -50,5 +54,14 @@ func SetupRouter() *gin.Engine {
 			"msg": "404",
 		})
 	})
+
+	//manage schedule
+	g.POST("/addschedule", controllers.AddSchedule)
+	g.PUT("/updateSchedule", controllers.UpdateSchedule)
+	g.GET("/getallschedulemsgbymovieid", controllers.GetAllScheduleMsgByMovieId)
+	g.GET("/getallschedulemsgbycinemaid", controllers.GetAllScheduleMsgByCinemaId)
+	g.GET("/getallschedulebymovieidandday", controllers.GetAllScheduleByMovieIdandDay)
+
+	
 	return r
 }
