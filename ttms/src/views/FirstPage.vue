@@ -44,7 +44,7 @@
                     <div v-for="item in first_page_info.ComingList.ComingList" :key="item.id" class="movie">
                         <el-card :body-style="{ padding: '0px' }" shadow="hover">
                             <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                                class="image" @click="movie_info_drawer = true">
+                                class="image" @click="gotoinfo(item.id)">
                             <div style="padding: 14px;">
                                 <span>{{ item.name }} |</span><span> 预售</span>
                             </div>
@@ -57,10 +57,10 @@
                 <div class="aside">
                     <div class="label">
                         <h1>票房最佳</h1>
-                        <span class="panel-more"><a href="">全部></a></span>
+                        <span class="panel-more"><a href="http://localhost:8080/#/pfborad">全部></a></span>
                     </div>
                     <div class="borde">
-                        <div class="borde_top">
+                        <div class="borde_top" @click="gotoinfo(first_page_info.BoxOfficeRankingList.BoxOfficeRankingList[0].id)">
                             <div><img
                                     src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644"
                                     alt="" class="bored_top_img"></div>
@@ -76,7 +76,7 @@
                             }}万</span></div>
                         </div>
                         <div v-for="(item, index) in first_page_info.BoxOfficeRankingList.BoxOfficeRankingList.slice(1, first_page_info.BoxOfficeRankingList.BoxOfficeRankingList.length)"
-                            :key="index" class="bored_item">
+                            :key="index" class="bored_item" @click="gotoinfo(item.id)">
                             <span class="bored_item_span">
                                 <i>{{ index + 2 }}</i>&nbsp;&nbsp;&nbsp;
                                 <span class="bored_item_name">{{ item.name }}</span>
@@ -88,13 +88,13 @@
                 <div class="aside">
                     <div class="label">
                         <h1>TOP</h1>
-                        <span class="panel-more"><a href="">全部></a></span>
+                        <span class="panel-more"><a href="http://localhost:8080/#/sborad">全部></a></span>
                     </div>
                     <div class="bored" style="margin-top:15px">
-                        <div class="borde_top">
-                            <div><img
-                                    src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644"
-                                    alt="" class="bored_top_img"></div>
+                        <div class="borde_top" @click="gotoinfo(first_page_info.ScoreRankingList.ScoreRankingList[0].id)">
+                            <div><img 
+                            :src =" src_url" class="bored_top_img"
+                            @click="gotoinfo(first_page_info.ScoreRankingList.ScoreRankingList[0].id)"></div>
 
                             <div style="padding-top:20px;margin-left:20px;width:60px">
                                 <a class="borde_top_name">{{
@@ -103,22 +103,22 @@
 
                             </div>
                             <div style="margin-left:170px;padding-top: 25px;"><span class="borde_top_pf">{{
-                                    first_page_info.ScoreRankingList.ScoreRankingList[0].pf
+                                    first_page_info.ScoreRankingList.ScoreRankingList[0].score
                             }}分</span></div>
                         </div>
                     </div>
                     <div v-for="(item, index) in first_page_info.ScoreRankingList.ScoreRankingList.slice(1, first_page_info.ScoreRankingList.ScoreRankingList.length)"
-                        :key="index" class="bored_item">
+                        :key="index" class="bored_item" @click="gotoinfo(item.id)">
                         <span class="bored_item_span">
                             <i>{{ index + 2 }}</i>&nbsp;&nbsp;&nbsp;
                             <span class="bored_item_name">{{ item.name }}</span>
-                            <span class="bored_item_pf">{{ item.pf }}分</span>
+                            <span class="bored_item_pf">{{ item.score }}分</span>
                         </span>
                     </div>
                 </div>
             </div>
         </div>
-       
+
 
         <el-drawer title="我是标题" :visible.sync="movie_info_drawer" :with-header="false" size="80%">
             <div>
@@ -135,11 +135,13 @@ export default {
     data() {
         return {
             form: {
+                CarouselNum: 3,
                 ShowingNum: 6,
                 ComingNum: 6,
                 ScoreRankingNum: 5,
                 BoxOfficeRankingNum: 5
             },
+            src_url: "https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644",
             first_page_info: {},
             movie_info_drawer: false,
             url: 'https://p0.pipi.cn/mmdb/25bfd69ae7a5bff0ee230fed0210646bfdde9.jpg?imageView2/1/w/160/h/220',

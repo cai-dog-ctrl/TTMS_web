@@ -101,24 +101,18 @@ export default {
                 {
                     "id": 104,
                     "authName": "剧目列表",
-                    "path": "goods",
+                    "path": "manger_movie",
                     "children": [],
                     "order": 1
                 },
                 {
                     "id": 115,
-                    "authName": "分类参数",
+                    "authName": "演出计划",
                     "path": "params",
                     "children": [],
                     "order": 2
                 },
-                {
-                    "id": 121,
-                    "authName": "剧目分类",
-                    "path": "categories",
-                    "children": [],
-                    "order": 3
-                }
+                
             ],
             "order": 3
         },
