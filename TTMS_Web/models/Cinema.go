@@ -2,10 +2,11 @@ package models
 
 //存放有关影院模型
 type SeatInfo struct {
-	ID    int64 `json:"id,string" db:"id"`
-	Row   int   `json:"row" db:"row"`
-	Col   int   `json:"col" db:"col"`
-	State int   `json:"state", db:"state"`
+	ID    int64 `json:"id" db:"id"`
+	CinemaID int64 `json:"cinema_id" db:"cinema_id"`
+	Row   int   `json:"roww" db:"roww"`
+	Col   int   `json:"coll" db:"coll"`
+	Status int   `json:"state" db:"status"`
 }
 
 type SeatList struct {
@@ -15,8 +16,8 @@ type SeatList struct {
 
 type CinemaInfo struct {
 	ID       int64  `json:"id,string" db:"id"`
-	MaxRow   int    `json:"row" db:"row"`
-	MaxCol   int    `json:"col" db:"col"`
+	MaxRow   int    `json:"roww" db:"roww"`
+	MaxCol   int    `json:"coll" db:"coll"`
 	Tag      string `json:"tag" db:"tag"`
 	IsDelete int    `json:"is_delete" db:"is_delete"`
 }
