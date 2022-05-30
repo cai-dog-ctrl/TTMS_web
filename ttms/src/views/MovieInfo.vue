@@ -62,9 +62,9 @@
           </div>
           <div v-for="item in movieInfo.relevantMovies.ShowingList" :key="item" class="item">
             <img :src="item.img" alt="">
-            <div style="height:30px;margin-top: 20px;margin-left: 10px;"><a class="recommend_a" href="#"
+            <div style="height:30px;margin-top: 20px;margin-left: 10px;width: 180px;"><a class="recommend_a" href="#"
                 style="color:#219FFF;text-decoration:none">《 {{ item.name }} 》</a></div>
-            <div style="margin-left:80px">
+            <div style="margin-left:40px">
               <h2 style="margin-top:12px;color: #FFC600;">{{ item.score }}</h2>
             </div>
           </div>
