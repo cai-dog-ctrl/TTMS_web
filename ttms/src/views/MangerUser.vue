@@ -308,14 +308,15 @@ export default {
 
                 if (!vaild) return
                 //发起修改用户信息的数据请求
-                const { data: res } = await this.$http.put('updatemsg/' +
-                    this.editForm.id, {
+                const { data: res } = await this.$http.put('updatemsg' , {
+                    id: this.editForm.id,
                     username: this.editForm.username,
                     password: this.editForm.password,
                     email: this.editForm.email,
                     phone_number: this.editForm.phone_number,
-                    identity: this.editForm.identity
-
+                    identity: this.editForm.identity,
+                    is_login: 1,
+                    is_delete: -1
                 })
                 if (res.code !== 1000) {
                     return this.$message.error('更新用户信息失败！');
