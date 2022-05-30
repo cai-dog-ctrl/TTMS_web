@@ -1,2 +1,0 @@
-package controllers
-//有关影院的controller代码
