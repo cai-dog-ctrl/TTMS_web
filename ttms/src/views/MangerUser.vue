@@ -30,23 +30,7 @@
                 <el-table-column label="角色" prop="identity"></el-table-column>
                 <el-table-column label="状态">
                     <template slot-scope="scope">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                         <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row)"></el-switch>
-=======
-                        <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row.id)" ></el-switch>
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
-                        <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row.id)" ></el-switch>
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
-                        <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row.id)" ></el-switch>
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
-=======
-                        <el-switch v-model="scope.row.is_login" @change="userStateChanged(scope.row.id)" ></el-switch>
->>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180px">
@@ -350,6 +334,9 @@ export default {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
+=======
 >>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
 =======
 >>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
@@ -370,7 +357,11 @@ export default {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 console.log(res + '1');
+=======
+                console.log(res.code)
+>>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
 =======
                 console.log(res.code)
 >>>>>>> 8cff58c47ef8c6359928a7fa18279da5a3a61a91
