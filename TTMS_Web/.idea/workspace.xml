@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="abaccad8-55e0-42eb-a53a-47ef58180f88" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/../ttms/src/plugins/element.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ttms/src/plugins/element.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ttms/src/views/MangerUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ttms/src/views/MangerUser.vue" afterDir="false" />
-    </list>
+    <list default="true" id="abaccad8-55e0-42eb-a53a-47ef58180f88" name="变更" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
