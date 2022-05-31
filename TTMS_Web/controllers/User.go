@@ -18,7 +18,7 @@ func Login(c *gin.Context){
 	err:=c.ShouldBind(&p)
 	if err!=nil{
 		ResponseError(c,CodeInvalidParams)
-		zap.L().Error("Login ShouldBind Error")
+		zap.L().Error("Login ShouldBind Error", zap.Error(err))
 		return
 	}
 	p1, err := service.Login(p)
@@ -49,7 +49,7 @@ func Register(c *gin.Context) {
 	err := c.ShouldBind(&p)
 	if err != nil {
 		ResponseError(c, CodeInvalidParams)
-		zap.L().Error("Register ShouldBind Error")
+		zap.L().Error("Register ShouldBind Error", zap.Error(err))
 		return
 	}
 	err = service.Register(p)
@@ -67,7 +67,7 @@ func AddAdmin(c *gin.Context) {
 	err := c.ShouldBind(&p)
 	if err != nil {
 		ResponseError(c, CodeInvalidParams)
-		zap.L().Error("AddAdmin ShouldBind Error")
+		zap.L().Error("AddAdmin ShouldBind Error", zap.Error(err))
 		return
 	}
 	err = service.AddAdmin(p)

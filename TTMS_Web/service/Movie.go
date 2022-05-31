@@ -141,3 +141,7 @@ func GetAllMovies(p *models.ParamsGetAllMovies) (*models.MovieList, error) {
 	}
 	return mysql.GetAllMovies(p, so)
 }
+
+func GetMovieByName(p *models.ParamsGetMovieByName) (*models.MovieList, error) {
+	return mysql.GetMovieByName()
+}
