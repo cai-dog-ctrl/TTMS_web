@@ -5,6 +5,7 @@ package service
 import (
 	"TTMS/dao/mysql"
 	"TTMS/models"
+	"TTMS/pkg/snowflake"
 	"TTMS/pkg/utils"
 )
 
@@ -19,6 +20,7 @@ func GetCinemaByID(p *models.ParamsGetCinemaByID) (*models.CinemaInfo, error) {
 
 func AddNewCinema(p *models.ParamsAddNewCinema) error {
 	Cinema := new(models.CinemaInfo)
+	Cinema.ID = snowflake.GenID()
 	Cinema.Name = p.Name
 	Cinema.Tag = p.Tag
 	Cinema.MaxCol = p.MaxCol
@@ -28,7 +30,7 @@ func AddNewCinema(p *models.ParamsAddNewCinema) error {
 
 func ModifyCinemaByID(p *models.ParamsModifyCinema) error {
 	Cinema := new(models.CinemaInfo)
-	Cinema.ID = p.ID
+	Cinema.ID = utils.ShiftToNum64(p.ID)
 	Cinema.Name = p.Name
 	Cinema.Tag = p.Tag
 	Cinema.MaxCol = p.MaxCol
@@ -38,7 +40,7 @@ func ModifyCinemaByID(p *models.ParamsModifyCinema) error {
 }
 
 func GetSeatByCinemaID(p *models.ParamsGetSeatByCinemaID) (*models.SeatList, error) {
-	seatList, err := mysql.GetSeatByCinemaID(p.ID)
+	seatList, err := mysql.GetSeatByCinemaID(utils.ShiftToNum64(p.ID))
 	if err != nil {
 		return nil, err
 	}
@@ -46,8 +48,5 @@ func GetSeatByCinemaID(p *models.ParamsGetSeatByCinemaID) (*models.SeatList, err
 }
 
 func ModifySeat(p *models.ParamsModifySeat) error {
-	seatlist := new(models.SeatList)
-	seatlist.ID = p.ID
-	seatlist.SeatList = p.SeatList
-	return mysql.ModifySeat(seatlist)
+	return mysql.ModifySeat(p)
 }

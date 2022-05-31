@@ -5,6 +5,7 @@ package service
 import (
 	"TTMS/dao/mysql"
 	"TTMS/models"
+	"TTMS/pkg/snowflake"
 	"TTMS/pkg/utils"
 )
 
@@ -92,6 +93,7 @@ func GetBoxOfficeRankingList(num int, page_num int) (*models.BoxOfficeRankingLis
 
 func AddNewMovie(p *models.ParamsAddNewMovie) error {
 	NewMovie := new(models.MovieInfo)
+	NewMovie.Id = snowflake.GenID()
 	NewMovie.Name = p.Name
 	NewMovie.Description = p.Description
 	NewMovie.Tag = p.Tag
@@ -106,7 +108,7 @@ func AddNewMovie(p *models.ParamsAddNewMovie) error {
 
 func ModifyMovieByID(p *models.ParamsModifyMovie) error {
 	movie := new(models.MovieInfo)
-	movie.Id = p.Id
+	movie.Id = utils.ShiftToNum64(p.Id)
 	movie.Name = p.Name
 	movie.Description = p.Description
 	movie.Tag = p.Tag

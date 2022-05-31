@@ -98,7 +98,7 @@ type ParamsAddNewMovie struct {
 }
 
 type ParamsModifyMovie struct {
-	Id              int64   `json:"id" form:"id" binding:"required"`
+	Id              string  `json:"id" form:"id" binding:"required"`
 	Name            string  `json:"name" form:"name" binding:"required"`
 	Description     string  `json:"description" form:"description" binding:"required"`
 	Tag             string  `json:"tag" form:"tag" binding:"required"`
@@ -129,7 +129,7 @@ type ParamsAddNewCinema struct {
 }
 
 type ParamsModifyCinema struct {
-	ID       int64  `json:"id" form:"id" binding:"required"`
+	ID       string `json:"id" form:"id" binding:"required"`
 	Name     string `json:"name" form:"name" binding:"required"`
 	MaxRow   int    `json:"row" form:"row" binding:"required"`
 	MaxCol   int    `json:"col" form:"col" binding:"required"`
@@ -138,12 +138,12 @@ type ParamsModifyCinema struct {
 }
 
 type ParamsGetSeatByCinemaID struct {
-	ID int64 `json:"id" form:"id" binding:"required"`
+	ID string `json:"id" form:"id" binding:"required"`
 }
 
 type ParamsModifySeat struct {
-	ID       int64   `json:"id" form:"id" binding:"required"`
-	SeatList [][]int `json:"seat_list" form:"seat_list" binding:"required"`
+	ID     string `json:"id" form:"id" binding:"required"`
+	Status int    `json:"status" form:"status" binding:"required"`
 }
 
 type ParamsGetAllMovies struct {
