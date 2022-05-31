@@ -207,12 +207,7 @@ export default {
                     { required: true, message: '请输入用户的手机号码', trigger: 'blur' },
                     { validator: checkMobile, trigger: 'blur' }
                 ]
-
-
             },
-
-
-
 
         }
     },
