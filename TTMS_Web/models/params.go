@@ -31,7 +31,7 @@ type ParamsAdminmsg struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber string  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string `json:"phone_number" form:"phone_number" binding:"required"`
 }
 
 type ParamsUpdateMsg struct {
@@ -39,7 +39,7 @@ type ParamsUpdateMsg struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber string  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string `json:"phone_number" form:"phone_number" binding:"required"`
 	IsDelete    int    `json:"is_delete" form:"is_delete" binding:"required"`
 	Identity    int    `json:"identity" form:"identity" binding:"required"`
 	IsLogin     int    `json:"is_login" form:"is_login" binding:"required"`
@@ -50,7 +50,7 @@ type ParamAddSchedule struct {
 	MovieId   string `json:"movie_id" form:"movie_id" binding:"required"`
 	DateDay   string `json:"date_day" form:"date_dat" binding:"required"`
 	StartTime string `json:"start_time" form:"start_time" binding:"required"`
-	Price     int 	`json:"price" form:"price" binding:"required"`
+	Price     int    `json:"price" form:"price" binding:"required"`
 }
 
 type ParamsUpdateScheduleMsg struct {
@@ -94,6 +94,7 @@ type ParamsAddNewMovie struct {
 	Down_time       int    `json:"down_time" form:"down_time" binding:"required"`
 	CoverImgPath    string `json:"cover_img_path" form:"cover_img_path" binding:"required"`
 	CarouselImgPath string `json:"carousel_img_path" form:"carousel_img_path" binding:"required"`
+	Zone            string `json:"zone" form:"zone" binding:"required"`
 }
 
 type ParamsModifyMovie struct {
