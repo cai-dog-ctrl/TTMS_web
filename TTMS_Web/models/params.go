@@ -31,7 +31,7 @@ type ParamsAdminmsg struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber string  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string `json:"phone_number" form:"phone_number" binding:"required"`
 }
 
 type ParamsUpdateMsg struct {
@@ -39,7 +39,7 @@ type ParamsUpdateMsg struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber string  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string `json:"phone_number" form:"phone_number" binding:"required"`
 	IsDelete    int    `json:"is_delete" form:"is_delete" binding:"required"`
 	Identity    int    `json:"identity" form:"identity" binding:"required"`
 	IsLogin     int    `json:"is_login" form:"is_login" binding:"required"`
@@ -50,19 +50,19 @@ type ParamAddSchedule struct {
 	MovieId   string `json:"movie_id" form:"movie_id" binding:"required"`
 	DateDay   string `json:"date_day" form:"date_dat" binding:"required"`
 	StartTime string `json:"start_time" form:"start_time" binding:"required"`
-	Price     int 	`json:"price" form:"price" binding:"required"`
+	Price     int    `json:"price" form:"price" binding:"required"`
 }
 
-
 type ParamsUpdateScheduleMsg struct {
-	ID 			string 	`json:"id" form:"id" binding:"required"`
-	CinemaId 	string	`json:"cinema_id" form:"cinema_id" binding:"required"`
-	MovieId		string 	`json:"movie_id" form:"movie_id" binding:"required"`
-	DateDay		string 	`json:"date_day" form:"date_day" binding:"required"`
-	StartTime 	string	`json:"start_time" form:"start_time" binding:"required"`
-	IsDelete	int		`json:"is_delete" form:"is_delete" binding:"required"`
-	IsShow 		int		`json:"is_show" form:"is_show" binding:"required"`
-	Price     	int 	`json:"price" form:"price" binding:"required"`
+	ID        string `json:"id" form:"id" binding:"required"`
+	CinemaId  string `json:"cinema_id" form:"cinema_id" binding:"required"`
+	MovieId   string `json:"movie_id" form:"movie_id" binding:"required"`
+	DateDay   string `json:"date_day" form:"date_day" binding:"required"`
+	StartTime string `json:"start_time" form:"start_time" binding:"required"`
+	EndTime   string `json:"end_time" form:"end_time" binding:"required"`
+	IsDelete  int    `json:"is_delete" form:"is_delete" binding:"required"`
+	IsShow    int    `json:"is_show" form:"is_show" binding:"required"`
+	Price     int    `json:"price" form:"price" binding:"required"`
 }
 
 type ParamsGetShowingMovies struct {
@@ -94,6 +94,7 @@ type ParamsAddNewMovie struct {
 	Down_time       int    `json:"down_time" form:"down_time" binding:"required"`
 	CoverImgPath    string `json:"cover_img_path" form:"cover_img_path" binding:"required"`
 	CarouselImgPath string `json:"carousel_img_path" form:"carousel_img_path" binding:"required"`
+	Zone            string `json:"zone" form:"zone" binding:"required"`
 }
 
 type ParamsModifyMovie struct {
@@ -145,14 +146,16 @@ type ParamsModifySeat struct {
 }
 
 type ParamsGetAllMovies struct {
-	Num           int `json:"num" form:"num" binding:"required"`
-	Page_num      int `json:"page_num" form:"page_num" binding:"required"`
+	Num           int    `json:"num" form:"num" binding:"required"`
+	Page_num      int    `json:"page_num" form:"page_num" binding:"required"`
 	FlagOfType    string `json:"flag_type" form:"flag_type" binding:"required"`
 	FlagOfZone    string `json:"flag_zone" form:"flag_zone" binding:"required"`
 	FlagOfShowing string `json:"flag_showing" form:"flag_showing" binding:"required"`
 	FlagOfOrder   string `json:"flag_order" form:"flag_order" binding:"required"`
 }
 
-type ParamsGetMovieInfoByName struct {
-	Name string `json:"name" form:"name" binding:"required"`
+type ParamsGetMovieByName struct {
+	Name     string `json:"name" form:"name" binding:"required"`
+	Num      int    `json:"num" form:"num" binding:"required"`
+	Page_num int    `json:"page_num" form:"page_num" binding:"required"`
 }

@@ -100,6 +100,7 @@ func AddNewMovie(p *models.ParamsAddNewMovie) error {
 	NewMovie.Down_time = p.Down_time
 	NewMovie.CoverImgPath = p.CoverImgPath
 	NewMovie.CarouselImgPath = p.CarouselImgPath
+	NewMovie.Zone = p.Zone
 	return mysql.InsertMovie(NewMovie)
 }
 
@@ -140,4 +141,8 @@ func GetAllMovies(p *models.ParamsGetAllMovies) (*models.MovieList, error) {
 		so |= 8
 	}
 	return mysql.GetAllMovies(p, so)
+}
+
+func GetMovieByName(p *models.ParamsGetMovieByName) (*models.MovieList, error) {
+	return mysql.GetMovieByName()
 }

@@ -112,8 +112,8 @@ func GetMovieInfoByID(id int64) (*models.MovieInfo, error) {
 }
 
 func InsertMovie(p *models.MovieInfo) error {
-	sqlStr := "insert into movie_info (name, description, tag, movie_time, date, score, pf, img, is_delete, cover_img, down_time) values (?, ?, ?, ?, ?, 0, 0, ?, -1, ?, ?)"
-	_, err := db.Exec(sqlStr, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.CarouselImgPath, p.CoverImgPath, p.Down_time)
+	sqlStr := "insert into movie_info (name, description, tag, movie_time, date, score, pf, img, is_delete, cover_img, down_time, zone) values (?, ?, ?, ?, ?, 0, 0, ?, -1, ?, ?, ?)"
+	_, err := db.Exec(sqlStr, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.CarouselImgPath, p.CoverImgPath, p.Down_time, p.Zone)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
@@ -122,8 +122,8 @@ func InsertMovie(p *models.MovieInfo) error {
 }
 
 func ModifyMovie(p *models.MovieInfo) error {
-	sqlStr := "update movie_info set name = ?, description = ?, tag = ?, movie_time = ?, date = ?, score = ?, pf = ?, img = ?, is_delete = ?, cover_img = ?, down_time = ? where id = ?"
-	_, err := db.Exec(sqlStr, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.Score, p.BoxOffice, p.CarouselImgPath, p.IsDelete, p.CoverImgPath, p.Down_time, p.Id)
+	sqlStr := "update movie_info set name = ?, description = ?, tag = ?, movie_time = ?, date = ?, score = ?, pf = ?, img = ?, is_delete = ?, cover_img = ?, down_time = ?, zone = ? where id = ?"
+	_, err := db.Exec(sqlStr, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.Score, p.BoxOffice, p.CarouselImgPath, p.IsDelete, p.CoverImgPath, p.Down_time, p.Id, p.Zone)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
@@ -319,4 +319,9 @@ func GetAllMovies(p *models.ParamsGetAllMovies, so int) (*models.MovieList, erro
 		return nil, err
 	}
 	return movie, err
+}
+
+func GetMovieByName()(*models.MovieList, error){
+	movie := new(models.MovieList)
+	return movie, nil
 }
