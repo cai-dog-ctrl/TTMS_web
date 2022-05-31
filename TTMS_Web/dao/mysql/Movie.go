@@ -318,6 +318,16 @@ func GetAllMovies(p *models.ParamsGetAllMovies, so int) (*models.MovieList, erro
 		zap.L().Error(sqlStr)
 		return nil, err
 	}
+	tmp := new(models.MovieList)
+	str := fmt.Sprintf(" limit %v, %v", startIdx, p.Num)
+	sqlStr1 := sqlStr[:len(sqlStr)-len(str)]
+	fmt.Println(sqlStr1)
+	err = db.Select(&tmp.MovieList, sqlStr1)
+	if err != nil {
+		zap.L().Error(sqlStr)
+		return nil, err
+	}
+	movie.Total = len(tmp.MovieList)
 	return movie, err
 }
 

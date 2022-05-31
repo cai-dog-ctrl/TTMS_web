@@ -55,6 +55,7 @@ type BoxOfficeRanking struct {
 }
 
 type MovieList struct {
+	Total     int          `json:"total"`
 	MovieList []*MovieInfo `json:"movieList"`
 }
 
