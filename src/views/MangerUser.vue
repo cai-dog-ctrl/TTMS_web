@@ -300,7 +300,7 @@ export default {
                 // console.log(valid)
                 if (!valid) return
                 //可以发起添加用户的网络请求
-                console.log(111111);
+                // console.log(111111);
                 const { data: res } = await this.$http.post('addadmin', this.addForm)
 
                 if (res.code !== 1000) {
@@ -334,19 +334,20 @@ export default {
 
         },
         //修改用户表单的预验证
-        editUserInfo() {
+        async editUserInfo() {
             this.$refs.editFormRef.validate(async vaild => {
 
                 if (!vaild) return
                 //发起修改用户信息的数据请求
-                const { data: res } = await this.$http.put('updatemsg/' +
-                    this.editForm.id, {
+                const { data: res } = await this.$http.put('updatemsg', {
                     id: this.editForm.id,
                     username: this.editForm.username,
                     password: this.editForm.password,
                     email: this.editForm.email,
                     phone_number: this.editForm.phone_number,
-                    identity: this.editForm.identity
+                    identity: this.editForm.identity,
+                    is_delete: this.editForm.is_delete,
+                    is_login: this.editForm.is_login
 
                 })
                 console.log(res.code)

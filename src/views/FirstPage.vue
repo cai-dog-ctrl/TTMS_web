@@ -60,7 +60,8 @@
                         <span class="panel-more"><a href="http://localhost:8080/#/pfborad">全部></a></span>
                     </div>
                     <div class="borde">
-                        <div class="borde_top" @click="gotoinfo(first_page_info.BoxOfficeRankingList.BoxOfficeRankingList[0].id)">
+                        <div class="borde_top"
+                            @click="gotoinfo(first_page_info.BoxOfficeRankingList.BoxOfficeRankingList[0].id)">
                             <div><img
                                     src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644"
                                     alt="" class="bored_top_img"></div>
@@ -91,10 +92,10 @@
                         <span class="panel-more"><a href="http://localhost:8080/#/sborad">全部></a></span>
                     </div>
                     <div class="bored" style="margin-top:15px">
-                        <div class="borde_top" @click="gotoinfo(first_page_info.ScoreRankingList.ScoreRankingList[0].id)">
-                            <div><img 
-                            :src =" src_url" class="bored_top_img"
-                            @click="gotoinfo(first_page_info.ScoreRankingList.ScoreRankingList[0].id)"></div>
+                        <div class="borde_top"
+                            @click="gotoinfo(first_page_info.ScoreRankingList.ScoreRankingList[0].id)">
+                            <div><img :src="src_url" class="bored_top_img"
+                                    @click="gotoinfo(first_page_info.ScoreRankingList.ScoreRankingList[0].id)"></div>
 
                             <div style="padding-top:20px;margin-left:20px;width:60px">
                                 <a class="borde_top_name">{{

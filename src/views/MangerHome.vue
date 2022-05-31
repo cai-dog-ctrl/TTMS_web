@@ -73,23 +73,17 @@ export default {
         },
         {
             "id": 103,
-            "authName": "权限管理",
+            "authName": "影厅管理",
             "path": "rights",
             "children": [
                 {
                     "id": 111,
-                    "authName": "角色列表",
-                    "path": "roles",
+                    "authName": "影厅列表",
+                    "path": "moviehall",
                     "children": [],
                     "order": null
                 },
-                {
-                    "id": 112,
-                    "authName": "权限列表",
-                    "path": "rights",
-                    "children": [],
-                    "order": null
-                }
+                
             ],
             "order": 2
         },
