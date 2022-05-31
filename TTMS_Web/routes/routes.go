@@ -28,7 +28,7 @@ func SetupRouter() *gin.Engine {
 	}
 	//cat front page / movie info / showing movies / coming movies / scoreRanking movies / boxofficeRanking movies
 	g.GET("/GetFrontPage", controllers.GetFrontPage)
-	g.GET("/GetMovieInfoByName", controllers.GetMovieInfoByName)
+	g.GET("/GetMovieByName", controllers.GetMovieByName)
 	g.GET("/GetMovieInfoById/:Id", controllers.GetMovieInfoByID)
 	g.GET("/GetAllMovies", controllers.GetAllmovies)
 	g.GET("/GetAllShowingMovies", controllers.GetShowingMovies)

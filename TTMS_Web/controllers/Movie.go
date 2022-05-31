@@ -37,22 +37,22 @@ func GetMovieInfoByID(c *gin.Context) {
 	if err != nil {
 		zap.L().Error("service.GetRelevantMovies ERROR", zap.Error(err))
 		return
-	} 
+	}
 	uptime := ""
-	uptime += utils.ShiftToStringFromInt64(int64(movie.Up_time/10000))
+	uptime += utils.ShiftToStringFromInt64(int64(movie.Up_time / 10000))
 	uptime += "-"
-	uptemtime := movie.Up_time%10000
-	uptime += utils.ShiftToStringFromInt64(int64(uptemtime/100))
+	uptemtime := movie.Up_time % 10000
+	uptime += utils.ShiftToStringFromInt64(int64(uptemtime / 100))
 	uptime += "-"
-	uptime += utils.ShiftToStringFromInt64(int64(uptemtime%100))
+	uptime += utils.ShiftToStringFromInt64(int64(uptemtime % 100))
 
 	downtime := ""
-	downtime += utils.ShiftToStringFromInt64(int64(movie.Down_time/10000))
+	downtime += utils.ShiftToStringFromInt64(int64(movie.Down_time / 10000))
 	downtime += "-"
-	downtemtime := movie.Down_time%10000
-	downtime += utils.ShiftToStringFromInt64(int64(downtemtime/100))
+	downtemtime := movie.Down_time % 10000
+	downtime += utils.ShiftToStringFromInt64(int64(downtemtime / 100))
 	downtime += "-"
-	downtime += utils.ShiftToStringFromInt64(int64(downtemtime%100))
+	downtime += utils.ShiftToStringFromInt64(int64(downtemtime % 100))
 
 	movie_id := utils.ShiftToStringFromInt64(movie.Id)
 	ResponseSuccess(c, gin.H{
@@ -68,6 +68,7 @@ func GetMovieInfoByID(c *gin.Context) {
 		"carouselImgPath": movie.CarouselImgPath,
 		"coverImgPath":    movie.CoverImgPath,
 		"is_delete":       movie.IsDelete,
+		"zone":            movie.Zone,
 		"relevantMovies":  relevantMovies,
 	})
 }
@@ -170,6 +171,10 @@ func GetAllmovies(c *gin.Context) {
 	ResponseSuccess(c, movie)
 }
 
-func GetMovieInfoByName(C *gin.Context) {
-	// p := new(models.P)
+func GetMovieByName(c *gin.Context) {
+	p := new(models.ParamsGetMovieByName)
+	p.Num = utils.ShiftToNum(c.Query("Num"))
+	p.Page_num = utils.ShiftToNum(c.Query("Page_num"))
+	p.Name = c.Query("Name")
+	movie, err := service.GetMovieByName()
 }

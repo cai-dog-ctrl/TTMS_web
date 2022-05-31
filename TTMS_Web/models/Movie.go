@@ -5,6 +5,7 @@ package models
 const (
 	IS_SHOWING = 0
 )
+
 type MovieInfo struct {
 	Id              int64   `json:"id,string" db:"id"`
 	Name            string  `json:"name" db:"name"`
@@ -18,6 +19,7 @@ type MovieInfo struct {
 	IsDelete        int     `json:"isDelete" db:"is_delete"`
 	CarouselImgPath string  `json:"carousel_img_path" db:"img"`
 	Down_time       int     `json:"down_Time" db:"down_time"`
+	Zone            string  `json:"zone" db:"zone"`
 }
 
 type Carousel struct {
