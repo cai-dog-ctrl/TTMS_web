@@ -15,7 +15,8 @@ type SeatList struct {
 }
 
 type CinemaInfo struct {
-	ID       int64  `json:"id,string" db:"id"`
+	ID       int64  `json:"id" db:"id"`
+	Name     string `json:"name" db:"cinema_info"`
 	MaxRow   int    `json:"roww" db:"roww"`
 	MaxCol   int    `json:"coll" db:"coll"`
 	Tag      string `json:"tag" db:"tag"`

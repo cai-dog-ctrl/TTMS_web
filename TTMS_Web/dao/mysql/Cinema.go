@@ -10,19 +10,35 @@ import (
 
 func GetAllCinemas(num int, page_num int) (*models.CinemaList, error){
 	cinemaList := new(models.CinemaList)
-	sqlStr := "select count(*) from cinema_info where is_delete != 1"
+	sqlStr := "select count(*) from cinema_info"
 	err := db.Get(&cinemaList.Number, sqlStr)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return nil, err
 	}
-	// sqlStr1 := fmt.Sprintf("select ")
+	sqlStr1 := "select * from cinema_info"
+	err = db.Select(&cinemaList.CinemaList, sqlStr1)
+	if err != nil {
+		zap.L().Error(sqlStr)
+		return nil, err
+	}
 	return cinemaList, nil
 }
 
+func GetCinemaByID(id int64)(*models.CinemaInfo, error) {
+	cinema := new(models.CinemaInfo)
+	sqlStr := fmt.Sprintf("select * from cinema_info where id = %v", id)
+	err := db.Get(cinema, sqlStr)
+	if err != nil {
+		zap.L().Error(sqlStr)
+		return nil, err
+	}
+	return cinema, nil
+}
+
 func InsertCinema(p *models.CinemaInfo) error {
-	sqlStr := "insert into cinema_info (roww, coll, tag, is_delete) values (?, ?, ?, -1)"
-	_, err := db.Exec(sqlStr, p.MaxRow, p.MaxCol, p.Tag)
+	sqlStr := "insert into cinema_info (roww, coll, tag, is_delete, cinema_name) values (?, ?, ?, -1, ?)"
+	_, err := db.Exec(sqlStr, p.MaxRow, p.MaxCol, p.Tag, p.Name)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
@@ -55,8 +71,8 @@ func InsertCinema(p *models.CinemaInfo) error {
 }
 
 func ModifyCinema(p *models.CinemaInfo) error {
-	sqlStr := "update movie_info set roww = ?, coll = ?, tag = ?, is_delete = ? where id = ?"
-	_, err := db.Exec(sqlStr, p.MaxRow, p.MaxCol, p.Tag, p.IsDelete, p.ID)
+	sqlStr := "update movie_info set roww = ?, coll = ?, tag = ?, is_delete = ? cinema_name = ? where id = ?"
+	_, err := db.Exec(sqlStr, p.MaxRow, p.MaxCol, p.Tag, p.IsDelete, p.Name, p.ID)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err

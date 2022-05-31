@@ -11,7 +11,14 @@ import (
 
 //有关影院的controller代码
 func GetCinemaByID(c *gin.Context){
-	
+	p := new(models.ParamsGetCinemaByID)
+	p.ID = c.Param("ID")
+	cinema, err := service.GetCinemaByID(p)
+	if err != nil {
+		zap.L().Error("service.GetCinemaByID ERROR", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, cinema)
 }
 
 func GetAllCinemas(c *gin.Context){

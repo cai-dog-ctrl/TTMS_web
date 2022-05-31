@@ -113,7 +113,7 @@ type ParamsModifyMovie struct {
 }
 
 type ParamsGetCinemaByID struct {
-	ID int64 `json:"id" form:"id" binding:"required"`
+	ID string `json:"id" form:"id" binding:"required"`
 }
 
 type ParamsGetAllCinemas struct {
@@ -122,7 +122,7 @@ type ParamsGetAllCinemas struct {
 }
 
 type ParamsAddNewCinema struct {
-	ID     int64  `json:"id" form:"id" binding:"required"`
+	Name   string `json:"name" form:"name" binding:"required"`
 	MaxRow int    `json:"row" form:"row" binding:"required"`
 	MaxCol int    `json:"col" form:"col" binding:"required"`
 	Tag    string `json:"tag" form:"tag" binding:"required"`
@@ -130,6 +130,7 @@ type ParamsAddNewCinema struct {
 
 type ParamsModifyCinema struct {
 	ID       int64  `json:"id" form:"id" binding:"required"`
+	Name     string `json:"name" form:"name" binding:"required"`
 	MaxRow   int    `json:"row" form:"row" binding:"required"`
 	MaxCol   int    `json:"col" form:"col" binding:"required"`
 	Tag      string `json:"tag" form:"tag" binding:"required"`

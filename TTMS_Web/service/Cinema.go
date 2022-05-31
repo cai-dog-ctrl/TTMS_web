@@ -5,27 +5,31 @@ package service
 import (
 	"TTMS/dao/mysql"
 	"TTMS/models"
+	"TTMS/pkg/utils"
 )
 
 func GetAllCinemas(p *models.ParamsGetAllCinemas) (*models.CinemaList, error) {
-	cinemaList, err := mysql.GetAllCinemas(p.Num, p.Page_num-1)
-	if err != nil{
-		return nil, err
-	}
-	return cinemaList, nil
+	return mysql.GetAllCinemas(p.Num, p.Page_num-1)
+}
+
+func GetCinemaByID(p *models.ParamsGetCinemaByID) (*models.CinemaInfo, error) {
+	return mysql.GetCinemaByID(utils.ShiftToNum64(p.ID))
+
 }
 
 func AddNewCinema(p *models.ParamsAddNewCinema) error {
 	Cinema := new(models.CinemaInfo)
+	Cinema.Name = p.Name
 	Cinema.Tag = p.Tag
 	Cinema.MaxCol = p.MaxCol
 	Cinema.MaxRow = p.MaxRow
-	return mysql.InsertCinema(Cinema) 
+	return mysql.InsertCinema(Cinema)
 }
 
 func ModifyCinemaByID(p *models.ParamsModifyCinema) error {
 	Cinema := new(models.CinemaInfo)
 	Cinema.ID = p.ID
+	Cinema.Name = p.Name
 	Cinema.Tag = p.Tag
 	Cinema.MaxCol = p.MaxCol
 	Cinema.MaxRow = p.MaxRow
@@ -33,7 +37,7 @@ func ModifyCinemaByID(p *models.ParamsModifyCinema) error {
 	return mysql.ModifyCinema(Cinema)
 }
 
-func GetSeatByCinemaID(p *models.ParamsGetSeatByCinemaID) (*models.SeatList, error){
+func GetSeatByCinemaID(p *models.ParamsGetSeatByCinemaID) (*models.SeatList, error) {
 	seatList, err := mysql.GetSeatByCinemaID(p.ID)
 	if err != nil {
 		return nil, err
@@ -41,9 +45,9 @@ func GetSeatByCinemaID(p *models.ParamsGetSeatByCinemaID) (*models.SeatList, err
 	return seatList, nil
 }
 
-func ModifySeat(p *models.ParamsModifySeat) error{
+func ModifySeat(p *models.ParamsModifySeat) error {
 	seatlist := new(models.SeatList)
 	seatlist.ID = p.ID
 	seatlist.SeatList = p.SeatList
-	return mysql.ModifySeat(seatlist)	 
+	return mysql.ModifySeat(seatlist)
 }
