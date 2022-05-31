@@ -30,7 +30,7 @@ func SetupRouter() *gin.Engine {
 	g.GET("/GetFrontPage", controllers.GetFrontPage)
 	g.GET("/GetMovieInfoByName", controllers.GetMovieInfoByName)
 	g.GET("/GetMovieInfoById/:Id", controllers.GetMovieInfoByID)
-	g.GET("/GetAllmovies", controllers.GetAllmovies)
+	g.GET("/GetAllMovies", controllers.GetAllmovies)
 	g.GET("/GetAllShowingMovies", controllers.GetShowingMovies)
 	g.GET("/GetAllComingMovies", controllers.GetComingMovies)
 	g.GET("/GetAllScoreRankingMovies", controllers.GetScoreRankingMovies)
@@ -39,13 +39,13 @@ func SetupRouter() *gin.Engine {
 	//manage movie
 	g.POST("/AddNewMovie", controllers.AddNewMovie)
 	g.PUT("/ModifyMovie", controllers.ModifyMovieByID)
-	
+
 	//manage cinema
 	g.GET("/GetCinemaByID", controllers.GetCinemaByID)
 	g.GET("/GetAllCinema", controllers.GetAllCinemas)
 	g.POST("/AddNewCinema", controllers.AddNewCinema)
 	g.PUT("/ModifyCinemaByID", controllers.ModifyCinemaByID)
-	
+
 	//manage seat
 	g.GET("/GetSeatByCinemaID", controllers.GetSeatByCinemaID)
 	g.PUT("/ModifySeat", controllers.ModifySeat)
@@ -62,6 +62,5 @@ func SetupRouter() *gin.Engine {
 	g.GET("/getallschedulemsgbycinemaid", controllers.GetAllScheduleMsgByCinemaId)
 	g.GET("/getallschedulebymovieidandday", controllers.GetAllScheduleByMovieIdandDay)
 
-	
 	return r
 }

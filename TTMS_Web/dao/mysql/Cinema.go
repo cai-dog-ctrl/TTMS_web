@@ -16,7 +16,7 @@ func GetAllCinemas(num int, page_num int) (*models.CinemaList, error){
 		zap.L().Error(sqlStr)
 		return nil, err
 	}
-	sqlStr1 := fmt.Sprintf("select ")
+	// sqlStr1 := fmt.Sprintf("select ")
 	return cinemaList, nil
 }
 

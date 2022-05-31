@@ -5,11 +5,9 @@ package service
 import (
 	"TTMS/dao/mysql"
 	"TTMS/models"
-
-	"golang.org/x/tools/go/analysis/passes/nilfunc"
 )
 
-func GetAllCinemas(p *models.ParamsGetAllCinemas) error {
+func GetAllCinemas(p *models.ParamsGetAllCinemas) (*models.CinemaList, error) {
 	cinemaList, err := mysql.GetAllCinemas(p.Num, p.Page_num-1)
 	if err != nil{
 		return nil, err

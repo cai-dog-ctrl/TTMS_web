@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"golang.org/x/tools/go/analysis/passes/nilfunc"
 )
 
 //有关影院的controller代码
