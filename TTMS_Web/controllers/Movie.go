@@ -192,3 +192,21 @@ func GetMovieByName(c *gin.Context) {
 	}
 	ResponseSuccess(c, movie)
 }
+
+func GetMovieSort(c *gin.Context) {
+	tag := []string{"全部", "爱情", "喜剧", "动画", "剧情", "恐怖", "惊悚", "科幻",
+		"动作", "悬疑", "犯罪", "冒险", "战争", "奇幻", "运动", "家庭", "古装", "武侠",
+		"西部", "历史", "传记", "歌舞", "黑色电影", "短片", "纪录片", "戏曲", "音乐",
+		"灾难", "青春", "儿童", "其他"}
+	zone := []string{"全部", "大陆", "美国", "韩国", "日本", "中国香港", "中国台湾",
+		"泰国", "印度", "法国", "英国", "俄罗斯", "意大利", "西班牙", "德国", "波兰",
+		"澳大利亚", "伊朗", "其他"}
+	showing := []string{"正在上映", "即将上映", "经典影片"}
+	order := []string{"按热门排序", "按时间排序", "按评价排序"}
+	ResponseSuccess(c, gin.H{
+		"tag":     tag,
+		"zone":    zone,
+		"showing": showing,
+		"order":   order,
+	})
+}

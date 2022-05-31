@@ -35,6 +35,7 @@ func SetupRouter() *gin.Engine {
 	g.GET("/GetAllComingMovies", controllers.GetComingMovies)
 	g.GET("/GetAllScoreRankingMovies", controllers.GetScoreRankingMovies)
 	g.GET("/GetAllBoxOfficeRankingMovies", controllers.GetBoxOfficeRankingMovies)
+	g.GET("/GetMovieSort", controllers.GetMovieSort)
 
 	//manage movie
 	g.POST("/AddNewMovie", controllers.AddNewMovie)
