@@ -176,5 +176,10 @@ func GetMovieByName(c *gin.Context) {
 	p.Num = utils.ShiftToNum(c.Query("Num"))
 	p.Page_num = utils.ShiftToNum(c.Query("Page_num"))
 	p.Name = c.Query("Name")
-	movie, err := service.GetMovieByName()
+	movie, err := service.GetMovieByName(p)
+	if err != nil {
+		zap.L().Error("", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, movie)
 }
