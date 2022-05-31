@@ -39,6 +39,10 @@ func ModifyCinemaByID(p *models.ParamsModifyCinema) error {
 	return mysql.ModifyCinema(Cinema)
 }
 
+func DeleteCinemaByID(p *models.ParamsDeleteCinema) error {
+	return mysql.DeleteCinemaByID(utils.ShiftToNum64(p.ID))
+}
+
 func GetSeatByCinemaID(p *models.ParamsGetSeatByCinemaID) (*models.SeatList, error) {
 	seatList, err := mysql.GetSeatByCinemaID(utils.ShiftToNum64(p.ID))
 	if err != nil {

@@ -41,13 +41,14 @@ func SetupRouter() *gin.Engine {
 	g.PUT("/ModifyMovie", controllers.ModifyMovieByID)
 
 	//manage cinema
-	g.GET("/GetCinemaByID", controllers.GetCinemaByID)
-	g.GET("/GetAllCinema", controllers.GetAllCinemas)
+	g.GET("/GetCinemaByID/:ID", controllers.GetCinemaByID)
+	g.GET("/GetAllCinemas", controllers.GetAllCinemas)
 	g.POST("/AddNewCinema", controllers.AddNewCinema)
 	g.PUT("/ModifyCinemaByID", controllers.ModifyCinemaByID)
+	g.PUT("/DeleteCinemaByID/:ID", controllers.DeleteCinemaByID)
 
 	//manage seat
-	g.GET("/GetSeatByCinemaID", controllers.GetSeatByCinemaID)
+	g.GET("/GetSeatByCinemaID/:ID", controllers.GetSeatByCinemaID)
 	g.PUT("/ModifySeat", controllers.ModifySeat)
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

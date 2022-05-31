@@ -19,7 +19,8 @@ func GetFrontPage(c *gin.Context) {
 	p.BoxOfficeRankingNum = utils.ShiftToNum(c.Query("BoxOfficeRankingNum"))
 	front_page, err := service.GetFrontPage(p)
 	if err != nil {
-		zap.L().Error("", zap.Error(err))
+		zap.L().Error("service.GetFrontPage Error", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	ResponseSuccess(c, front_page)
@@ -31,11 +32,13 @@ func GetMovieInfoByID(c *gin.Context) {
 	movie, err := service.GetMovieInfoByID(p)
 	if err != nil {
 		zap.L().Error("service.GetMovieInfoByID ERROR", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	relevantMovies, err := service.GetRelevantMovies(movie.Tag)
 	if err != nil {
 		zap.L().Error("service.GetRelevantMovies ERROR", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	uptime := ""
@@ -79,7 +82,8 @@ func GetShowingMovies(c *gin.Context) {
 	p.Page_num = utils.ShiftToNum(c.Query("Page_num"))
 	movie, err := service.GetAllShowingMovies(p)
 	if err != nil {
-		zap.L().Error("", zap.Error(err))
+		zap.L().Error("service.GetAllShowingMovies Error", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	ResponseSuccess(c, movie)
@@ -91,7 +95,8 @@ func GetComingMovies(c *gin.Context) {
 	p.Page_num = utils.ShiftToNum(c.Query("Page_num"))
 	movie, err := service.GetAllComingMovies(p)
 	if err != nil {
-		zap.L().Error("", zap.Error(err))
+		zap.L().Error("service.GetAllComingMovies Error", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	ResponseSuccess(c, movie)
@@ -103,7 +108,8 @@ func GetScoreRankingMovies(c *gin.Context) {
 	p.Page_num = utils.ShiftToNum(c.Query("Page_num"))
 	movie, err := service.GetAllScoreRankingMovies(p)
 	if err != nil {
-		zap.L().Error("", zap.Error(err))
+		zap.L().Error("service.GetAllScoreRankingMovie Error", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	ResponseSuccess(c, movie)
@@ -115,7 +121,8 @@ func GetBoxOfficeRankingMovies(c *gin.Context) {
 	p.Page_num = utils.ShiftToNum(c.Query("Page_num"))
 	movie, err := service.GetAllBoxOfficeRankingMovies(p)
 	if err != nil {
-		zap.L().Error("", zap.Error(err))
+		zap.L().Error("service.GetAllBoxOfficeRankingMovies Error", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	ResponseSuccess(c, movie)
@@ -165,7 +172,8 @@ func GetAllMovies(c *gin.Context) {
 	p.FlagOfOrder = c.Query("FlagOfOrder")
 	movie, err := service.GetAllMovies(p)
 	if err != nil {
-		zap.L().Error("", zap.Error(err))
+		zap.L().Error("service.GetAllMovies Error", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	ResponseSuccess(c, movie)
@@ -178,7 +186,8 @@ func GetMovieByName(c *gin.Context) {
 	p.Name = c.Query("Name")
 	movie, err := service.GetMovieByName(p)
 	if err != nil {
-		zap.L().Error("", zap.Error(err))
+		zap.L().Error("service.GetMovieByName Error", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	ResponseSuccess(c, movie)

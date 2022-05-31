@@ -137,6 +137,10 @@ type ParamsModifyCinema struct {
 	IsDelete int    `json:"is_delete" form:"is_delete" binding:"required"`
 }
 
+type ParamsDeleteCinema struct {
+	ID string `json:"id" form:"id" binding:"required"`
+}
+
 type ParamsGetSeatByCinemaID struct {
 	ID string `json:"id" form:"id" binding:"required"`
 }

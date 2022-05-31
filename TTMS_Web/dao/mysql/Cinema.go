@@ -60,18 +60,34 @@ func InsertCinema(p *models.CinemaInfo) error {
 				zap.L().Error(sqlStr)
 				return err1
 			}
-			time.Sleep(1 * time.Millisecond)
+			time.Sleep(1 * time.Microsecond)
 		}
 	}
 	return nil
 }
 
 func ModifyCinema(p *models.CinemaInfo) error {
-	sqlStr := "update cinema_info set roww = ?, coll = ?, tag = ?, is_delete = ? cinema_name = ? where id = ?"
+	sqlStr := "update cinema_info set roww = ?, coll = ?, tag = ?, is_delete = ? ,cinema_name = ? where id = ?"
 	_, err := db.Exec(sqlStr, p.MaxRow, p.MaxCol, p.Tag, p.IsDelete, p.Name, p.ID)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
+	}
+	return nil
+}
+
+func DeleteCinemaByID(id int64) error {
+	sqlStr := "delete from cinema_info where id = ?"
+	_, err := db.Exec(sqlStr, id)
+	if err != nil {
+		zap.L().Error(sqlStr)
+		return err
+	}
+	sqlStr1 := "delete from seat_info where cinema_id = ?"
+	_, err1 := db.Exec(sqlStr1, id)
+	if err1 != nil {
+		zap.L().Error(sqlStr1)
+		return err1
 	}
 	return nil
 }
@@ -88,28 +104,28 @@ func InsertSeat(p *models.SeatInfo) error {
 
 func GetSeatByCinemaID(id int64) (*models.SeatList, error) {
 	seatList := new(models.SeatList)
+	cinema := new(models.CinemaInfo)
 	sqlStr1 := fmt.Sprintf("select roww from cinema_info where id = %v", id)
-	var row int
-	err := db.Get(&row, sqlStr1)
+	err := db.Get(&cinema.MaxRow, sqlStr1)
 	if err != nil {
 		zap.L().Error(sqlStr1)
 		return nil, err
 	}
 	sqlStr2 := fmt.Sprintf("select coll from cinema_info where id = %v", id)
-	var col int
-	err = db.Get(&col, sqlStr2)
+	err = db.Get(&cinema.MaxCol, sqlStr2)
 	if err != nil {
 		zap.L().Error(sqlStr2)
 		return nil, err
 	}
 
-	n := make([][]int, row)
+	n := make([][]models.Seat, cinema.MaxRow)
 	for i := range n {
-		n[i] = make([]int, col)
+		n[i] = make([]models.Seat, cinema.MaxCol)
 	}
-	for i := 0; i < row; i++ {
-		for j := 0; j < col; j++ {
-			sqlStr := fmt.Sprintf("select status from seat_info where id = %v and coll = %v and roww = %v", id, j, i)
+	fmt.Println(cinema.MaxRow, cinema.MaxCol)
+	for i := 0; i < cinema.MaxRow; i++ {
+		for j := 0; j < cinema.MaxCol; j++ {
+			sqlStr := fmt.Sprintf("select id, status from seat_info where cinema_id = %v and coll = %v and roww = %v", id, j, i)
 			err = db.Get(&n[i][j], sqlStr)
 			if err != nil {
 				zap.L().Error(sqlStr2)
