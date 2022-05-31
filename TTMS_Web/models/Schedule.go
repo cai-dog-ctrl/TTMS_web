@@ -33,8 +33,8 @@ type SCheduledata struct {
 	IsShow    int 		`db:"is_show" json:"is_show"`
 
 	Price	  	int		`db:"price" json:"price"`
-	CinemaName	int		`db:"cinema_name" json:"cinema_name"`
-	Type	  string 	`db:"type" json:"type"`
+	CinemaName	string	`db:"cinema_name" json:"cinema_name"`
+	Type	  	string 	`db:"type" json:"type"`
 }
 
 type ScheduleList struct {

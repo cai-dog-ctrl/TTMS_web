@@ -13,10 +13,10 @@ import (
 func AddSchedule(p *models.ParamAddSchedule) error {
 	Sche := new(models.ScheduleIn)
 	Sche.ID = snowflake.GenID()
-	Sche.CinemaId = p.CinemaId
-	Sche.MovieId = p.MovieId
-	Sche.DateDay = p.DateDay
-	Sche.StartTime = p.StartTime
+	Sche.CinemaId = utils.ShiftToNum64(p.CinemaId)
+	Sche.MovieId = utils.ShiftToNum64(p.MovieId)
+	Sche.DateDay = utils.ShiftToNum64(p.DateDay)
+	Sche.StartTime = utils.ShiftToNum64(p.StartTime)
 	Sche.Price = p.Price
 
 	Sche.EndTime = 10

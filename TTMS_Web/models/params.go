@@ -12,7 +12,7 @@ type ParamsRegister struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string `json:"phone_number" form:"phone_number" binding:"required"`
 }
 
 type ParamsFrontPage struct {
@@ -31,7 +31,7 @@ type ParamsAdminmsg struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string  `json:"phone_number" form:"phone_number" binding:"required"`
 }
 
 type ParamsUpdateMsg struct {
@@ -39,17 +39,17 @@ type ParamsUpdateMsg struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string  `json:"phone_number" form:"phone_number" binding:"required"`
 	IsDelete    int    `json:"is_delete" form:"is_delete" binding:"required"`
 	Identity    int    `json:"identity" form:"identity" binding:"required"`
 	IsLogin     int    `json:"is_login" form:"is_login" binding:"required"`
 }
 
 type ParamAddSchedule struct {
-	CinemaId  int64 `json:"cinema_id" form:"cinema_id" binding:"required"`
-	MovieId   int64 `json:"movie_id" form:"movie_id" binding:"required"`
-	DateDay   int64 `json:"date_day" form:"date_dat" binding:"required"`
-	StartTime int64 `json:"start_time" form:"start_time" binding:"required"`
+	CinemaId  string `json:"cinema_id" form:"cinema_id" binding:"required"`
+	MovieId   string `json:"movie_id" form:"movie_id" binding:"required"`
+	DateDay   string `json:"date_day" form:"date_dat" binding:"required"`
+	StartTime string `json:"start_time" form:"start_time" binding:"required"`
 	Price     int 	`json:"price" form:"price" binding:"required"`
 }
 

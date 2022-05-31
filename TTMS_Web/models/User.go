@@ -7,7 +7,7 @@ type User struct {
 	Username    string `db:"username" json:"username"`
 	Password    string `db:"password" json:"password"`
 	Email       string `db:"email" json:"email"`
-	PhoneNumber int64  `db:"phone_number" json:"phone_number"`
+	PhoneNumber string `db:"phone_number" json:"phone_number"`
 	IsLogin     int    `db:"is_login" json:"is_login"`
 	Identity    int    `db:"identity" json:"identity"`
 	IsDelete    int    `db:"is_delete" json:"is_delete"`
