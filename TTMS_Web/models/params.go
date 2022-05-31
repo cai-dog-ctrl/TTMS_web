@@ -12,7 +12,7 @@ type ParamsRegister struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string  `json:"phone_number" form:"phone_number" binding:"required"`
 }
 
 type ParamsFrontPage struct {
@@ -31,7 +31,7 @@ type ParamsAdminmsg struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string  `json:"phone_number" form:"phone_number" binding:"required"`
 }
 
 type ParamsUpdateMsg struct {
@@ -39,7 +39,7 @@ type ParamsUpdateMsg struct {
 	Username    string `json:"username" form:"username" binding:"required"`
 	Password    string `json:"password" form:"password" binding:"required"`
 	Email       string `json:"email" form:"email" binding:"required"`
-	PhoneNumber int64  `json:"phone_number" form:"phone_number" binding:"required"`
+	PhoneNumber string  `json:"phone_number" form:"phone_number" binding:"required"`
 	IsDelete    int    `json:"is_delete" form:"is_delete" binding:"required"`
 	Identity    int    `json:"identity" form:"identity" binding:"required"`
 	IsLogin     int    `json:"is_login" form:"is_login" binding:"required"`
