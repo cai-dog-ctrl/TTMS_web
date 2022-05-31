@@ -60,7 +60,6 @@ type ParamsUpdateScheduleMsg struct {
 	MovieId		string 	`json:"movie_id" form:"movie_id" binding:"required"`
 	DateDay		string 	`json:"date_day" form:"date_day" binding:"required"`
 	StartTime 	string	`json:"start_time" form:"start_time" binding:"required"`
-	EndTime 	string 	`json:"end_time" form:"end_time" binding:"required"`
 	IsDelete	int		`json:"is_delete" form:"is_delete" binding:"required"`
 	IsShow 		int		`json:"is_show" form:"is_show" binding:"required"`
 	Price     	int 	`json:"price" form:"price" binding:"required"`

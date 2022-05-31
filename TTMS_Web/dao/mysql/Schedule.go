@@ -1,13 +1,34 @@
 package mysql
 
-import "TTMS/models"
+import (
+	"TTMS/models"
+	"errors"
+)
 
 //有关演出计划的持久化代码
 
 // InsertSchedule 添加演出计划
 func InsertSchedule(p *models.ScheduleIn) error {
+
+	sqlStr1 := "select movie_time from movie_info where id = ?"
+	var time int
+	err := db.Get(&time, sqlStr1, p.MovieId)
+	if err != nil {
+		return nil
+	}
+
+	hour := time / 60
+	minute := time % 60
+
+	p.EndTime = p.StartTime + int64(hour) * 100 + int64(minute)
+
+	if p.EndTime > int64(2400) {
+		err =  errors.New("the show time has expired, please reschedule")
+		return err
+	}
+
 	sqlStr := "insert into showschdule (id, cinema_id, movie_id, date_day, start_time, end_time, price) values (?, ?, ?, ?, ?, ?, ?)"
-	_, err := db.Exec(sqlStr, p.ID, p.CinemaId, p.MovieId, p.DateDay, p.StartTime, p.EndTime, p.Price)
+	_, err = db.Exec(sqlStr, p.ID, p.CinemaId, p.MovieId, p.DateDay, p.StartTime, p.EndTime, p.Price)
 	return err
 }
 
@@ -79,7 +100,25 @@ func GetAllScheduleByMovieIdandDay(movie_id, day int64) (*models.ScheduleList, e
 
 
 func UpdateSchedule(p *models.SCheduledata) error {
-	sqlStr := "update showschdule set date_day=?, start_time=?, end_time=?, is_delete=?, is_show=? where id = ?"
-	_, err := db.Exec(sqlStr, p.DateDay, p.StartTime, p.EndTime, p.IsDelete, p.IsShow, p.ID)
+
+	sqlStr1 := "select movie_time from movie_info where id = ?"
+	var time int
+	err := db.Get(&time, sqlStr1, p.MovieId)
+	if err != nil {
+		return nil
+	}
+
+	hour := time / 60
+	minute := time % 60
+
+	p.EndTime = p.StartTime + int64(hour) * 100 + int64(minute)
+
+	if p.EndTime > int64(2400) {
+		err =  errors.New("the show time has expired, please reschedule")
+		return err
+	}
+
+	sqlStr := "update showschdule set date_day=?, start_time=?, end_time=?, is_delete=?, is_show=?, price=? where id = ?"
+	_, err = db.Exec(sqlStr, p.DateDay, p.StartTime, p.EndTime, p.IsDelete, p.IsShow, p.Price, p.ID)
 	return err
 }
