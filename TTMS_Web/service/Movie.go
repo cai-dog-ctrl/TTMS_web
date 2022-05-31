@@ -100,6 +100,7 @@ func AddNewMovie(p *models.ParamsAddNewMovie) error {
 	NewMovie.Down_time = p.Down_time
 	NewMovie.CoverImgPath = p.CoverImgPath
 	NewMovie.CarouselImgPath = p.CarouselImgPath
+	NewMovie.Zone = p.Zone
 	return mysql.InsertMovie(NewMovie)
 }
 

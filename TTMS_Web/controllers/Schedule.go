@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-//有关演出假话的controller代码
+//有关演出计划的controller代码
 
 // AddSchedule 添加演出计划
 func AddSchedule(c *gin.Context) {

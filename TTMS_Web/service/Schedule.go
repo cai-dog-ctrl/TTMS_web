@@ -19,8 +19,6 @@ func AddSchedule(p *models.ParamAddSchedule) error {
 	Sche.StartTime = utils.ShiftToNum64(p.StartTime)
 	Sche.Price = p.Price
 
-	Sche.EndTime = 10
-
 	err := mysql.InsertSchedule(Sche)
 	if err != nil {
 		return err
@@ -80,7 +78,7 @@ func UpdateSchedule(p *models.ParamsUpdateScheduleMsg) error {
 	Sch.MovieId 	= utils.ShiftToNum64(p.MovieId)
 	Sch.DateDay		= utils.ShiftToNum64(p.DateDay)
 	Sch.StartTime 	= utils.ShiftToNum64(p.StartTime)
-	Sch.EndTime 	= utils.ShiftToNum64(p.EndTime)
+	Sch.Price 		= p.Price
 	Sch.IsDelete	= p.IsDelete
 	Sch.IsShow 		= p.IsShow
 
