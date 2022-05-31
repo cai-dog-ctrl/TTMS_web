@@ -155,7 +155,7 @@ func ModifyMovieByID(c *gin.Context) {
 	ResponseSuccess(c, "modify movie successful.")
 }
 
-func GetAllmovies(c *gin.Context) {
+func GetAllMovies(c *gin.Context) {
 	p := new(models.ParamsGetAllMovies)
 	p.Num = utils.ShiftToNum(c.Query("Num"))
 	p.Page_num = utils.ShiftToNum(c.Query("Page_num"))
