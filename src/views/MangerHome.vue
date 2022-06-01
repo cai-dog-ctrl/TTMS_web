@@ -102,7 +102,7 @@ export default {
                 {
                     "id": 115,
                     "authName": "演出计划",
-                    "path": "params",
+                    "path": "movieplan",
                     "children": [],
                     "order": 2
                 },

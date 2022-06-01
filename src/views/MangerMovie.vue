@@ -7,7 +7,7 @@
         </el-breadcrumb>
         <!--卡片视图-->
         <el-card>
-            <!-- 搜索与添加区 -->
+            <!--  -->
             <div v-for="item in first_page_info.ShowingList.ShowingList" :key="item.id" class="movie">
                 <el-card :body-style="{ padding: '0px' }" shadow="hover">
                     <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
@@ -93,13 +93,6 @@ export default {
     margin: auto;
 }
 
-// .main {
-//     margin-bottom: 40px;
-//     background: #fff;
-//     width: 750px;
-//     float: left;
-//     height: 100%;
-// }
 .movie {
     width: 235px;
     float: left;
