@@ -120,6 +120,7 @@ func ModifyMovieByID(p *models.ParamsModifyMovie) error {
 	movie.IsDelete = p.IsDelete
 	movie.CarouselImgPath = p.CarouselImgPath
 	movie.Down_time = p.Down_time
+	movie.Zone = p.Zone
 	return mysql.ModifyMovie(movie)
 }
 

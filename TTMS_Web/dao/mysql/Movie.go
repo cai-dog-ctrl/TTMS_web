@@ -27,7 +27,6 @@ func GetComingList(num int, page_num int) (*models.ComingList, error) {
 	year := time.Now().Year()
 	date := fmt.Sprintf("%v-%02v-%02v", year, month, day)
 	sqlStr1 := fmt.Sprintf("select count(*) from movie_info where '%v' < date and is_delete = -1", date)
-	fmt.Println(sqlStr1)
 	err := db.Get(&comingList.Number, sqlStr1)
 	if err != nil {
 		zap.L().Error(sqlStr1)
@@ -35,7 +34,6 @@ func GetComingList(num int, page_num int) (*models.ComingList, error) {
 	}
 	startIdx := num * page_num
 	sqlStr2 := fmt.Sprintf("select id, name, cover_img from movie_info where '%v' < date and is_delete = -1 limit %v, %v", date, startIdx, num)
-	fmt.Println(sqlStr2)
 	err = db.Select(&comingList.ComingList, sqlStr2)
 	if err != nil {
 		zap.L().Error(sqlStr2)
@@ -121,7 +119,7 @@ func InsertMovie(p *models.MovieInfo) error {
 
 func ModifyMovie(p *models.MovieInfo) error {
 	sqlStr := "update movie_info set name = ?, description = ?, tag = ?, movie_time = ?, date = ?, score = ?, pf = ?, img = ?, is_delete = ?, cover_img = ?, down_time = ?, zone = ? where id = ?"
-	_, err := db.Exec(sqlStr, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.Score, p.BoxOffice, p.CarouselImgPath, p.IsDelete, p.CoverImgPath, p.Down_time, p.Id, p.Zone)
+	_, err := db.Exec(sqlStr, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.Score, p.BoxOffice, p.CarouselImgPath, p.IsDelete, p.CoverImgPath, p.Down_time, p.Zone, p.Id)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
@@ -137,8 +135,6 @@ func GetAllMovies(p *models.ParamsGetAllMovies, so int) (*models.MovieList, erro
 	month := int(time.Now().Month())
 	year := time.Now().Year()
 	date := fmt.Sprintf("%v-%02v-%02v", year, month, day)
-	fmt.Println(so)
-	fmt.Println(15 & so)
 	switch 15 & so {
 	case 0:
 		sqlStr = fmt.Sprintf("select * from movie_info limit %v, %v", startIdx, p.Num)
@@ -321,7 +317,6 @@ func GetAllMovies(p *models.ParamsGetAllMovies, so int) (*models.MovieList, erro
 	tmp := new(models.MovieList)
 	str := fmt.Sprintf(" limit %v, %v", startIdx, p.Num)
 	sqlStr1 := sqlStr[:len(sqlStr)-len(str)]
-	fmt.Println(sqlStr1)
 	err = db.Select(&tmp.MovieList, sqlStr1)
 	if err != nil {
 		zap.L().Error(sqlStr)
