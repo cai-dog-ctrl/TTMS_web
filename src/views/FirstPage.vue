@@ -1,14 +1,11 @@
 <template>
     <el-row>
-        <div id="appaaa">
-            <ul>
-                <li v-for="(item, index) in slideData" :key="index">
-                    <transition>
-                        <img class="imga" :src="item.img" v-if="index === currentIndex" />
-                    </transition>
-                </li>
-            </ul>
-        </div>
+        <el-carousel :interval="4000" type="card" height="260px">
+            <el-carousel-item v-for="item in slideData" :key="item">
+                <h3 class="medium"><img :src="item.img" alt=""></h3>
+            </el-carousel-item>
+        </el-carousel>
+
         <div class="Container">
             <div class="el-col1">
                 <div class="main">
@@ -207,52 +204,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.imga {
-    width: 1200px;
+.el-carousel {
+    left: 50%;
+    transform: translate(-50%);
+    width: 1400px;
+}
+
+.el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
 }
 
 .borde {
     margin-top: 20px;
-}
-
-#appaaa {
-
-    >ul {
-        left: 50%;
-        transform: translate(-50%);
-        position: relative;
-        text-align: center;
-        width: 1200px;
-        height: 284px;
-        overflow: hidden;
-
-        img {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .v-enter-active,
-        .v-leave-active {
-            transition: transform 0.5s;
-        }
-
-        .v-enter {
-            transform: translateX(100%);
-        }
-
-        .v-enter-to {
-            transform: translateX(0);
-        }
-
-        .v-leave {
-            transform: translateX(0);
-        }
-
-        .v-leave-to {
-            transform: translateX(-100%);
-        }
-    }
 }
 
 .main {
