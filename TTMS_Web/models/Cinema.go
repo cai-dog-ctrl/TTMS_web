@@ -9,15 +9,21 @@ type SeatInfo struct {
 	Status   int   `json:"state" db:"status"`
 }
 
+type Seat struct {
+	ID     int64 `json:"id,string" db:"id"`
+	Status int   `json:"status" db:"status"`
+}
+
 type SeatList struct {
-	ID       int64   `json:"id,string"`
-	SeatList [][]int `json:"seat_list"`
+	ID       int64    `json:"id,string"`
+	SeatList [][]Seat `json:"seat_list"`
 }
 
 type CinemaInfo struct {
 	ID       int64  `json:"id,string" db:"id"`
-	MaxRow   int    `json:"roww" db:"roww"`
-	MaxCol   int    `json:"coll" db:"coll"`
+	Name     string `json:"name" db:"cinema_name"`
+	MaxRow   int    `json:"row" db:"roww"`
+	MaxCol   int    `json:"col" db:"coll"`
 	Tag      string `json:"tag" db:"tag"`
 	IsDelete int    `json:"is_delete" db:"is_delete"`
 }

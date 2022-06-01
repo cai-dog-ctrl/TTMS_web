@@ -29,25 +29,27 @@ func SetupRouter() *gin.Engine {
 	//cat front page / movie info / showing movies / coming movies / scoreRanking movies / boxofficeRanking movies
 	g.GET("/GetFrontPage", controllers.GetFrontPage)
 	g.GET("/GetMovieByName", controllers.GetMovieByName)
-	g.GET("/GetMovieInfoById/:Id", controllers.GetMovieInfoByID)
-	g.GET("/GetAllMovies", controllers.GetAllmovies)
+	g.GET("/GetMovieInfoByID/:Id", controllers.GetMovieInfoByID)
+	g.GET("/GetAllMovies", controllers.GetAllMovies)
 	g.GET("/GetAllShowingMovies", controllers.GetShowingMovies)
 	g.GET("/GetAllComingMovies", controllers.GetComingMovies)
 	g.GET("/GetAllScoreRankingMovies", controllers.GetScoreRankingMovies)
 	g.GET("/GetAllBoxOfficeRankingMovies", controllers.GetBoxOfficeRankingMovies)
+	g.GET("/GetMovieSort", controllers.GetMovieSort)
 
 	//manage movie
 	g.POST("/AddNewMovie", controllers.AddNewMovie)
 	g.PUT("/ModifyMovie", controllers.ModifyMovieByID)
 
 	//manage cinema
-	g.GET("/GetCinemaByID", controllers.GetCinemaByID)
-	g.GET("/GetAllCinema", controllers.GetAllCinemas)
+	g.GET("/GetCinemaByID/:ID", controllers.GetCinemaByID)
+	g.GET("/GetAllCinemas", controllers.GetAllCinemas)
 	g.POST("/AddNewCinema", controllers.AddNewCinema)
 	g.PUT("/ModifyCinemaByID", controllers.ModifyCinemaByID)
+	g.PUT("/DeleteCinemaByID/:ID", controllers.DeleteCinemaByID)
 
 	//manage seat
-	g.GET("/GetSeatByCinemaID", controllers.GetSeatByCinemaID)
+	g.GET("/GetSeatByCinemaID/:ID", controllers.GetSeatByCinemaID)
 	g.PUT("/ModifySeat", controllers.ModifySeat)
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

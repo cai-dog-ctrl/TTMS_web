@@ -57,9 +57,7 @@ func GetShowingList(num int, page_num int) (*models.ShowingList, error) {
 		return nil, err
 	}
 	startIdx := num * page_num
-	fmt.Println(sqlStr1)
 	sqlStr2 := fmt.Sprintf("select id, name, score, cover_img from movie_info where %v >= date and %v < down_time and is_delete = -1 limit %v, %v", date, date, startIdx, num)
-	fmt.Println(sqlStr2)
 	err = db.Select(&showingList.ShowingList, sqlStr2)
 	if err != nil {
 		zap.L().Error(sqlStr2)
@@ -112,8 +110,8 @@ func GetMovieInfoByID(id int64) (*models.MovieInfo, error) {
 }
 
 func InsertMovie(p *models.MovieInfo) error {
-	sqlStr := "insert into movie_info (name, description, tag, movie_time, date, score, pf, img, is_delete, cover_img, down_time, zone) values (?, ?, ?, ?, ?, 0, 0, ?, -1, ?, ?, ?)"
-	_, err := db.Exec(sqlStr, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.CarouselImgPath, p.CoverImgPath, p.Down_time, p.Zone)
+	sqlStr := "insert into movie_info (id, name, description, tag, movie_time, date, score, pf, img, is_delete, cover_img, down_time, zone) values (?, ?, ?, ?, ?, ?, 0, 0, ?, -1, ?, ?, ?)"
+	_, err := db.Exec(sqlStr, p.Id, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.CarouselImgPath, p.CoverImgPath, p.Down_time, p.Zone)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
@@ -134,20 +132,22 @@ func ModifyMovie(p *models.MovieInfo) error {
 func GetAllMovies(p *models.ParamsGetAllMovies, so int) (*models.MovieList, error) {
 	movie := new(models.MovieList)
 	var sqlStr string
-	startIdx := p.Num * p.Page_num
+	startIdx := p.Num * (p.Page_num - 1)
 	day := time.Now().Day()
 	month := int(time.Now().Month())
 	year := time.Now().Year()
 	date := day + month*100 + year*100*100
-	switch 11111 & so {
+	fmt.Println(so)
+	fmt.Println(15 & so)
+	switch 15 & so {
 	case 0:
-		sqlStr = "select * from movie_info"
+		sqlStr = fmt.Sprintf("select * from movie_info limit %v, %v", startIdx, p.Num)
 	case 1:
-		sqlStr = fmt.Sprintf("select * from movie_info where tag = %v", p.FlagOfType)
+		sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' limit %v, %v", p.FlagOfType, startIdx, p.Num)
 	case 2:
-		sqlStr = fmt.Sprintf("select * from movie_info where zone = %v", p.FlagOfZone)
+		sqlStr = fmt.Sprintf("select * from movie_info where zone = '%v' limit %v, %v", p.FlagOfZone, startIdx, p.Num)
 	case 3:
-		sqlStr = fmt.Sprintf("select * from movie_info where tag = %v and zone = %v", p.FlagOfType, p.FlagOfZone)
+		sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' and zone = '%v' limit %v, %v", p.FlagOfType, p.FlagOfZone, startIdx, p.Num)
 	case 4:
 		if p.FlagOfShowing == "showing" {
 			sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and is_delete = -1 limit %v, %v", date, date, startIdx, p.Num)
@@ -156,21 +156,21 @@ func GetAllMovies(p *models.ParamsGetAllMovies, so int) (*models.MovieList, erro
 		}
 	case 5:
 		if p.FlagOfShowing == "showing" {
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v and %v >= date and %v < down_time and is_delete = -1 limit %v, %v", p.FlagOfType, date, date, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' and %v >= date and %v < down_time and is_delete = -1 limit %v, %v", p.FlagOfType, date, date, startIdx, p.Num)
 		} else if p.FlagOfShowing == "coming" {
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v and %v < date and is_delete = -1 limit %v, %v", p.FlagOfType, date, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' and %v < date and is_delete = -1 limit %v, %v", p.FlagOfType, date, startIdx, p.Num)
 		}
 	case 6:
 		if p.FlagOfShowing == "showing" {
-			sqlStr = fmt.Sprintf("select * from movie_info where zone = %v and %v >= date and %v < down_time and is_delete = -1 limit %v, %v", p.FlagOfZone, date, date, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where zone = '%v' and %v >= date and %v < down_time and is_delete = -1 limit %v, %v", p.FlagOfZone, date, date, startIdx, p.Num)
 		} else if p.FlagOfShowing == "coming" {
-			sqlStr = fmt.Sprintf("select * from movie_info where zone = %v and %v < date and is_delete = -1 limit %v, %v", p.FlagOfZone, date, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where zone = '%v' and %v < date and is_delete = -1 limit %v, %v", p.FlagOfZone, date, startIdx, p.Num)
 		}
 	case 7:
 		if p.FlagOfShowing == "showing" {
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v and zone = %v and %v >= date and %v < down_time and is_delete = -1 limit %v, %v", p.FlagOfType, p.FlagOfZone, date, date, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' and zone = '%v' and %v >= date and %v < down_time and is_delete = -1 limit %v, %v", p.FlagOfType, p.FlagOfZone, date, date, startIdx, p.Num)
 		} else if p.FlagOfShowing == "coming" {
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v and zone = %v and %v < date and is_delete = -1 limit %v, %v", p.FlagOfType, p.FlagOfZone, date, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' and zone = '%v' and %v < date and is_delete = -1 limit %v, %v", p.FlagOfType, p.FlagOfZone, date, startIdx, p.Num)
 		}
 	case 8:
 		if p.FlagOfOrder == "score" {
@@ -186,35 +186,35 @@ func GetAllMovies(p *models.ParamsGetAllMovies, so int) (*models.MovieList, erro
 	case 9:
 		if p.FlagOfOrder == "score" {
 			//Score
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v order by score desc limit %v, %v", p.FlagOfType, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' order by score desc limit %v, %v", p.FlagOfType, startIdx, p.Num)
 		} else if p.FlagOfOrder == "boxoffice" {
 			//Boxoffice
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v order by pf desc limit %v, %v", p.FlagOfType, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' order by pf desc limit %v, %v", p.FlagOfType, startIdx, p.Num)
 		} else if p.FlagOfOrder == "date" {
 			//Date
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v order by date desc limit %v, %v", p.FlagOfType, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' order by date desc limit %v, %v", p.FlagOfType, startIdx, p.Num)
 		}
 	case 10:
 		if p.FlagOfOrder == "score" {
 			//Score
-			sqlStr = fmt.Sprintf("select * from movie_info where zone = %v order by score desc limit %v, %v", p.FlagOfZone, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where zone = '%v' order by score desc limit %v, %v", p.FlagOfZone, startIdx, p.Num)
 		} else if p.FlagOfOrder == "boxoffice" {
 			//Boxoffice
-			sqlStr = fmt.Sprintf("select * from movie_info where zone = %v order by pf desc limit %v, %v", p.FlagOfZone, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where zone = '%v' order by pf desc limit %v, %v", p.FlagOfZone, startIdx, p.Num)
 		} else if p.FlagOfOrder == "date" {
 			//Date
-			sqlStr = fmt.Sprintf("select * from movie_info where zone = %v order by date desc limit %v, %v", p.FlagOfZone, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where zone = '%v' order by date desc limit %v, %v", p.FlagOfZone, startIdx, p.Num)
 		}
 	case 11:
 		if p.FlagOfOrder == "score" {
 			//Score
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v and zone = %v order by score desc limit %v, %v", p.FlagOfType, p.FlagOfZone, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' and zone = '%v' order by score desc limit %v, %v", p.FlagOfType, p.FlagOfZone, startIdx, p.Num)
 		} else if p.FlagOfOrder == "boxoffice" {
 			//Boxoffice
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v and zone = %v order by pf desc limit %v, %v", p.FlagOfType, p.FlagOfZone, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' and zone = '%v' order by pf desc limit %v, %v", p.FlagOfType, p.FlagOfZone, startIdx, p.Num)
 		} else if p.FlagOfOrder == "date" {
 			//Date
-			sqlStr = fmt.Sprintf("select * from movie_info where type = %v and zone = %v order by date desc limit %v, %v", p.FlagOfType, p.FlagOfZone, startIdx, p.Num)
+			sqlStr = fmt.Sprintf("select * from movie_info where tag = '%v' and zone = '%v' order by date desc limit %v, %v", p.FlagOfType, p.FlagOfZone, startIdx, p.Num)
 		}
 	case 12:
 		if p.FlagOfShowing == "showing" {
@@ -244,72 +244,72 @@ func GetAllMovies(p *models.ParamsGetAllMovies, so int) (*models.MovieList, erro
 		if p.FlagOfShowing == "showing" {
 			if p.FlagOfOrder == "score" {
 				//Score
-				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and type = %v order by score desc limit %v, %v", date, date, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and tag = '%v' order by score desc limit %v, %v", date, date, p.FlagOfType, startIdx, p.Num)
 			} else if p.FlagOfOrder == "boxoffice" {
 				//Boxoffice
-				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and type = %v order by pf desc limit %v, %v", date, date, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and tag = '%v' order by pf desc limit %v, %v", date, date, p.FlagOfType, startIdx, p.Num)
 			} else if p.FlagOfOrder == "date" {
 				//Date
-				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and type = %v order by date desc limit %v, %v", date, date, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and tag = '%v' order by date desc limit %v, %v", date, date, p.FlagOfType, startIdx, p.Num)
 			}
 		} else if p.FlagOfShowing == "coming" {
 			if p.FlagOfOrder == "score" {
 				//Score
-				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and type = %v order by score desc limit %v, %v", date, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and tag = '%v' order by score desc limit %v, %v", date, p.FlagOfType, startIdx, p.Num)
 			} else if p.FlagOfOrder == "boxoffice" {
 				//Boxoffice
-				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and type = %v order by pf desc limit %v, %v", date, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and tag = '%v' order by pf desc limit %v, %v", date, p.FlagOfType, startIdx, p.Num)
 			} else if p.FlagOfOrder == "date" {
 				//Date
-				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and type = %v order by date desc limit %v, %v", date, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and tag = '%v' order by date desc limit %v, %v", date, p.FlagOfType, startIdx, p.Num)
 			}
 		}
 	case 14:
 		if p.FlagOfShowing == "showing" {
 			if p.FlagOfOrder == "score" {
 				//Score
-				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = %v order by score desc limit %v, %v", date, date, p.FlagOfZone, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = '%v' order by score desc limit %v, %v", date, date, p.FlagOfZone, startIdx, p.Num)
 			} else if p.FlagOfOrder == "boxoffice" {
 				//Boxoffice
-				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = %v order by pf desc limit %v, %v", date, date, p.FlagOfZone, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = '%v' order by pf desc limit %v, %v", date, date, p.FlagOfZone, startIdx, p.Num)
 			} else if p.FlagOfOrder == "date" {
 				//Date
-				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = %v order by date desc limit %v, %v", date, date, p.FlagOfZone, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = '%v' order by date desc limit %v, %v", date, date, p.FlagOfZone, startIdx, p.Num)
 			}
 		} else if p.FlagOfShowing == "coming" {
 			if p.FlagOfOrder == "score" {
 				//Score
-				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = %v order by score desc limit %v, %v", date, p.FlagOfZone, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = '%v' order by score desc limit %v, %v", date, p.FlagOfZone, startIdx, p.Num)
 			} else if p.FlagOfOrder == "boxoffice" {
 				//Boxoffice
-				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = %v order by pf desc limit %v, %v", date, p.FlagOfZone, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = '%v' order by pf desc limit %v, %v", date, p.FlagOfZone, startIdx, p.Num)
 			} else if p.FlagOfOrder == "date" {
 				//Date
-				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = %v order by date desc limit %v, %v", date, p.FlagOfZone, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = '%v' order by date desc limit %v, %v", date, p.FlagOfZone, startIdx, p.Num)
 			}
 		}
 	case 15:
 		if p.FlagOfShowing == "showing" {
 			if p.FlagOfOrder == "score" {
 				//Score
-				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = %v and type = %v order by score desc limit %v, %v", date, date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = '%v' and tag = '%v' order by score desc limit %v, %v", date, date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
 			} else if p.FlagOfOrder == "boxoffice" {
 				//Boxoffice
-				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = %v and type = %v order by pf desc limit %v, %v", date, date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = '%v' and tag = '%v' order by pf desc limit %v, %v", date, date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
 			} else if p.FlagOfOrder == "date" {
 				//Date
-				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = %v and type = %v order by date desc limit %v, %v", date, date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v >= date and %v < down_time and zone = '%v' and tag = '%v' order by date desc limit %v, %v", date, date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
 			}
 		} else if p.FlagOfShowing == "coming" {
 			if p.FlagOfOrder == "score" {
 				//Score
-				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = %v and type = %v order by score desc limit %v, %v", date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = '%v' and tag = '%v' order by score desc limit %v, %v", date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
 			} else if p.FlagOfOrder == "boxffice" {
 				//Boxoffice
-				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = %v and type = %v order by pf desc limit %v, %v", date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = '%v' and tag = '%v' order by pf desc limit %v, %v", date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
 			} else if p.FlagOfOrder == "date" {
 				//Date
-				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = %v and type = %v order by date desc limit %v, %v", date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
+				sqlStr = fmt.Sprintf("select * from movie_info where %v < date and zone = '%v' and tag = '%v' order by date desc limit %v, %v", date, p.FlagOfZone, p.FlagOfType, startIdx, p.Num)
 			}
 		}
 	}
@@ -318,10 +318,27 @@ func GetAllMovies(p *models.ParamsGetAllMovies, so int) (*models.MovieList, erro
 		zap.L().Error(sqlStr)
 		return nil, err
 	}
+	tmp := new(models.MovieList)
+	str := fmt.Sprintf(" limit %v, %v", startIdx, p.Num)
+	sqlStr1 := sqlStr[:len(sqlStr)-len(str)]
+	fmt.Println(sqlStr1)
+	err = db.Select(&tmp.MovieList, sqlStr1)
+	if err != nil {
+		zap.L().Error(sqlStr)
+		return nil, err
+	}
+	movie.Total = len(tmp.MovieList)
 	return movie, err
 }
 
-func GetMovieByName()(*models.MovieList, error){
+func GetMovieByName(p *models.ParamsGetMovieByName) (*models.MovieList, error) {
 	movie := new(models.MovieList)
+	startIdx := p.Num * (p.Page_num - 1)
+	sqlStr := fmt.Sprintf("select * from movie_info where name like '%%%v%%' limit %v, %v", p.Name, startIdx, p.Num)
+	err := db.Select(&movie.MovieList, sqlStr)
+	if err != nil {
+		zap.L().Error(sqlStr)
+		return nil, err
+	}
 	return movie, nil
 }
