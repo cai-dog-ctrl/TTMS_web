@@ -95,6 +95,7 @@ export default {
     async getMovieInfo() {
       var id = this.$route.params.id
       const { data: res } = await this.$http.get('GetMovieInfoById/' + id)
+
       if (res.code !== 1000) {
         this.$message.error("获取电影详情失败")
         this.$router.push("/home")

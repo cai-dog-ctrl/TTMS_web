@@ -11,10 +11,9 @@ import MangerHome from '../views/MangerHome.vue'
 import MangerUser from '../views/MangerUser.vue'
 import MangerWelcome from '../views/MangerWelcome.vue'
 import MangerMovie from '../views/MangerMovie.vue'
-import SBorad from '../views/SBorad.vue'
-
 import Borad from '../views/Borad.vue'
-import PBorad from '../views/PBorad'
+import Movie from '../views/Movie.vue'
+
 Vue.use(VueRouter)
 
 
@@ -76,18 +75,11 @@ const routes = [
       {
         path: "/borad",
         component: Borad,
-        redirect: "/pfborad",
-        children: [
-          {
-            path: "/pfborad",
-            component: PBorad
-          },
-          {
-            path: "/sborad",
-            component: SBorad
-          }
-        ]
       },
+      {
+        path: "/movie",
+        component: Movie
+      }
     ]
   }
 ]

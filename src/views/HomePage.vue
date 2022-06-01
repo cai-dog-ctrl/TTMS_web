@@ -9,7 +9,7 @@
                 </el-menu-item>
 
                 <el-menu-item :index="url1" class="left1" @click="toFirstPage">首页</el-menu-item>
-                <el-menu-item :index="url2" class="left1">电影</el-menu-item>
+                <el-menu-item :index="url2" class="left1" @click="tomovie">电影</el-menu-item>
                 <el-menu-item :index="url3" class="left1" @click="toBorad">榜单</el-menu-item>
                 <el-dropdown>
                     <img class="img" src="https://p0.meituan.net/movie/7dd82a16316ab32c8359debdb04396ef2897.png" alt="">
@@ -71,6 +71,9 @@ export default {
         },
         toFirstPage() {
             this.$router.push('/first');
+        },
+        tomovie() {
+            this.$router.push('/movie');
         }
     }
 
