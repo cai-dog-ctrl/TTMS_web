@@ -4,6 +4,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -118,7 +119,8 @@ func AddNewMovie(c *gin.Context) {
 
 func ModifyMovieByID(c *gin.Context) {
 	p := new(models.ParamsModifyMovie)
-	err := c.ShouldBind(p)
+	fmt.Println(p)
+	err := c.ShouldBind(&p)
 	if err != nil {
 		ResponseError(c, CodeInvalidParams)
 		zap.L().Error("ModifyMovieByID ShouldBind Error", zap.Error(err))

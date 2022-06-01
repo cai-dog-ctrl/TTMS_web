@@ -16,7 +16,7 @@ type MovieInfo struct {
 	Score           float64 `json:"score" db:"score"`
 	BoxOffice       float64 `json:"box_office" db:"pf"`
 	CoverImgPath    string  `json:"cover_img_path" db:"cover_img"`
-	IsDelete        int     `json:"isDelete" db:"is_delete"`
+	IsDelete        int     `json:"is_delete" db:"is_delete"`
 	CarouselImgPath string  `json:"carousel_img_path" db:"img"`
 	Down_time       string  `json:"down_Time" db:"down_time"`
 	Zone            string  `json:"zone" db:"zone"`
