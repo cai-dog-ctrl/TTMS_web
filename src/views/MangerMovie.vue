@@ -212,13 +212,6 @@ export default {
     margin: auto;
 }
 
-// .main {
-//     margin-bottom: 40px;
-//     background: #fff;
-//     width: 750px;
-//     float: left;
-//     height: 100%;
-// }
 .movie {
     width: 200px;
     float: left;

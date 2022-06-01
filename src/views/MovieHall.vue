@@ -194,11 +194,12 @@ export default {
                 return this.$message.error('获取影厅列表失败！'); ``
 
             }
+
             this.cinemalist = res.data.cinemaList
             this.total = res.data.cinema_num
         },
 
-        // 监听pagesize
+        // 监听num
         handleSizeChange(newSize) {
             // console.log(newSize)
             this.queryInfo.num = newSize
