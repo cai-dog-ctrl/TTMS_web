@@ -1,2 +1,17 @@
 package models
+
 //存放有关票务模型
+
+// 座位状态
+type Seat struct {
+	ID          int64  `db:"id" json:"id,string"`
+	CinemaId 	int64  `db:"cinema_id" json:"cinema_id,string"`
+	Roww		int  `db:"roww" json:"roww"`
+	Coll 		int  `db:"coll" json:"coll"`
+	Status		int	 `db:"status" json:"status"`
+}
+
+type Seats struct {
+	Total int 	 `json:"total"`
+	List []Seat  `json:"List"`
+}
