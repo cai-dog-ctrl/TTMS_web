@@ -4,7 +4,6 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -128,7 +127,7 @@ func ModifyMovieByID(c *gin.Context) {
 	}
 	err = service.ModifyMovieByID(p)
 	if err != nil {
-		ResponseError(c, CodeInvalidParams)
+		ResponseError(c, CodeServerBusy)
 		zap.L().Error("service.ModifyMovieByID Error", zap.Error(err))
 		return
 	}

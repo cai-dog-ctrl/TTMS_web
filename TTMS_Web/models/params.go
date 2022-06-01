@@ -107,6 +107,7 @@ type ParamsModifyMovie struct {
 	IsDelete        int     `json:"is_delete" form:"is_delete" binding:"required"`
 	CarouselImgPath string  `json:"carousel_img_path" form:"carousel_img_path" binding:"required"`
 	Down_time       string  `json:"down_time" form:"down_time" binding:"required"`
+	Zone            string  `json:"zone" form:"zone" binding:"required"`
 }
 
 type ParamsGetCinemaByID struct {
