@@ -11,13 +11,9 @@ import MangerHome from '../views/MangerHome.vue'
 import MangerUser from '../views/MangerUser.vue'
 import MangerWelcome from '../views/MangerWelcome.vue'
 import MangerMovie from '../views/MangerMovie.vue'
-<<<<<<< HEAD
-=======
 import MovieHall from '../views/MovieHall.vue'
 import MoviePlan from '../views/MoviePlan.vue'
-import SBorad from '../views/SBorad.vue'
 
->>>>>>> 6ace1625c3b74fd92a472b04af5cdb831423e277
 import Borad from '../views/Borad.vue'
 import Movie from '../views/Movie.vue'
 
