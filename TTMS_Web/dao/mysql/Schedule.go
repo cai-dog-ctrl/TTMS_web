@@ -3,12 +3,46 @@ package mysql
 import (
 	"TTMS/models"
 	"errors"
+	"time"
 
 	"TTMS/pkg/snowflake"
-
 )
 
 //有关演出计划的持久化代码
+
+func RefreshSchedule() error {
+	sqlStr := "select id, cinema_id, movie_id, date_day, start_time, end_time, price from showschdule where is_delete = -1"
+	Sches := new(models.ScheduleList)
+	err := db.Select(&Sches.List, sqlStr)
+	if err != nil {
+		return err
+	}
+
+	day := int64(time.Now().Day())
+	month := int64(time.Now().Month())
+	year := int64(time.Now().Year())
+
+	hour := int64(time.Hour)
+	minute := int64(time.Minute)
+
+	date_day := year*10000 + month*100 + day
+	now_time := hour*100 + minute
+
+	for _, it := range Sches.List {
+		
+		if it.DateDay < date_day {
+			err = DeleteSchedule(it.ID)
+		}else if it.DateDay == date_day {
+			if it.StartTime <= now_time {
+				err = DeleteSchedule(it.ID)
+			}
+		}
+	} 
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 // InsertSchedule 添加演出计划，并生成票
 func InsertSchedule(p *models.ScheduleIn) (bool, error) {
