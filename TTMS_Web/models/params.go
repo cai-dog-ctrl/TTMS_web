@@ -48,7 +48,7 @@ type ParamsUpdateMsg struct {
 type ParamAddSchedule struct {
 	CinemaId  string `json:"cinema_id" form:"cinema_id" binding:"required"`
 	MovieId   string `json:"movie_id" form:"movie_id" binding:"required"`
-	DateDay   string `json:"date_day" form:"date_dat" binding:"required"`
+	DateDay   string `json:"date_day" form:"date_day" binding:"required"`
 	StartTime string `json:"start_time" form:"start_time" binding:"required"`
 	Price     int    `json:"price" form:"price" binding:"required"`
 }
