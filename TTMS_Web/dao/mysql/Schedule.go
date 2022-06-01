@@ -37,7 +37,7 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	// 	return errors.New("the show time has expired, please reschedule")
 	// }
 
-	sqlStr := "select id, cinema_id, movie_id, date_day, start_time, end_time, s.price, from showschdule where is_delete = -1 and cinema_id = ? and date_day = ?"
+	sqlStr := "select id, cinema_id, movie_id, date_day, start_time, end_time, price from showschdule where is_delete = -1 and cinema_id = ? and date_day = ?"
 	Sches := new(models.ScheduleList)
 	err = db.Select(&Sches.List, sqlStr, p.CinemaId, p.DateDay)
 	if err != nil {
