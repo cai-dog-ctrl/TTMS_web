@@ -90,8 +90,8 @@ type ParamsAddNewMovie struct {
 	Description     string `json:"description" form:"description" binding:"required"`
 	Tag             string `json:"tag" form:"tag" binding:"required"`
 	Duration        int    `json:"duration" form:"duration" binding:"required"`
-	Up_time         int    `json:"up_time" form:"up_time" binding:"required"`
-	Down_time       int    `json:"down_time" form:"down_time" binding:"required"`
+	Up_time         string `json:"up_time" form:"up_time" binding:"required"`
+	Down_time       string `json:"down_time" form:"down_time" binding:"required"`
 	CoverImgPath    string `json:"cover_img_path" form:"cover_img_path" binding:"required"`
 	CarouselImgPath string `json:"carousel_img_path" form:"carousel_img_path" binding:"required"`
 	Zone            string `json:"zone" form:"zone" binding:"required"`
@@ -103,13 +103,13 @@ type ParamsModifyMovie struct {
 	Description     string  `json:"description" form:"description" binding:"required"`
 	Tag             string  `json:"tag" form:"tag" binding:"required"`
 	Duration        int     `json:"duration" form:"duration" binding:"required"`
-	Up_time         int     `json:"up_time" form:"up_time" binding:"required"`
+	Up_time         string  `json:"up_time" form:"up_time" binding:"required"`
 	Score           float64 `json:"score" form:"score" binding:"required"`
 	BoxOffice       float64 `json:"box_office" form:"box_office" binding:"required"`
 	CoverImgPath    string  `json:"cover_img_path" form:"cover_img_path" binding:"required"`
 	IsDelete        int     `json:"is_delete" form:"is_delete" binding:"required"`
 	CarouselImgPath string  `json:"carousel_img_path" form:"carousel_img_path" binding:"required"`
-	Down_time       int     `json:"down_time" form:"down_time" binding:"required"`
+	Down_time       string  `json:"down_time" form:"down_time" binding:"required"`
 }
 
 type ParamsGetCinemaByID struct {

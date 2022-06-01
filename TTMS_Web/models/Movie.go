@@ -12,13 +12,13 @@ type MovieInfo struct {
 	Description     string  `json:"description" db:"description"`
 	Tag             string  `json:"tag" db:"tag"`
 	Duration        int     `json:"duration" db:"movie_time"`
-	Up_time         int     `json:"up_Time" db:"date"`
+	Up_time         string  `json:"up_Time" db:"date"`
 	Score           float64 `json:"score" db:"score"`
 	BoxOffice       float64 `json:"box_office" db:"pf"`
 	CoverImgPath    string  `json:"cover_img_path" db:"cover_img"`
 	IsDelete        int     `json:"isDelete" db:"is_delete"`
 	CarouselImgPath string  `json:"carousel_img_path" db:"img"`
-	Down_time       int     `json:"down_Time" db:"down_time"`
+	Down_time       string  `json:"down_Time" db:"down_time"`
 	Zone            string  `json:"zone" db:"zone"`
 }
 

@@ -41,38 +41,9 @@ func GetMovieInfoByID(c *gin.Context) {
 		ResponseError(c, CodeServerBusy)
 		return
 	}
-	uptime := ""
-	uptime += utils.ShiftToStringFromInt64(int64(movie.Up_time / 10000))
-	uptime += "-"
-	uptemtime := movie.Up_time % 10000
-	uptime += utils.ShiftToStringFromInt64(int64(uptemtime / 100))
-	uptime += "-"
-	uptime += utils.ShiftToStringFromInt64(int64(uptemtime % 100))
-
-	downtime := ""
-	downtime += utils.ShiftToStringFromInt64(int64(movie.Down_time / 10000))
-	downtime += "-"
-	downtemtime := movie.Down_time % 10000
-	downtime += utils.ShiftToStringFromInt64(int64(downtemtime / 100))
-	downtime += "-"
-	downtime += utils.ShiftToStringFromInt64(int64(downtemtime % 100))
-
-	movie_id := utils.ShiftToStringFromInt64(movie.Id)
 	ResponseSuccess(c, gin.H{
-		"id":              movie_id,
-		"name":            movie.Name,
-		"descrption":      movie.Description,
-		"tag":             movie.Tag,
-		"duration":        movie.Duration,
-		"up_time":         uptime,
-		"down_time":       downtime,
-		"score":           movie.Score,
-		"boxoffice":       movie.BoxOffice,
-		"carouselImgPath": movie.CarouselImgPath,
-		"coverImgPath":    movie.CoverImgPath,
-		"is_delete":       movie.IsDelete,
-		"zone":            movie.Zone,
-		"relevantMovies":  relevantMovies,
+		"movie":          movie,
+		"relevantMovies": relevantMovies,
 	})
 }
 
