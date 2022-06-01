@@ -63,6 +63,8 @@ func SetupRouter() *gin.Engine {
 	g.GET("/getallschedulemsgbymovieid", controllers.GetAllScheduleMsgByMovieId)
 	g.GET("/getallschedulemsgbycinemaid", controllers.GetAllScheduleMsgByCinemaId)
 	g.GET("/getallschedulebymovieidandday", controllers.GetAllScheduleByMovieIdandDay)
-
+	g.PUT("/deleteschedule/:id", controllers.DeleteSchedule)
+	g.GET("/getalldcheduledaybymovieid/:movie_id", controllers.GetAllScheduleDayByMovieId)
+	g.GET("/getallschedulemsbyday/:date_day", controllers.GetAllScheduleMsgByDay)
 	return r
 }

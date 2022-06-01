@@ -58,7 +58,7 @@ func InsertUser(p *models.User) error {
 
 // InsertAdmin 添加一个管理员
 func InsertAdmin(p *models.User) error {
-	sqlStr := "insert into user (id, username, password, email, phone_number, identity)values (?, ?, ?, ?, ?, 1)"
+	sqlStr := "insert into user (id, username, password, email, phone_number, identity)values (?, ?, ?, ?, ?, 2)"
 	_, err := db.Exec(sqlStr, p.ID, p.Username, p.Password, p.Email, p.PhoneNumber)
 	return err
 }
