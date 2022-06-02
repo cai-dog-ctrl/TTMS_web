@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
 
@@ -12,7 +13,7 @@ import (
 
 // 根据演出计划ID查看票
 func GetTicketByScheduleId(c *gin.Context) {
-	p:=c.Param("id")
+	p := c.Param("id")
 	if p == "" {
 		ResponseError(c, CodeInvalidParams)
 		zap.L().Error("GetTicketByScheduleId getid Error")
@@ -76,5 +77,20 @@ func GetTicketByCinemaIdAndDateDay(c *gin.Context) {
 }
 
 // 买票
+func SaleTicket(c *gin.Context) {
+	p := new(models.ParamsSaleTicket)
+	err := c.ShouldBind(&p)
+	if err != nil {
+		ResponseError(c, CodeInvalidParams)
+		zap.L().Error("SaleTicket ShouldBind Error", zap.Error(err))
+	}
+	is, err1 := service.SaleTicket(p)
+	if err1 != nil || !is {
+		ResponseError(c, CodeServerBusy)
+		zap.L().Error("service.SaleTicket Error", zap.Error(err))
+		return
+	}
+	ResponseSuccess(c, "sale ticket successful.")
+}
 
 // 退票

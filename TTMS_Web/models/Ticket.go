@@ -7,6 +7,11 @@ type Seats struct {
 	List []SeatInfo  `json:"List"`
 }
 
+type Order struct {
+	UserID int64 `json:"user_id"`
+	TicketList []string `json:"ticket_list"`
+}
+
 type Tick struct {
 	Id  			int64	`db:"id" json:"id"`
 	ScheduleId 		int64	`db:"schedule_id" json:"schedule_id"`

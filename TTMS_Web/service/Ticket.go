@@ -9,6 +9,12 @@ import (
 
 //有关票务的业务逻辑代码
 
+func SaleTicket(p *models.ParamsSaleTicket) (bool, error) {
+	order := new(models.Order)
+	order.UserID = utils.ShiftToNum64(p.UserID)
+	order.TicketList = p.IDList
+	return mysql.SaleTicket(order)
+}
 func GetTicketByScheduleId(id int64) ( *models.TickRets, error) {
 	p1, err := mysql.GetTicketByScheduleId(id)
 	if err != nil {
