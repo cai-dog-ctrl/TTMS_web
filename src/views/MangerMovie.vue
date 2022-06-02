@@ -7,6 +7,13 @@
         </el-breadcrumb>
         <!--卡片视图-->
         <el-card class="top_card">
+            <el-row :gutter="20">
+                
+                <el-col :span="4">
+                    <el-button type="primary" @click="addDialogVisible = true">上架电影</el-button>
+                </el-col>
+            </el-row>
+             <el-divider content-position="left">少年包青天</el-divider>
             <!-- 搜索与添加区 -->
             <div v-for="item in movie_list" :key="item.id" class="movie">
                 <el-card :body-style="{ padding: '0px' }" shadow="hover">
@@ -24,7 +31,7 @@
                             <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(item.id)">
                                 修改
                             </el-button>
-                            <el-button type="danger" size="mini" icon="el-icon-delete">删除
+                            <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteMovie(item.id)">删除
                             </el-button>
                         </div>
                     </div>
@@ -42,13 +49,13 @@
                         <el-input v-model="editForm.name"></el-input>
                     </el-form-item>
                     <el-form-item label="描述" prop="descrption">
-                        <el-input v-model="editForm.descrption"></el-input>
+                        <el-input v-model="editForm.description"></el-input>
                     </el-form-item>
                     <el-form-item label="类型" prop="tag">
                         <el-input v-model="editForm.tag"></el-input>
                     </el-form-item>
                     <el-form-item label="票房" prop="boxoffice">
-                        <el-input-number v-model="editForm.boxoffice" :precision="2" :step="0.1" :min="1" :max="500">
+                        <el-input-number v-model="editForm.box_office" :precision="2" :step="0.1" :min="1" :max="500">
                         </el-input-number>
                     </el-form-item>
                     <el-form-item label="评分" prop="score">
@@ -62,6 +69,8 @@
                     <el-button type="primary" @click="editUserInfo">确 定</el-button>
                 </span>
             </el-dialog>
+
+        
         </el-card>
         <div class="page">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -91,6 +100,15 @@ export default {
             }
         };
         return {
+             addForm: {
+                name: '',
+                description: '',
+                tag: '',
+                down_time: '',
+                duration:1,
+                up_time:'',
+                cover_img_path:''
+            },
             editDialogVisible: false,
             editFormRules: {
                 name: [
@@ -176,18 +194,43 @@ export default {
                 this.$message.error("获取信息失败")
                 return
             }
-            this.editForm = res.data
+            this.editForm = res.data.movie
             this.editDialogVisible = true
         },
         async editUserInfo(){
-            console.log(this.editForm);
+            
             const { data: res } = await this.$http.put('ModifyMovie',this.editForm)
             if (res.code !== 1000) {
                 this.$message.error("修改信息失败")
                 return
             }
+            this.get_firstPage()
             this.$message.success('修改信息成功')
             this.editDialogVisible = false
+        },
+        async deleteMovie(id){
+            const confirmResult = await this.$confirm('此操作将永久删除该电影, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).catch(err => err)
+            if (confirmResult !== 'confirm') {
+                return this.$message.info('已取消删除')
+            }
+            const { data: res } = await this.$http.get('GetMovieInfoByID/' + id)
+            if (res.code !== 1000) {
+                this.$message.error("删除失败")
+                return
+            }
+            res.data.movie["is_delete"]=1;
+            console.log(res.data);
+             const { data: res2 } = await this.$http.put('ModifyMovie',res.data.movie)
+            if (res2.code !== 1000) {
+                this.$message.error("修改信息失败")
+                return
+            }
+            this.get_firstPage()
+            this.$message.success('删除成功')
         }
     },
 }
