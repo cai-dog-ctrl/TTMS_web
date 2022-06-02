@@ -15,3 +15,8 @@ type Seats struct {
 	Total int 	 `json:"total"`
 	List []SeatStatus  `json:"List"`
 }
+
+type Order struct {
+	UserID int64 `json:"user_id"`
+	TicketList []string `json:"ticket_list"`
+}
