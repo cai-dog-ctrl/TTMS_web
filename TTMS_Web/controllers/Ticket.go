@@ -93,4 +93,22 @@ func SaleTicket(c *gin.Context) {
 	ResponseSuccess(c, "sale ticket successful.")
 }
 
-// 退票
+// // 退票
+// func Refund(c *gin.Context) {
+// 	ticket_id 	:= c.Param("ticket_id")
+// 	user_id 	:= c.Param("user_id")
+
+// 	if ticket_id == "" || user_id == "" {
+// 		ResponseError(c, CodeInvalidParams)
+// 		zap.L().Error("Refund get ticket_id or user_id  Error")
+// 		return
+// 	}
+
+// 	ret, err := service.Refund(utils.ShiftToNum64(ticket_id), utils.ShiftToNum64(user_id))
+// 	if err != nil {
+// 		ResponseError(c, CodeServerBusy)
+// 		zap.L().Error("service.Refund Error", zap.Error(err))
+// 		return
+// 	}
+// 	ResponseSuccess(c, "Refund ticket successful.")
+// }

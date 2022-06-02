@@ -9,7 +9,7 @@ type ScheduleIn struct {
 	DateDay   int64 
 	StartTime int64 
 	EndTime   int64 
-	Price	  	int	
+	Price	  	float32	
 }
 
 type ScheduleOut struct {
