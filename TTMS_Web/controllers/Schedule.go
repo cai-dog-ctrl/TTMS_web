@@ -4,6 +4,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -136,8 +137,9 @@ func GetAllScheduleByMovieIdandDay(c *gin.Context) {
 
 // 更加电影ID获取演出计划的日期
 func GetAllScheduleDayByMovieId(c *gin.Context) {
+	
 	movie_id := utils.ShiftToNum64(c.Query("movie_id"))
-
+	
 	p1, err := service.GetAllScheduleDayByMovieID(movie_id)
 
 	if err != nil {
