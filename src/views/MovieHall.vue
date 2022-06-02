@@ -48,10 +48,12 @@
             </el-table>
 
             <!-- 分页区域 -->
+            <div class="page">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="queryInfo.page_num" :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.num"
+                :current-page="queryInfo.Page_num" :page-sizes="[2, 5, 10, 15]" :page-size="queryInfo.Num"
                 layout="total,sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
+        </div>
         </el-card>
 
         <!-- 添加用户的对话框 -->
@@ -140,9 +142,9 @@ export default {
             queryInfo: {
                 key_word: '',
                 //当前的页数
-                page_num: 1,
+                Page_num: 1,
                 //当前每页有多少条数据
-                num: 2,
+                Num: 2
             },
             cinemalist: [],
             total: '',
@@ -269,13 +271,13 @@ export default {
         // 监听num
         handleSizeChange(newSize) {
             // console.log(newSize)
-            this.queryInfo.num = newSize
+            this.queryInfo.Num = newSize
             this.getCinemaList()
         },
         //监听页码值改变的事件
         handleCurrentChange(newPage) {
             // console.log(newPage)
-            this.queryInfo.page_num = newPage
+            this.queryInfo.Page_num = newPage
             this.getCinemaList()
 
         },
