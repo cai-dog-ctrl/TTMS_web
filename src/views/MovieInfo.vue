@@ -25,7 +25,7 @@
               {{ movieInfo.score }}</h1>
           </div>
           <div class="pf" style="color:#fff">累计票房<br>
-            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.box_office }}亿</h1>
+            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.boxoffice }}亿</h1>
           </div>
         </div>
 
