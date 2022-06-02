@@ -7,12 +7,11 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"golang.org/x/tools/go/analysis/passes/nilfunc"
 )
 
 //有关票务的持久化代码
 
-func SaleTicket(order *models.Order) error {
+func SaleTicket(order *models.Order) (bool, error) {
 	day := time.Now().Day()
 	month := int(time.Now().Month())
 	year := time.Now().Year()
@@ -22,10 +21,10 @@ func SaleTicket(order *models.Order) error {
 	second := time.Now().Second()
 	now := fmt.Sprintf("%02v:%02v:%02v", hour, minute, second)
 	order_id := snowflake.GenID()
-
+	
 	tx, err := db.Begin()
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	defer func() {
@@ -38,15 +37,20 @@ func SaleTicket(order *models.Order) error {
 			err = tx.Commit()
 		}
 	}()
+
 	for _, ticket_id := range order.TicketList {
-		ticket := new(models)
+		ticket := new(models.Tick)
 		sqlStr1 := fmt.Sprintf("select status from ticket where id = %v", ticket_id)
-		err := db.Get(&)
+		err1 := db.Get(&ticket.Status, sqlStr1)
+		if err1 != nil || ticket.Status == 1{
+			zap.L().Error(sqlStr1)
+			return false, err1
+		}
 		sqlStr := "update ticket set status = ? where id = ? and status = -1"
 		_, err := db.Exec(sqlStr, 1, ticket_id)
 		if err != nil {
 			zap.L().Error(sqlStr)
-			return err
+			return false, err
 		}
 	}
 
@@ -55,10 +59,11 @@ func SaleTicket(order *models.Order) error {
 		_, err := db.Exec(sqlStr, order_id, order.UserID, ticket_id, date, now, -1)
 		if err != nil {
 			zap.L().Error(sqlStr)
-			return err
+			return false, err
 		}
 	}
-	return nil
+
+	return true, nil
 }
 
 func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
