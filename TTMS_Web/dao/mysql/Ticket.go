@@ -60,3 +60,13 @@ func SaleTicket(order *models.Order) error {
 	}
 	return nil
 }
+
+func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
+	sqlStr := "select id, schedule_id, cinema_id, movie_id, seat_id, status from ticket where is_delete = -1"
+	p := new(models.Ticks)
+	err := db.Select(&p.List, sqlStr, id)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
+}
