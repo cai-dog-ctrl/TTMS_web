@@ -6,12 +6,12 @@
             src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644" alt="">
         </div>
         <div class="name">
-          <h1>{{ movieInfo.movie.name }}</h1>
-          <span>{{ movieInfo.movie.tag }}&nbsp; &nbsp; &nbsp; 电影</span>
+          <h1>{{ movieInfo.name }}</h1>
+          <span>{{ movieInfo.tag }}&nbsp; &nbsp; &nbsp; 电影</span>
           <br><br>
-          <span>中国/{{ movieInfo.movie.duration }}分钟</span>
+          <span>中国/{{ movieInfo.duration }}分钟</span>
           <br><br>
-          <span>{{ movieInfo.movie.up_Time }} 西安邮电大学上映</span>
+          <span>{{ movieInfo.up_Time }} 西安邮电大学上映</span>
           <br><br>
           <div class="btns">
             <el-button type="info" size="small" icon="el-icon-bell"> 想看 &nbsp;&nbsp;&nbsp; </el-button>
@@ -22,10 +22,10 @@
         </div>
         <div style="margin-top:120px;margin-left: 80px;">
           <div class="score" style="color:#fff">西邮评分<h1 style="color:#FFC600;font-size:30px;margin-top:10px">
-              {{ movieInfo.movie.score }}</h1>
+              {{ movieInfo.score }}</h1>
           </div>
           <div class="pf" style="color:#fff">累计票房<br>
-            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.movie.boxoffice }}亿</h1>
+            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.boxoffice }}亿</h1>
           </div>
         </div>
 
