@@ -5,7 +5,7 @@
                 <div class="category_tr">
                     <span>类型:</span>
                 </div>
-                <div @click="getcategoryIndex(index),categoryForm(item)"
+                <div @click="getcategoryIndex(index), categoryForm(item)"
                     :class="btnActive.categoryIndex === index ? 'category_borde_focus' : 'category_borde'"
                     v-for="(item, index) in SortInfo.tag" :key="index">
                     <div>
@@ -18,10 +18,11 @@
                 <div class="zone_tr">
                     <span>区域:</span>
                 </div>
-                <div @click="getzoneIndex(index),zoneForm(item)" 
-                    :class="btnActive.zoneIndex===index?'zone_borde_focus':'zone_borde'" v-for="(item,index) in SortInfo.zone" :key="index">
+                <div @click="getzoneIndex(index), zoneForm(item)"
+                    :class="btnActive.zoneIndex === index ? 'zone_borde_focus' : 'zone_borde'"
+                    v-for="(item, index) in SortInfo.zone" :key="index">
                     <div>
-                        <span>{{item}}</span>
+                        <span>{{ item }}</span>
                     </div>
                 </div>
             </div>
@@ -46,7 +47,7 @@
                         </div>
                         <div class="bottom clearfix">
 
-                            <el-button type="text" class="button" @click="gotoinfo(item.id)">特惠购买</el-button>
+                            <el-button type="text" class="button" @click="buyTickets(item.id)">特惠购买</el-button>
                         </div>
                     </div>
                 </el-card>
@@ -95,7 +96,7 @@ export default {
             this.form.FlagOfType = item
             this.getMovieInfo();
         },
-        zoneForm(item){
+        zoneForm(item) {
             this.form.FlagOfZone = item
             this.getMovieInfo();
         },
@@ -128,7 +129,6 @@ export default {
             this.$router.push('/movie/' + id);
         },
         sort(index) {
-            console.log(111);
             if (index === 0) {
                 this.form.FlagOfOrder = 'boxoffice'
             } else if (index === 1) {
@@ -136,10 +136,10 @@ export default {
             } else {
                 this.form.FlagOfOrder = 'score'
             }
-            console.log(this.form.FlagOfOrder);
             this.getMovieInfo();
-
-
+        },
+        buyTickets(id) {
+            this.$router.push('/buytickets/' + id);
         }
     },
 };
