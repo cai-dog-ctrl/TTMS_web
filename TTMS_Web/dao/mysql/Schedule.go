@@ -274,7 +274,7 @@ func DeleteSchedule(id int64) error {
 }
 
 func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheDay, error) {
-	sqlStr := "select date_day, id from showschdule where movie_id = ? and is_delete = -1"
+	sqlStr := "select date_day from showschdule where movie_id = ? and is_delete = -1"
 	Sches := new(models.ScheDay)
 	err := db.Select(&Sches.Time, sqlStr, movie_id)
 

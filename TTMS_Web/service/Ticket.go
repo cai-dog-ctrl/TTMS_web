@@ -90,3 +90,7 @@ func GetTicketByCinemaIdAndDateDay(cinema_id, date_day string) (*models.TickRets
 	}
 	return p, nil
 }
+
+// func Refund(ticket_id, user_id int64) ( bool, error) {
+	
+// }
