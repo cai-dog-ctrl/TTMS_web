@@ -9,7 +9,7 @@ type ScheduleIn struct {
 	DateDay   int64 
 	StartTime int64 
 	EndTime   int64 
-	Price	  	int	
+	Price	  	float32	
 }
 
 type ScheduleOut struct {
@@ -63,7 +63,7 @@ type Sche struct {
 }
 
 type ScheDateDay struct {
-	Time 	int64		`db:"data_day" json:"data_day"`
+	Time 	int64		`db:"date_day" json:"data_day"`
 }
 
 type ScheDayRet struct {
