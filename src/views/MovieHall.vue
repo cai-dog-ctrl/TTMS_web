@@ -37,7 +37,8 @@
                         </el-tooltip>
                         <!-- 修改座位按钮 -->
                         <el-tooltip effect="dark" content="修改座位" placement="top" :enterable="false">
-                            <el-button type="success" icon="el-icon-edit" size="mini"></el-button>
+                            <el-button type="success" icon="el-icon-edit" size="mini" @click="editSeat(scope.row.id)">
+                            </el-button>
                         </el-tooltip>
                         <!-- 删除按钮 -->
                         <el-button type="danger" icon="el-icon-delete" size="mini"
@@ -80,7 +81,7 @@
         </el-dialog>
 
         <!-- 修改影厅的对话框 -->
-        <el-dialog title="修改影厅" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
+        <el-dialog title="修改影厅" :visible.sync="editDialogVisible" width="50%">
 
             <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
                 <el-form-item label="id">
@@ -99,6 +100,33 @@
             </span>
         </el-dialog>
 
+        <el-dialog title="座位信息" :visible.sync="dialogFormVisible" class="cinema_info">
+
+            <el-card class="box-card" v-loading="loading" :element-loading-text="message_get">
+                <div class="cinema">
+                    <div class="screen">荧幕</div>
+                    <div class="seats">
+                        <div v-for="(item, index) in map" :key="item" class="row">
+                            <div class="aaa" style="margin-right: 5px">{{ index + 1 }}</div>
+
+                            <div v-for="(ite, ind) in item" :key="ite" style="height: 25px; width:25px" class="aaa bbb"
+                                @click="point(ite.id)">
+                                <div v-if="ite.status === 1" class="seatyes">{{ ind + 1 }}</div>
+                                <div v-if="ite.status === 2" class="seatno">{{ ind + 1 }}</div>
+                                <div v-if="ite.status === 3" class="seatblank"></div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </el-card>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary">确定</el-button>
+            </div>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -106,6 +134,11 @@
 export default {
     data() {
         return {
+            message_get: "拼命加载中",
+            message_updata: "正在更改",
+            loading: false,
+            map: {},
+            dialogFormVisible: false,
             queryInfo: {
                 key_word: '',
                 //当前的页数
@@ -125,7 +158,7 @@ export default {
                 col: '',
                 tag: ''
             },
-            
+
             //添加表单的验证规则对象
             addFormRules: {
                 name: [
@@ -140,7 +173,7 @@ export default {
 
                 col: [
                     { required: true, message: '请输入列数', trigger: 'blur' },
-                    {  min: 1, max: 3, message: '列数在1至100之间', trigger: 'blur' }
+                    { min: 1, max: 3, message: '列数在1至100之间', trigger: 'blur' }
                 ],
 
                 tag: [
@@ -154,7 +187,7 @@ export default {
             editDialogVisible: false,
             // 查询到的影厅信息对象
             editForm: {},
-             //修改表单的验证规则
+            //修改表单的验证规则
             editFormRules: {
                 name: [
                     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -168,7 +201,7 @@ export default {
 
                 col: [
                     { required: true, message: '请输入列数', trigger: 'blur' },
-                    {  min: 1, max: 3, message: '列数在1至100之间', trigger: 'blur' }
+                    { min: 1, max: 3, message: '列数在1至100之间', trigger: 'blur' }
                 ],
 
                 tag: [
@@ -188,6 +221,40 @@ export default {
     },
 
     methods: {
+        updateSeat() {
+            for (let i = 0; i < this.map.length; i++) {
+                for (let j = 0; j < this.map[0].length; j++) {
+
+                }
+            }
+        },
+        point(id) {
+            for (let i = 0; i < this.map.length; i++) {
+                for (let j = 0; j < this.map[0].length; j++) {
+                    if (id === this.map[i][j].id) {
+                        if (this.map[i][j].status === 1) {
+                            this.map[i][j].status = 2
+                        } else if (this.map[i][j].status === 2) {
+                            this.map[i][j].status = 3
+                        } else {
+                            this.map[i][j].status = 1
+                        }
+                    }
+                }
+            }
+        },
+        async editSeat(id) {
+
+            this.dialogFormVisible = true
+            this.loading = true
+            const { data: res } = await this.$http.get('GetSeatByCinemaID/' + id)
+            if (res.code != 1000) {
+                return this.$message.error('获取座位信息失败！'); ``
+
+            }
+            this.map = res.data.seat_list
+            this.loading = false
+        },
         async getCinemaList() {
             const { data: res } = await this.$http.get('GetAllCinemas', {
                 params: this.queryInfo
@@ -279,7 +346,7 @@ export default {
             })
         },
 
-         //展示编辑的对话框
+        //展示编辑的对话框
         async showEditDialog(id) {
             // console.log(id);
             const { data: res } = await this.$http.get('GetCinemaByID/' + id)
@@ -287,7 +354,7 @@ export default {
             if (res.code !== 1000) {
                 return this.$message.error('查询影厅信息失败！')
             }
-        
+
             this.editForm = res.data
             console.log(this.editForm);
             this.editDialogVisible = true
@@ -297,14 +364,14 @@ export default {
         //修改影厅表单的预验证
         async editHallInfo() {
             this.$refs.editFormRef.validate(async vaild => {
-                
+
                 if (!vaild) return
                 //发起修改用户信息的数据请求
                 const { data: res } = await this.$http.put('ModifyCinemaByID', {
                     id: this.editForm.id,
                     name: this.editForm.name,
-                    row:this.editForm.row,
-                    col:this.editForm.col,
+                    row: this.editForm.row,
+                    col: this.editForm.col,
                     tag: this.editForm.tag,
                     is_delete: this.editForm.is_delete
 
@@ -330,6 +397,80 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.cinema_info {
+    height: 730px;
+}
+
+.cinema {
+    border: 1px solid blanchedalmond;
+    height: 400px;
+    width: 450px;
+    background: #fff;
+    left: 50%;
+    top: 5%;
+
+    border-radius: 8px;
+
+}
+
+.seats {
+    margin-top: 50px;
+    margin-left: 20px;
+}
+
+.screen {
+    height: 35px;
+    width: 150px;
+    background: white;
+    border-radius: 5px;
+    text-align: center;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.seatyes,
+.seatno,
+.seatblack {
+    height: 25px;
+    width: 25px;
+    border-radius: 3px;
+    margin-top: 3px;
+    margin-left: 3px;
+    text-align: center;
+}
+
+.seatyes {
+    background: #67C23A;
+}
+
+.seatno {
+    background: #EF4238;
+}
+
+.seatblack {
+    background: blanchedalmond;
+}
+
+.row {
+    width: 450px;
+    margin-top: 8px;
+}
+
+.aaa {
+    float: left;
+    margin-left: 5px;
+
+}
+
+.bbb {
+    cursor: pointer;
+}
+
+
+
+
+
+
 .el-card {
     margin-top: 5px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;

@@ -3,36 +3,36 @@
         <div class="classify">
             <div class="category">
                 <div class="category_tr">
-                    <span>类型</span>
-                    <div class="borde">
-                        <div class="category_item" v-for="item in SortInfo.tag" :key="item">
-                            <div class="category_item_info"><span>{{ item }}</span></div>
-                        </div>
+                    <span>类型:</span>
+                </div>
+                <div @click="getcategoryIndex(index), categoryForm(item)"
+                    :class="btnActive.categoryIndex === index ? 'category_borde_focus' : 'category_borde'"
+                    v-for="(item, index) in SortInfo.tag" :key="index">
+                    <div>
+                        <span>{{ item }}</span>
                     </div>
                 </div>
-
             </div>
-            <hr>
+            <el-divider></el-divider>
             <div class="zone">
                 <div class="zone_tr">
-                    <span>区域</span>
-                    <div class="borde">
-                        <div class="zone_item" v-for="item in SortInfo.zone" :key="item">
-                            <div class="zone_item_info"><span>{{ item }}</span></div>
-                        </div>
+                    <span>区域:</span>
+                </div>
+                <div @click="getzoneIndex(index), zoneForm(item)"
+                    :class="btnActive.zoneIndex === index ? 'zone_borde_focus' : 'zone_borde'"
+                    v-for="(item, index) in SortInfo.zone" :key="index">
+                    <div>
+                        <span>{{ item }}</span>
                     </div>
                 </div>
             </div>
-            <hr>
+            <el-divider></el-divider>
             <div class="sort">
-                <div class="sort_tr">
-                    <div class="borde">
-                        <el-radio-group v-model="radio" class="sort_item" v-for="(item, index) in SortInfo.order"
-                            :key="item">
-                            <el-radio :label="index">{{ item }}</el-radio>
-                        </el-radio-group>
-                    </div>
-                </div>
+                <el-radio-group v-model="radio" class="sort_item" @change="sortForm">
+                    <el-radio :label="1">按热门排序</el-radio>
+                    <el-radio :label="2">按时间排序</el-radio>
+                    <el-radio :label="3">按评分排序</el-radio>
+                </el-radio-group>
             </div>
         </div>
         <div class="card">
@@ -41,12 +41,13 @@
                     <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
                         class="image" @click="gotoinfo(item.id)">
                     <div style="padding: 14px;">
-                        <span>{{ item.name }}</span>
-                        <span>{{ item.score }}</span>
-                        <span>{{item.id}}</span>
+                        <div class="text">
+                            <div class="text_name"><span>{{ item.name }}</span></div>
+                            <div class="text_score"><span>{{ item.score }}</span></div>
+                        </div>
                         <div class="bottom clearfix">
 
-                            <el-button type="text" class="button" @click="gotoinfo(item.id)">特惠购买</el-button>
+                            <el-button type="text" class="button" @click="buyTickets(item.id)">特惠购买</el-button>
                         </div>
                     </div>
                 </el-card>
@@ -65,10 +66,17 @@ export default {
         return {
             SortInfo: {},
             MovieInfo: {},
-            radio: 3,
-            form:{
+            radio: 1,
+            btnActive: {
+                categoryIndex: 0,
+                zoneIndex: 0
+            },
+            form: {
                 Num: 8,
-                Page_num: 1
+                Page_num: 1,
+                FlagOfType: '',
+                FlagOfZone: '',
+                FlagOfOrder: 'boxoffice'
             }
         };
     },
@@ -77,8 +85,30 @@ export default {
         this.getSortInfo();
         this.getMovieInfo();
     },
-
     methods: {
+        getcategoryIndex(index) {
+            this.btnActive.categoryIndex = index
+        },
+        getzoneIndex(index) {
+            this.btnActive.zoneIndex = index
+        },
+        categoryForm(item) {
+            this.form.FlagOfType = item
+            this.getMovieInfo();
+        },
+        zoneForm(item) {
+            this.form.FlagOfZone = item
+            this.getMovieInfo();
+        },
+        sortForm() {
+            if (this.radio === 2) {
+                this.form.FlagOfOrder = 'date';
+            }
+            if (this.radio === 3) {
+                this.form.FlagOfOrder = 'score';
+            }
+            this.getMovieInfo();
+        },
         async getSortInfo() {
             const { data: res } = await this.$http.get('GetMovieSort')
             if (res.code !== 1000) {
@@ -88,7 +118,7 @@ export default {
             this.SortInfo = res.data;
         },
         async getMovieInfo() {
-            const { data: res2 } = await this.$http.get('GetAllMovies',{ params: this.form })
+            const { data: res2 } = await this.$http.get('GetAllMovies', { params: this.form })
             if (res2.code !== 1000) {
                 this.$message.error("获取电影失败");
                 return
@@ -97,6 +127,19 @@ export default {
         },
         gotoinfo(id) {
             this.$router.push('/movie/' + id);
+        },
+        sort(index) {
+            if (index === 0) {
+                this.form.FlagOfOrder = 'boxoffice'
+            } else if (index === 1) {
+                this.form.FlagOfOrder = 'date'
+            } else {
+                this.form.FlagOfOrder = 'score'
+            }
+            this.getMovieInfo();
+        },
+        buyTickets(id) {
+            this.$router.push('/buytickets/' + id);
         }
     },
 };
@@ -109,45 +152,97 @@ export default {
 
 .classify {
     width: 1300px;
-    border: 1px solid #000;
+    border: #dedcdc solid 1px;
     margin: auto;
+    border-radius: 5px;
 }
+
 
 .category {
-    height: 100px;
-}
-
-.category_tr {
-    width: 40px;
-}
-
-.borde {
-    display: flex;
-
-    width: 100%;
-    align-items: center;
-    /*垂直居中*/
-    justify-content: center;
-    /*水平居中*/
-    // // justify-content: flex-start;
-    // margin-left: 20px;
-    // width: 100%;
-    // // flex-direction: row;
-    // flex-wrap: wrap;
-    // flex-direction: column;
-    // border: 1px solid #cccc;
-    // display: flex;
-    // flex-direction: row;
-    // justify-content: space-evenly;
-    // align-items: center;
-    // word-wrap:break-word;
-    // word-break:break-all;
-}
-
-.category_item_info {
+    height: 36px;
+    width: 1300px;
     margin-left: 10px;
-    width: 64px;
+}
 
+.zone {
+    height: 3px;
+    width: 1300px;
+    margin-left: 10px;
+}
+
+.category_tr,
+.zone_tr {
+    float: left;
+    margin-top: 5px;
+}
+
+.category_borde {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    float: left;
+    margin-left: 14px;
+    cursor: pointer;
+    // border: 1px solid #000;
+}
+
+.category_borde:hover {
+    color: blue;
+}
+
+.category_borde_focus {
+    color: #fff;
+    background-color: blue;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    float: left;
+    margin-left: 14px;
+    // border: 1px solid #4FA9FD;
+}
+
+
+.zone_borde {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    float: left;
+    margin-left: 14px;
+    cursor: pointer;
+    // border: 1px solid #000;
+}
+
+.zone_borde:hover {
+    color: blue;
+}
+
+.zone_borde_focus {
+    color: #fff;
+    background-color: blue;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    float: left;
+    margin-left: 14px;
+    // border: 1px solid #4FA9FD;
+}
+
+.el-divider--horizontal {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 23px 0 6px 0;
+}
+
+
+.sort_item {
+    margin-left: 15px;
 }
 
 .card {
@@ -166,6 +261,16 @@ export default {
         text-align: center;
     }
 
+}
+
+.text {
+    display: flex;
+    justify-content: space-between;
+}
+
+.text_score {
+    font-style: italic;
+    color: rgb(241, 220, 137);
 }
 
 .image {
