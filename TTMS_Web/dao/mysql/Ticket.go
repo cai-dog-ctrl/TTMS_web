@@ -75,7 +75,6 @@ func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
 	}
 	return p, nil
 }
-<<<<<<< HEAD
 
 func GetTicketByMovieIdAndDateDay(movie_id, date_day int64) ( *models.Ticks, error) {
 	p := new(models.Sche)
@@ -111,5 +110,3 @@ func GetTicketByCinemaIdAndDateDay(cinema_id, date_day int64) ( *models.Ticks, e
 	return p1, nil
 }
 
-=======
->>>>>>> 18e0f4535d23f444db24391d4808d1262633e219
