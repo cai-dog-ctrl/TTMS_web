@@ -84,13 +84,15 @@ func SaleTicket(c *gin.Context) {
 		ResponseError(c, CodeInvalidParams)
 		zap.L().Error("SaleTicket ShouldBind Error", zap.Error(err))
 	}
-	is, err1 := service.SaleTicket(p)
+	is, err1, price := service.SaleTicket(p)
 	if err1 != nil || !is {
 		ResponseError(c, CodeServerBusy)
 		zap.L().Error("service.SaleTicket Error", zap.Error(err))
 		return
 	}
-	ResponseSuccess(c, "sale ticket successful.")
+	ResponseSuccess(c, gin.H{
+		"TotalPrice": price,
+	})
 }
 
 // // 退票

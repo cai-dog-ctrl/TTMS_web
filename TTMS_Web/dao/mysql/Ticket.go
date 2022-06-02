@@ -11,7 +11,7 @@ import (
 
 //有关票务的持久化代码
 
-func SaleTicket(order *models.Order) (bool, error) {
+func SaleTicket(order *models.Order) (bool, error, float32) {
 	day := time.Now().Day()
 	month := int(time.Now().Month())
 	year := time.Now().Year()
@@ -21,10 +21,11 @@ func SaleTicket(order *models.Order) (bool, error) {
 	second := time.Now().Second()
 	now := fmt.Sprintf("%02v:%02v:%02v", hour, minute, second)
 	order_id := snowflake.GenID()
-	
+	var TotalPrice float32
+
 	tx, err := db.Begin()
 	if err != nil {
-		return false, err
+		return false, err, 0
 	}
 
 	defer func() {
@@ -39,31 +40,48 @@ func SaleTicket(order *models.Order) (bool, error) {
 	}()
 
 	for _, ticket_id := range order.TicketList {
+		var TicketPrice float32
 		ticket := new(models.Tick)
+		schdule := new(models.ScheduleOut)
+		// user := new(models.)
 		sqlStr1 := fmt.Sprintf("select status from ticket where id = %v", ticket_id)
 		err1 := db.Get(&ticket.Status, sqlStr1)
-		if err1 != nil || ticket.Status == 1{
+		if err1 != nil || ticket.Status == 1 {
 			zap.L().Error(sqlStr1)
-			return false, err1
+			return false, err1, 0
 		}
 		sqlStr := "update ticket set status = ? where id = ? and status = -1"
 		_, err := db.Exec(sqlStr, 1, ticket_id)
 		if err != nil {
 			zap.L().Error(sqlStr)
-			return false, err
+			return false, err, 0
 		}
-	}
-
-	for _, ticket_id := range order.TicketList {
-		sqlStr := "insert into order_info (id, user_id, ticket_id, date, time, is_delete) values(?, ?, ?, ?, ?, ?)"
-		_, err := db.Exec(sqlStr, order_id, order.UserID, ticket_id, date, now, -1)
-		if err != nil {
+		sqlStr3 := fmt.Sprintf("select showschdule.price from showschdule, ticket where ticket.id = %v and ticket.schedule_id = showschdule.id", ticket_id)
+		err3 := db.Get(&schdule.Price, sqlStr3)
+		if err3 != nil {
+			zap.L().Error(sqlStr3)
+			return false, err3, 0
+		}
+		// discount
+		// sqlStr4 := fmt.Sprintf("select discount from user where id = %v", order.UserID)
+		// err4 := db.Get(&schdule.Price, sqlStr4)
+		// if err4 != nil{
+		// 	zap.L().Error(sqlStr4)
+		// 	return false, err4, 0
+		// }
+		//
+		TicketPrice = schdule.Price
+		TotalPrice += TicketPrice
+		sqlStr2 := "insert into order_info (id, user_id, ticket_id, date, time, is_delete, price) values(?, ?, ?, ?, ?, ?, ?)"
+		_, err2 := db.Exec(sqlStr2, order_id, order.UserID, ticket_id, date, now, -1, TicketPrice)
+		if err2 != nil {
 			zap.L().Error(sqlStr)
-			return false, err
+			return false, err2, 0
 		}
+
 	}
 
-	return true, nil
+	return true, nil, TotalPrice
 }
 
 func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
