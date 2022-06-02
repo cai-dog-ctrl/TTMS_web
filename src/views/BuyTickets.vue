@@ -32,7 +32,7 @@
                 <div class="schedule">
                     <div class="schedule_btu">
                         <div class="schedule_btu_word"><span>观影日期</span></div>
-                        <div class="schedule_btu_itme" v-for="item in dateList">
+                        <div class="schedule_btu_itme" v-for="item in dateList" :key="item">
                             <span >{{item}}</span>
                         </div>
                     </div>

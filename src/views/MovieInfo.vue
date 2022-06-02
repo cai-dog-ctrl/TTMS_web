@@ -25,7 +25,7 @@
               {{ movieInfo.score }}</h1>
           </div>
           <div class="pf" style="color:#fff">累计票房<br>
-            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.boxoffice }}亿</h1>
+            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.box_office }}亿</h1>
           </div>
         </div>
 
@@ -48,7 +48,7 @@
               </div>
 
 
-              {{ movieInfo.descrption }}
+              {{ movieInfo.description }}
             </div>
             <br><br><br><br><br><br>
           </el-card>
@@ -60,7 +60,7 @@
             <span style="font-size:20px;color:#8FDCFE">相似推荐</span>
 
           </div>
-          <div v-for="item in movieInfo.relevantMovies.ShowingList" :key="item" class="item">
+          <div v-for="item in recommend.ShowingList" :key="item" class="item">
             <img :src="item.img" alt="">
             <div style="height:30px;margin-top: 20px;margin-left: 10px;width: 180px;"><a class="recommend_a" href="#"
                 style="color:#219FFF;text-decoration:none">《 {{ item.name }} 》</a></div>
@@ -100,7 +100,9 @@ export default {
         this.$router.push("/home")
         return
       }
-      this.movieInfo = res.data
+      this.movieInfo = res.data.movie
+      this.recommend=res.data.relevantMovies
+      console.log(res.data.movie);
     },
 
     buyTickets(id) {
