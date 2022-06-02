@@ -118,7 +118,6 @@ func AddNewMovie(c *gin.Context) {
 
 func ModifyMovieByID(c *gin.Context) {
 	p := new(models.ParamsModifyMovie)
-	fmt.Println(p)
 	err := c.ShouldBind(&p)
 	if err != nil {
 		ResponseError(c, CodeInvalidParams)
