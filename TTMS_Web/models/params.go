@@ -59,7 +59,7 @@ type ParamsUpdateScheduleMsg struct {
 	MovieId   string `json:"movie_id" form:"movie_id" binding:"required"`
 	DateDay   string `json:"date_day" form:"date_day" binding:"required"`
 	StartTime string `json:"start_time" form:"start_time" binding:"required"`
-	Price     int    `json:"price" form:"price" binding:"required"`
+	Price     float32    `json:"price" form:"price" binding:"required"`
 }
 
 type ParamsGetShowingMovies struct {
