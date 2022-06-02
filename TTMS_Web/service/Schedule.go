@@ -5,6 +5,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/snowflake"
 	"TTMS/pkg/utils"
+	"errors"
 	"strings"
 )
 
@@ -12,6 +13,12 @@ import (
 
 //AddSchedule 添加演出计划
 func AddSchedule(p *models.ParamAddSchedule) (bool ,error) {
+
+	err := mysql.RefreshSchedule()
+	if err != nil {
+		return false, errors.New("RefreshSchedule in serve.AddSchedule failed")
+	}
+
 	Sche := new(models.ScheduleIn)
 	Sche.ID = snowflake.GenID()
 	Sche.CinemaId = utils.ShiftToNum64(p.CinemaId)
@@ -52,8 +59,13 @@ func AddSchedule(p *models.ParamAddSchedule) (bool ,error) {
 // 	return nil
 // }
 
-func GetAllScheduleMsgByMovieId(page_num, page_size int, movie_id int64) (p *models.ScheduleRetList, err error) {
+func GetAllScheduleMsgByMovieId(page_num, page_size int, movie_id int64) (*models.ScheduleRetList, error) {
 	
+	err := mysql.RefreshSchedule()
+	if err != nil {
+		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleMsgByMovieId failed")
+	}
+
 	p1, err := mysql.GetAllScheduleByMovieId(page_num,page_size,movie_id)
 	if err != nil {
 		return nil, err
@@ -97,7 +109,12 @@ func GetAllScheduleMsgByMovieId(page_num, page_size int, movie_id int64) (p *mod
 	return ret, nil
 }
 
-func GetAllScheduleMsgByCinemaId(page_num, page_size int, cinema_id int64) (p *models.ScheduleRetList, err error) {
+func GetAllScheduleMsgByCinemaId(page_num, page_size int, cinema_id int64) (*models.ScheduleRetList, error) {
+	
+	err := mysql.RefreshSchedule()
+	if err != nil {
+		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleMsgByCinemaId failed")
+	}
 	
 	p1, err := mysql.GetAllScheduleByCinemaId(page_num,page_size,cinema_id)
 	
@@ -143,7 +160,13 @@ func GetAllScheduleMsgByCinemaId(page_num, page_size int, cinema_id int64) (p *m
 	return ret, nil
 }
 
-func GetAllScheduleByMovieIdandDay(movie_id, day int64) (p *models.ScheduleRetList, err error) {
+func GetAllScheduleByMovieIdandDay(movie_id, day int64) ( *models.ScheduleRetList, error) {
+	
+	err := mysql.RefreshSchedule()
+	if err != nil {
+		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleByMovieIdandDay failed")
+	}
+	
 	p1, err := mysql.GetAllScheduleByMovieIdandDay(movie_id, day)
 
 	if err != nil {
@@ -190,6 +213,12 @@ func GetAllScheduleByMovieIdandDay(movie_id, day int64) (p *models.ScheduleRetLi
 
 
 func UpdateSchedule(p *models.ParamsUpdateScheduleMsg) (bool, error) {
+	
+	err := mysql.RefreshSchedule()
+	if err != nil {
+		return false, errors.New("RefreshSchedule in serve.UpdateSchedule failed")
+	}
+	
 	Sch := new(models.SCheduledata)
 	Sch.ID 			= utils.ShiftToNum64(p.ID)
 	Sch.CinemaId 	= utils.ShiftToNum64(p.CinemaId)
@@ -216,7 +245,13 @@ func UpdateSchedule(p *models.ParamsUpdateScheduleMsg) (bool, error) {
 }
 
 func DeleteSchedule(id int64) error {
-	err := mysql.DeleteSchedule(id)
+
+	err := mysql.RefreshSchedule()
+	if err != nil {
+		return errors.New("RefreshSchedule in serve.DeleteSchedule failed")
+	}
+
+	err = mysql.DeleteSchedule(id)
 	if err != nil {
 		return err
 	}
@@ -224,6 +259,13 @@ func DeleteSchedule(id int64) error {
 }
 
 func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheRets, error) {
+	
+	err := mysql.RefreshSchedule()
+	if err != nil {
+		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleDayByMovieID failed")
+	}
+
+
 	p1, err := mysql.GetAllScheduleDayByMovieID(movie_id)
 	if err != nil {
 		return nil, err
@@ -247,6 +289,11 @@ func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheRets, error) {
 }	
 
 func GetAllScheduleMsgByDay(day string) (*models.ScheduleRetList, error) {
+
+	err := mysql.RefreshSchedule()
+	if err != nil {
+		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleMsgByDay failed")
+	}
 
 	day_string := strings.Trim(day, "-")
 
