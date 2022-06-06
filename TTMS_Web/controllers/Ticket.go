@@ -84,7 +84,7 @@ func SaleTicket(c *gin.Context) {
 		ResponseError(c, CodeInvalidParams)
 		zap.L().Error("SaleTicket ShouldBind Error", zap.Error(err))
 	}
-	is, err1, price := service.SaleTicket(p)
+	is, price, err1 := service.SaleTicket(p)
 	if err1 != nil || !is {
 		ResponseError(c, CodeServerBusy)
 		zap.L().Error("service.SaleTicket Error", zap.Error(err))

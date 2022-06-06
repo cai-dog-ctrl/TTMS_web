@@ -6,6 +6,7 @@ import (
 	"TTMS/pkg/snowflake"
 	"TTMS/pkg/utils"
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -25,12 +26,12 @@ func AddSchedule(p *models.ParamAddSchedule) (bool ,error) {
 	Sche.MovieId = utils.ShiftToNum64(p.MovieId)
 
 	str_day  := strings.Split(p.DateDay, "-")
-	date_day := str_day[0] + str_day[1] + str_day[2] 
+	date_day := utils.ShiftToNum(str_day[0])*10000 + utils.ShiftToNum(str_day[1])*100 + utils.ShiftToNum(str_day[2]) 
 
 	str_start_time 	:= strings.Split(p.StartTime, ":")
 	start_time 		:= str_start_time[0] + str_start_time[1]
 
-	Sche.DateDay = utils.ShiftToNum64(date_day)
+	Sche.DateDay = int64(date_day)
 	Sche.StartTime = utils.ShiftToNum64(start_time)
 	Sche.Price = p.Price
 
@@ -295,14 +296,19 @@ func GetAllScheduleMsgByDay(day string) (*models.ScheduleRetList, error) {
 		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleMsgByDay failed")
 	}
 
-	day_string := strings.Trim(day, "-")
+	str_day  := strings.Split(day, "-")
+	date_day := utils.ShiftToNum(str_day[0])*10000 + utils.ShiftToNum(str_day[1])*100 + utils.ShiftToNum(str_day[2]) 
 
-	day_int64 := utils.ShiftToNum64(day_string)
-
+	day_int64 := int64(date_day)
 	p1, err := mysql.GetAllScheduleMsgByDay(day_int64)
+
+	if err != nil {
+		return nil, err
+	}
 
 	p := new(models.ScheduleRetList)
 	p.Total = p1.Total
+	fmt.Println(len(p1.List))
 	for _, it := range p1.List {
 		date_day := ""
 		date_day += utils.ShiftToStringFromInt64(int64(it.DateDay / 10000))
@@ -311,12 +317,10 @@ func GetAllScheduleMsgByDay(day string) (*models.ScheduleRetList, error) {
 		date_day += utils.ShiftToStringFromInt64(int64(day_time / 100))
 		date_day += "-"
 		date_day += utils.ShiftToStringFromInt64(int64(day_time % 100))
-
 		start_time := ""
 		start_time += utils.ShiftToStringFromInt64(int64(it.StartTime / 100))
 		start_time += ":"
 		start_time += utils.ShiftToStringFromInt64(int64(it.StartTime % 100))
-
 		end_time := ""
 		end_time += utils.ShiftToStringFromInt64(int64(it.EndTime / 100))
 		end_time += ":"
@@ -334,10 +338,6 @@ func GetAllScheduleMsgByDay(day string) (*models.ScheduleRetList, error) {
 			CinemaName: it.CinemaName,
 			Type: it.Type,
 		})
-	}
-
-	if err != nil {
-		return nil, err
 	}
 	return p, nil
 

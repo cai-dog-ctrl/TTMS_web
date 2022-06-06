@@ -46,20 +46,20 @@ type ParamsUpdateMsg struct {
 }
 
 type ParamAddSchedule struct {
-	CinemaId  string `json:"cinema_id" form:"cinema_id" binding:"required"`
-	MovieId   string `json:"movie_id" form:"movie_id" binding:"required"`
-	DateDay   string `json:"date_day" form:"date_day" binding:"required"`
-	StartTime string `json:"start_time" form:"start_time" binding:"required"`
-	Price     float32    `json:"price" form:"price" binding:"required"`
+	CinemaId  string  `json:"cinema_id" form:"cinema_id" binding:"required"`
+	MovieId   string  `json:"movie_id" form:"movie_id" binding:"required"`
+	DateDay   string  `json:"date_day" form:"date_day" binding:"required"`
+	StartTime string  `json:"start_time" form:"start_time" binding:"required"`
+	Price     float32 `json:"price" form:"price" binding:"required"`
 }
 
 type ParamsUpdateScheduleMsg struct {
-	ID        string `json:"id" form:"id" binding:"required"`
-	CinemaId  string `json:"cinema_id" form:"cinema_id" binding:"required"`
-	MovieId   string `json:"movie_id" form:"movie_id" binding:"required"`
-	DateDay   string `json:"date_day" form:"date_day" binding:"required"`
-	StartTime string `json:"start_time" form:"start_time" binding:"required"`
-	Price     float32    `json:"price" form:"price" binding:"required"`
+	ID        string  `json:"id" form:"id" binding:"required"`
+	CinemaId  string  `json:"cinema_id" form:"cinema_id" binding:"required"`
+	MovieId   string  `json:"movie_id" form:"movie_id" binding:"required"`
+	DateDay   string  `json:"date_day" form:"date_day" binding:"required"`
+	StartTime string  `json:"start_time" form:"start_time" binding:"required"`
+	Price     float32 `json:"price" form:"price" binding:"required"`
 }
 
 type ParamsGetShowingMovies struct {
@@ -146,6 +146,7 @@ type ParamsGetSeatByCinemaID struct {
 type ParamsModifySeat struct {
 	ID     string `json:"id" form:"id" binding:"required"`
 	Status int    `json:"status" form:"status" binding:"required"`
+	Flag   int    `json:"flag" form:"flag" binding:"required"`
 }
 
 type ParamsGetAllMovies struct {
