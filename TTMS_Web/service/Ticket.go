@@ -15,7 +15,7 @@ func SaleTicket(p *models.ParamsSaleTicket) (bool, float32, error) {
 	order.TicketList = p.IDList
 	return mysql.SaleTicket(order)
 }
-func GetTicketByScheduleId(id int64) ( *models.TickRets, error) {
+func GetTicketByScheduleId(id int64) ( *models.TickRetss, error) {
 	p1, err := mysql.GetTicketByScheduleId(id)
 	if err != nil {
 		return nil, err
@@ -34,7 +34,17 @@ func GetTicketByScheduleId(id int64) ( *models.TickRets, error) {
 		})
 	}
 
-	return p, nil	
+	p2 := new(models.TickRetss)
+	len := len(p.List)
+
+	for len >= p1.RowNum {
+		arr := p.List[:p1.RowNum]
+		p.List = p.List[p1.RowNum:]
+		p2.List = append(p2.List, arr)
+		len -= p1.RowNum
+	}
+
+	return p2, nil	
 }
 
 func GetTicketByMovieIdAndDateDay(movie_id, date_day string) (*models.TickRets, error) {
@@ -91,6 +101,7 @@ func GetTicketByCinemaIdAndDateDay(cinema_id, date_day string) (*models.TickRets
 	return p, nil
 }
 
-// func Refund(ticket_id, user_id int64) ( bool, error) {
-	
-// }
+func Refund(ticket_id, user_id int64) error {
+	err := mysql.Refund(ticket_id, user_id)
+	return err
+}

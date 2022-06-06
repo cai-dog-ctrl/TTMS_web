@@ -77,7 +77,6 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	sqlStr4 := "select count(id) from showschdule where cinema_id = ? and date_day = ? and is_delete = -1"
 	err = db.Get(&Sches.Total, sqlStr4, p.CinemaId, p.DateDay)
 	if err != nil {
-		fmt.Println("count :", err)
 		return false, err
 	}
 	//expected slice but got int
