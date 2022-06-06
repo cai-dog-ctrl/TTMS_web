@@ -70,7 +70,7 @@ func SaleTicket(order *models.Order) (bool, error, float32) {
 		// 	return false, err4, 0
 		// }
 		//
-		TicketPrice = schdule.Price
+		//TicketPrice = schdule.Price
 		TotalPrice += TicketPrice
 		sqlStr2 := "insert into order_info (id, user_id, ticket_id, date, time, is_delete, price) values(?, ?, ?, ?, ?, ?, ?)"
 		_, err2 := db.Exec(sqlStr2, order_id, order.UserID, ticket_id, date, now, -1, TicketPrice)
