@@ -304,7 +304,7 @@ func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheDay, error) {
 
 func GetAllScheduleMsgByDay(day int64) (*models.ScheduleList, error) {
 
-	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, c.cinema_name, c.tag, m.name  from showschdule s,cinema_info c,movie_info m where s.is_delete = -1 and s.day = ?"
+	sqlStr := "select s.id, s.cinema_id, s.movie_id, m.name, s.date_day, s.start_time, s.end_time, c.cinema_name, c.tag from showschdule s,cinema_info c,movie_info m where s.is_delete = -1 and s.date_day = ? and m.id = s.movie_id and c.id = s.cinema_id"
 	Sches := new(models.ScheduleList)
 	err := db.Select(&Sches.List, sqlStr, day)
 
@@ -312,7 +312,7 @@ func GetAllScheduleMsgByDay(day int64) (*models.ScheduleList, error) {
 		return nil, err
 	}
 
-	sqlStr1 := "select count(id) from showschdule where is_delete = -1 and date_day = ?"
+	sqlStr1 := "select count(s.id) from showschdule s,cinema_info c,movie_info m where s.is_delete = -1 and s.date_day = ? and m.id = s.movie_id and c.id = s.cinema_id"
 
 	err = db.Get(&Sches.Total, sqlStr1, day)
 	if err != nil {
