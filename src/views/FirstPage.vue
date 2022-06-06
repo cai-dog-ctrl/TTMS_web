@@ -183,7 +183,7 @@ export default {
             if (this.currentIndex === this.slideData.length) this.currentIndex = 0
         },
         gotoinfo(id) {
-            this.$router.push('/movie/' + id);
+            this.$router.push('/movieinfo/' + id);
         },
 
         async get_firstPage() {

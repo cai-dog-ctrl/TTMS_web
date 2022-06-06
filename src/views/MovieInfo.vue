@@ -18,7 +18,7 @@
             <el-button type="info" size="small" icon="el-icon-star-off"> 评分&nbsp;&nbsp;&nbsp; </el-button>
           </div>
           <br>
-          <div class="buy_btn" @click="buyTickets(123)">特惠购票</div>
+          <div class="buy_btn" @click="buyTickets">特惠购票</div>
         </div>
         <div style="margin-top:120px;margin-left: 80px;">
           <div class="score" style="color:#fff">西邮评分<h1 style="color:#FFC600;font-size:30px;margin-top:10px">
@@ -102,11 +102,10 @@ export default {
       }
       this.movieInfo = res.data.movie
       this.recommend=res.data.relevantMovies
-      console.log(res.data.movie);
     },
 
-    buyTickets(id) {
-      this.$router.push('/buytickets/' + id);
+    buyTickets() {
+      this.$router.push('/buytickets/' + this.movieInfo.id);
     }
   }
 }

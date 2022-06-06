@@ -72,7 +72,7 @@ const routes = [
         component: FirstPage
       },
       {
-        path: "/movie/:id",
+        path: "/movieinfo/:id",
         component: MovieInfo
       },
       {

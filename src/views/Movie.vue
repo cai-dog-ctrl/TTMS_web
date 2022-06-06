@@ -93,11 +93,19 @@ export default {
             this.btnActive.zoneIndex = index
         },
         categoryForm(item) {
-            this.form.FlagOfType = item
+            if(item==='全部'){
+                this.form.FlagOfType = ''
+            }else{
+                this.form.FlagOfType = item
+            }
             this.getMovieInfo();
         },
         zoneForm(item) {
-            this.form.FlagOfZone = item
+            if(item==='全部'){
+                this.form.FlagOfZone = ''
+            }else{
+                this.form.FlagOfZone = item
+            }
             this.getMovieInfo();
         },
         sortForm() {
