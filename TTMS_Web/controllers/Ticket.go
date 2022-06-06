@@ -13,7 +13,7 @@ import (
 
 // 根据演出计划ID查看票
 func GetTicketByScheduleId(c *gin.Context) {
-	p := c.Param("id")
+	p := c.Query("id")
 	if p == "" {
 		ResponseError(c, CodeInvalidParams)
 		zap.L().Error("GetTicketByScheduleId getid Error")
@@ -34,8 +34,8 @@ func GetTicketByScheduleId(c *gin.Context) {
 
 // 根据movie_id和时间date_day查询票
 func GetTicketByMovieIdAndDateDay(c *gin.Context) {
-	movie_id := c.Param("movie_id")
-	date_day := c.Param("date_day")
+	movie_id := c.Query("movie_id")
+	date_day := c.Query("date_day")
 
 	if movie_id == "" || date_day == "" {
 		ResponseError(c, CodeInvalidParams)
@@ -56,8 +56,8 @@ func GetTicketByMovieIdAndDateDay(c *gin.Context) {
 
 // 根据影厅cinema_id和date_day查询票
 func GetTicketByCinemaIdAndDateDay(c *gin.Context) {
-	cinema_id 	:= c.Param("cinema_id")
-	date_day 	:= c.Param("date_day")
+	cinema_id 	:= c.Query("cinema_id")
+	date_day 	:= c.Query("date_day")
 
 	if cinema_id == "" || date_day == "" {
 		ResponseError(c, CodeInvalidParams)
@@ -97,8 +97,8 @@ func SaleTicket(c *gin.Context) {
 
 // 退票
 func Refund(c *gin.Context) {
-	ticket_id 	:= c.Param("ticket_id")
-	user_id 	:= c.Param("user_id")
+	ticket_id 	:= c.Query("ticket_id")
+	user_id 	:= c.Query("user_id")
 
 	if ticket_id == "" || user_id == "" {
 		ResponseError(c, CodeInvalidParams)

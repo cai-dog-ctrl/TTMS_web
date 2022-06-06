@@ -85,7 +85,7 @@ func SaleTicket(order *models.Order) (bool, float32, error) {
 }
 
 func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
-	sqlStr := "select id, schedule_id, cinema_id, movie_id, seat_id, status from ticket where is_delete = -1"
+	sqlStr := "select id, schedule_id, cinema_id, movie_id, seat_id, status from ticket where is_delete = -1 and schedule_id = ?"
 	p := new(models.Ticks)
 	err := db.Select(&p.List, sqlStr, id)
 	if err != nil {
@@ -93,7 +93,7 @@ func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
 	}
 
 	sqlStr1 := "select roww from cinema_info where id = ?"
-	err = db.Select(&p.RowNum, sqlStr1, p.List[0].CinemaId)
+	err = db.Get(&p.RowNum, sqlStr1, p.List[0].CinemaId)
 	if err != nil {
 		return nil, err
 	}
