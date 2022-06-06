@@ -32,49 +32,49 @@ func GetTicketByScheduleId(c *gin.Context) {
 
 }
 
-// 根据movie_id和时间date_day查询票
-func GetTicketByMovieIdAndDateDay(c *gin.Context) {
-	movie_id := c.Query("movie_id")
-	date_day := c.Query("date_day")
+// // 根据movie_id和时间date_day查询票
+// func GetTicketByMovieIdAndDateDay(c *gin.Context) {
+// 	movie_id := c.Query("movie_id")
+// 	date_day := c.Query("date_day")
 
-	if movie_id == "" || date_day == "" {
-		ResponseError(c, CodeInvalidParams)
-		zap.L().Error("GetTicketByMovieIdAndDateDay get movie_id or date_day  Error")
-		return
-	}
+// 	if movie_id == "" || date_day == "" {
+// 		ResponseError(c, CodeInvalidParams)
+// 		zap.L().Error("GetTicketByMovieIdAndDateDay get movie_id or date_day  Error")
+// 		return
+// 	}
 
-	p1, err := service.GetTicketByMovieIdAndDateDay(movie_id, date_day)
+// 	p1, err := service.GetTicketByMovieIdAndDateDay(movie_id, date_day)
 
-	if err != nil {
-		zap.L().Error("service.GetTicketByMovieIdAndDateDay error", zap.Error(err))
-		ResponseErrorWithMsg(c, CodeServerBusy, "获取失败")
-		return
-	}
+// 	if err != nil {
+// 		zap.L().Error("service.GetTicketByMovieIdAndDateDay error", zap.Error(err))
+// 		ResponseErrorWithMsg(c, CodeServerBusy, "获取失败")
+// 		return
+// 	}
 
-	ResponseSuccess(c, p1)
-}
+// 	ResponseSuccess(c, p1)
+// }
 
-// 根据影厅cinema_id和date_day查询票
-func GetTicketByCinemaIdAndDateDay(c *gin.Context) {
-	cinema_id 	:= c.Query("cinema_id")
-	date_day 	:= c.Query("date_day")
+// // 根据影厅cinema_id和date_day查询票
+// func GetTicketByCinemaIdAndDateDay(c *gin.Context) {
+// 	cinema_id 	:= c.Query("cinema_id")
+// 	date_day 	:= c.Query("date_day")
 
-	if cinema_id == "" || date_day == "" {
-		ResponseError(c, CodeInvalidParams)
-		zap.L().Error("GetTicketByCinemaIdAndDateDay get cinema_id or date_day  Error")
-		return
-	}
+// 	if cinema_id == "" || date_day == "" {
+// 		ResponseError(c, CodeInvalidParams)
+// 		zap.L().Error("GetTicketByCinemaIdAndDateDay get cinema_id or date_day  Error")
+// 		return
+// 	}
 
-	p1, err := service.GetTicketByCinemaIdAndDateDay(cinema_id, date_day)
+// 	p1, err := service.GetTicketByCinemaIdAndDateDay(cinema_id, date_day)
 
-	if err != nil {
-		zap.L().Error("service.GetTicketByCinemaIdAndDateDay error", zap.Error(err))
-		ResponseErrorWithMsg(c, CodeServerBusy, "获取失败")
-		return
-	}
+// 	if err != nil {
+// 		zap.L().Error("service.GetTicketByCinemaIdAndDateDay error", zap.Error(err))
+// 		ResponseErrorWithMsg(c, CodeServerBusy, "获取失败")
+// 		return
+// 	}
 
-	ResponseSuccess(c, p1)
-}
+// 	ResponseSuccess(c, p1)
+// }
 
 // 买票
 func SaleTicket(c *gin.Context) {
