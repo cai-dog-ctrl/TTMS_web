@@ -69,5 +69,8 @@ func SetupRouter() *gin.Engine {
 
 	//sale
 	g.PUT("/SaleTicket", controllers.SaleTicket)
+	g.GET("/GetTicketByScheduleId", controllers.GetTicketByScheduleId)
+	g.GET("/GetTicketByMovieIdAndDateDay", controllers.GetTicketByMovieIdAndDateDay)
+	g.GET("/GetTicketByCinemaIdAndDateDay", controllers.GetTicketByCinemaIdAndDateDay)
 	return r
 }

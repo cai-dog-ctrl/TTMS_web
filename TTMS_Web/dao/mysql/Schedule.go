@@ -3,6 +3,8 @@ package mysql
 import (
 	"TTMS/models"
 	"errors"
+	"fmt"
+
 	//"fmt"
 	//"time"
 
@@ -30,7 +32,7 @@ func RefreshSchedule() error {
 	// now_time := hour*100 + minute
 
 	// for _, it := range Sches.List {
-		
+
 	// 	if it.DateDay < date_day {
 	// 		err = DeleteSchedule(it.ID)
 	// 	}else if it.DateDay == date_day {
@@ -38,7 +40,7 @@ func RefreshSchedule() error {
 	// 			err = DeleteSchedule(it.ID)
 	// 		}
 	// 	}
-	// } 
+	// }
 	// if err != nil {
 	// 	return err
 	// }
@@ -53,13 +55,13 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	T.Id = 0
 	err := db.Get(&T.Time, sqlStr1, p.MovieId)
 	if err != nil {
-		return false, nil
+		return false, err
 	}
-	T.Time += 10  //预留10分钟退场和进场
+	T.Time += 10 //预留10分钟退场和进场
 	hour := T.Time / 60
 	minute := T.Time % 60
 
-	p.EndTime = p.StartTime + int64(hour) * 100 + int64(minute)
+	p.EndTime = p.StartTime + int64(hour)*100 + int64(minute)
 
 	if p.EndTime > int64(2400) {
 		// err =  errors.New("the show time has expired, please reschedule")
@@ -71,23 +73,36 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	// if err == nil &&  T.Id != 0{
 	// 	return errors.New("the show time has expired, please reschedule")
 	// }
-
-	sqlStr := "select id, cinema_id, movie_id, date_day, start_time, end_time, price from showschdule where is_delete = -1 and cinema_id = ? and date_day = ?"
 	Sches := new(models.ScheduleList)
-	err = db.Select(&Sches.List, sqlStr, p.CinemaId, p.DateDay)
+	sqlStr4 := "select count(id) from showschdule where cinema_id = ? and date_day = ? and is_delete = -1"
+	err = db.Get(&Sches.Total, sqlStr4, p.CinemaId, p.DateDay)
 	if err != nil {
+		fmt.Println("count :", err)
 		return false, err
 	}
+	//expected slice but got int
+	if Sches.Total > 0 {
 
-	for _, it := range Sches.List{
-		if p.StartTime <= it.StartTime && p.EndTime > it.StartTime { //已有演出计划的开始时间在新演出计划的S-E之间
-			return false, nil
-		}else if p.StartTime > it.StartTime && p.StartTime < it.EndTime { //新演出计划的开始时间在已有演出计划的S-E之间
-			return false, nil
+		sqlStr := "select id, cinema_id, movie_id, date_day, start_time, end_time, price from showschdule where is_delete = -1 and cinema_id = ? and date_day = ?"
+		
+		err = db.Select(&Sches.List, sqlStr, p.CinemaId, p.DateDay)
+		if err != nil {
+			fmt.Println( "list : ", Sches.List)
+			return false, err
+		}
+
+		for _, it := range Sches.List {
+			if p.StartTime <= it.StartTime && p.EndTime > it.StartTime { //已有演出计划的开始时间在新演出计划的S-E之间
+				fmt.Println("BBB")
+				return false, nil
+			} else if p.StartTime > it.StartTime && p.StartTime < it.EndTime { //新演出计划的开始时间在已有演出计划的S-E之间
+				fmt.Println("CCC")
+				return false, nil
+			}
 		}
 	}
 
-	tx, err := db.Beginx()  //开启事务
+	tx, err := db.Beginx() //开启事务
 	if err != nil {
 		return false, err
 	}
@@ -96,25 +111,27 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 		if p := recover(); p != nil {
 			tx.Rollback()
 			panic(p)
-		}else if err != nil {
+		} else if err != nil {
 			tx.Rollback()
-		}else{
+		} else {
 			err = tx.Commit()
 		}
 	}()
 
-	sqlStr = "insert into showschdule (id, cinema_id, movie_id, date_day, start_time, end_time, price) values (?, ?, ?, ?, ?, ?, ?)"
+	sqlStr := "insert into showschdule (id, cinema_id, movie_id, date_day, start_time, end_time, price) values (?, ?, ?, ?, ?, ?, ?)"
 	rs, err := tx.Exec(sqlStr, p.ID, p.CinemaId, p.MovieId, p.DateDay, p.StartTime, p.EndTime, p.Price)
 	if err != nil {
+		fmt.Println("insert error")
 		return false, err
 	}
 
 	n, err := rs.RowsAffected()
 	if err != nil {
+		fmt.Println("row")
 		return false, err
 	}
 
-	if n!=1 {
+	if n != 1 {
 		return false, errors.New("exec sqlStr failed, insert showschedule failed")
 	}
 
@@ -122,6 +139,7 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	sqlStr2 := "select id, cinema_id, roww, coll, status from seat_info where status = 1 and cinema_id = ?"
 	err = db.Select(&Seats.List, sqlStr2, p.CinemaId)
 	if err != nil {
+		fmt.Println("select error")
 		return false, err
 	}
 
@@ -132,15 +150,16 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 
 		rs, err := tx.Exec(sqlStr3, id, p.ID, p.CinemaId, p.MovieId, it.ID)
 		if err != nil {
+			fmt.Println("insert into ticket error")
 			return false, err
 		}
-	
+
 		n, err := rs.RowsAffected()
 		if err != nil {
 			return false, err
 		}
-	
-		if n!=1 {
+
+		if n != 1 {
 			return false, errors.New("exec sqlStr failed, insert ticket failed")
 		}
 	}
@@ -157,13 +176,13 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 
 func GetAllScheduleByMovieId(page_num, page_size int, movie_id int64) (*models.ScheduleList, error) {
 	Sches := new(models.ScheduleList)
-	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, s.is_show, s.price, c.cinema_name, c.tag  from showschdule s,cinema_info c where s.movie_id = ? and c.is_delete = -1 and s.cinema_id = c.id limit ?,?"
+	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, s.price, c.cinema_name, c.tag  from showschdule s,cinema_info c where s.movie_id = ? and c.is_delete = -1 and s.cinema_id = c.id limit ?,?"
 	err := db.Select(&Sches.List, sqlStr, movie_id, (page_num-1)*page_size, page_size)
-	
+
 	if err != nil {
 		return nil, err
 	}
-	
+
 	sqlStr1 := "select count(id) from showschdule where is_delete = -1 and movie_id = ?"
 
 	err = db.Get(&Sches.Total, sqlStr1, movie_id)
@@ -176,13 +195,13 @@ func GetAllScheduleByMovieId(page_num, page_size int, movie_id int64) (*models.S
 
 func GetAllScheduleByCinemaId(page_num, page_size int, cinema_id int64) (*models.ScheduleList, error) {
 	Sches := new(models.ScheduleList)
-	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, s.is_show, s.price, c.cinema_name, c.tag  from showschdule s,cinema_info c where s.cinema_id = c.id and s.is_delete = -1 and s.cinema_id = ? limit ?,?"
+	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, s.price, c.cinema_name, c.tag  from showschdule s,cinema_info c where s.cinema_id = c.id and s.is_delete = -1 and s.cinema_id = ? limit ?,?"
 	err := db.Select(&Sches.List, sqlStr, cinema_id, (page_num-1)*page_size, page_size)
-	
+
 	if err != nil {
 		return nil, err
 	}
-	
+
 	sqlStr1 := "select count(id) from showschdule where is_delete = -1 and cinema_id = ?"
 
 	err = db.Get(&Sches.Total, sqlStr1, cinema_id)
@@ -196,16 +215,16 @@ func GetAllScheduleByCinemaId(page_num, page_size int, cinema_id int64) (*models
 
 func GetAllScheduleByMovieIdandDay(movie_id, day int64) (*models.ScheduleList, error) {
 	Sches := new(models.ScheduleList)
-	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, s.is_show, s.price, c.cinema_name, c.tag  from showschdule s,cinema_info c where s.movie_id = ? and s.date_day = ? and s.is_delete = -1 and s.cinema_id = c.id"
+	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, s.price, c.cinema_name, c.tag  from showschdule s,cinema_info c where s.movie_id = ? and s.date_day = ? and s.is_delete = -1 and s.cinema_id = c.id"
 	err := db.Select(&Sches.List, sqlStr, movie_id, day)
-	
+
 	if err != nil {
 		return nil, err
 	}
-	
-	sqlStr1 := "select count(id) from showschdule where is_delete = -1 and movie_id = ? and date_day = day"
 
-	err = db.Get(&Sches.Total, sqlStr1, movie_id)
+	sqlStr1 := "select count(id) from showschdule where is_delete = -1 and movie_id = ? and date_day = ?"
+
+	err = db.Get(&Sches.Total, sqlStr1, movie_id, day)
 
 	if err != nil {
 		return nil, err
@@ -213,9 +232,7 @@ func GetAllScheduleByMovieIdandDay(movie_id, day int64) (*models.ScheduleList, e
 	return Sches, nil
 }
 
-
-
-func UpdateSchedule(p *models.SCheduledata) ( bool, error) {
+func UpdateSchedule(p *models.SCheduledata) (bool, error) {
 
 	sqlStr1 := "select movie_time from movie_info where id = ?"
 	T := new(models.Sche)
@@ -224,11 +241,11 @@ func UpdateSchedule(p *models.SCheduledata) ( bool, error) {
 	if err != nil {
 		return false, nil
 	}
-	T.Time += 10  //预留10分钟退场和进场
+	T.Time += 10 //预留10分钟退场和进场
 	hour := T.Time / 60
 	minute := T.Time % 60
 
-	end_time := p.StartTime + int64(hour) * 100 + int64(minute)
+	end_time := p.StartTime + int64(hour)*100 + int64(minute)
 
 	if end_time > int64(2400) {
 		// err =  errors.New("the show time has expired, please reschedule")
@@ -242,10 +259,10 @@ func UpdateSchedule(p *models.SCheduledata) ( bool, error) {
 		return false, err
 	}
 
-	for _, it := range Sches.List{
+	for _, it := range Sches.List {
 		if p.StartTime <= it.StartTime && end_time > it.StartTime { //已有演出计划的开始时间在新演出计划的S-E之间
 			return false, nil
-		}else if p.StartTime > it.StartTime && p.StartTime < it.EndTime { //新演出计划的开始时间在已有演出计划的S-E之间
+		} else if p.StartTime > it.StartTime && p.StartTime < it.EndTime { //新演出计划的开始时间在已有演出计划的S-E之间
 			return false, nil
 		}
 	}
@@ -255,18 +272,18 @@ func UpdateSchedule(p *models.SCheduledata) ( bool, error) {
 	if err != nil {
 		return false, err
 	}
-	return true,nil
+	return true, nil
 }
 
 func DeleteSchedule(id int64) error {
 	sqlStr := "update showschdule set is_delete = 1 where id = ?"
-	_,err := db.Exec(sqlStr, id)
+	_, err := db.Exec(sqlStr, id)
 	if err != nil {
 		return err
 	}
 
 	sqlStr1 := "update ticket set is_delete = 1 where schedule_id = ?"
-	_,err = db.Exec(sqlStr1, id)
+	_, err = db.Exec(sqlStr1, id)
 	if err != nil {
 		return err
 	}
@@ -286,7 +303,7 @@ func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheDay, error) {
 }
 
 func GetAllScheduleMsgByDay(day int64) (*models.ScheduleList, error) {
-	
+
 	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, c.cinema_name, c.tag, m.name  from showschdule s,cinema_info c,movie_info m where s.is_delete = -1 and s.day = ?"
 	Sches := new(models.ScheduleList)
 	err := db.Select(&Sches.List, sqlStr, day)
