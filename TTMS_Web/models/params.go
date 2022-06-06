@@ -168,3 +168,17 @@ type ParamsSaleTicket struct {
 	IDList []string `json:"id_list" form:"id_list" binding:"required"`
 	UserID string   `json:"user_id" form:"user_id" binding:"required"`
 }
+
+type ParamsPayMoneyByOrderID struct {
+	ID string `json:"id" form:"id" binding:"required"`
+}
+
+type ParamsGetOrderByUserID struct {
+	ID       string `json:"id" form:"id" binding:"required"`
+	Num      int    `json:"num" form:"num" binding:"required"`
+	Page_num int    `json:"page_num" form:"page_num" binding:"required"`
+}
+
+type ParamsGetOrderByID struct {
+	ID string `json:"id" form:"id" binding:"required"`
+}
