@@ -7,7 +7,6 @@ import (
 	"TTMS/pkg/snowflake"
 	"TTMS/pkg/utils"
 	"fmt"
-	"time"
 
 	"go.uber.org/zap"
 )
@@ -60,7 +59,6 @@ func InsertCinema(p *models.CinemaInfo) error {
 				zap.L().Error(sqlStr)
 				return err1
 			}
-			time.Sleep(1 * time.Microsecond)
 		}
 	}
 	return nil
@@ -93,8 +91,8 @@ func DeleteCinemaByID(id int64) error {
 }
 
 func InsertSeat(p *models.SeatInfo) error {
-	sqlStr := "insert into seat_info (id, cinema_id, roww, coll, status) values (?, ?, ?, ?, ?)"
-	_, err := db.Exec(sqlStr, p.ID, p.CinemaID, p.Row, p.Col, p.Status)
+	sqlStr := "insert into seat_info (id, cinema_id, roww, coll, status, flag) values (?, ?, ?, ?, ?, ?)"
+	_, err := db.Exec(sqlStr, p.ID, p.CinemaID, p.Row, p.Col, p.Status, 3)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err

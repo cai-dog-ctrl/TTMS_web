@@ -9,7 +9,7 @@ import (
 
 //有关票务的业务逻辑代码
 
-func SaleTicket(p *models.ParamsSaleTicket) (bool, error, float32) {
+func SaleTicket(p *models.ParamsSaleTicket) (bool, float32, error) {
 	order := new(models.Order)
 	order.UserID = utils.ShiftToNum64(p.UserID)
 	order.TicketList = p.IDList
