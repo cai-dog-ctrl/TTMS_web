@@ -73,5 +73,11 @@ func SetupRouter() *gin.Engine {
 	g.PUT("/Refund", controllers.Refund)
 	// g.GET("/GetTicketByMovieIdAndDateDay", controllers.GetTicketByMovieIdAndDateDay)
 	// g.GET("/GetTicketByCinemaIdAndDateDay", controllers.GetTicketByCinemaIdAndDateDay)
+
+	
+	//cat and manage order
+	g.GET("/GetOrderByID", controllers.GetOrderByID)
+	g.GET("/GetOrderByUserID/", controllers.GetOrderByUserID)
+	g.GET("/PayMoneyByOrderID/:ID", controllers.PayMoneyByOrderID)
 	return r
 }
