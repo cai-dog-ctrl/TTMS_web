@@ -7,7 +7,6 @@ import (
 	"TTMS/pkg/snowflake"
 	"TTMS/pkg/utils"
 	"fmt"
-	"time"
 
 	"go.uber.org/zap"
 )
@@ -60,7 +59,6 @@ func InsertCinema(p *models.CinemaInfo) error {
 				zap.L().Error(sqlStr)
 				return err1
 			}
-			time.Sleep(1 * time.Microsecond)
 		}
 	}
 	return nil
@@ -93,8 +91,8 @@ func DeleteCinemaByID(id int64) error {
 }
 
 func InsertSeat(p *models.SeatInfo) error {
-	sqlStr := "insert into seat_info (id, cinema_id, roww, coll, status) values (?, ?, ?, ?, ?)"
-	_, err := db.Exec(sqlStr, p.ID, p.CinemaID, p.Row, p.Col, p.Status)
+	sqlStr := "insert into seat_info (id, cinema_id, roww, coll, status, flag) values (?, ?, ?, ?, ?, ?)"
+	_, err := db.Exec(sqlStr, p.ID, p.CinemaID, p.Row, p.Col, p.Status, 3)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
@@ -122,15 +120,12 @@ func GetSeatByCinemaID(id int64) (*models.SeatList, error) {
 	for i := range n {
 		n[i] = make([]models.Seat, cinema.MaxCol)
 	}
-	fmt.Println(cinema.MaxRow, cinema.MaxCol)
 	for i := 0; i < cinema.MaxRow; i++ {
-		for j := 0; j < cinema.MaxCol; j++ {
-			sqlStr := fmt.Sprintf("select id, status from seat_info where cinema_id = %v and coll = %v and roww = %v", id, j, i)
-			err = db.Get(&n[i][j], sqlStr)
-			if err != nil {
-				zap.L().Error(sqlStr2)
-				return nil, err
-			}
+		sqlStr3 := fmt.Sprintf("select id, status from seat_info where cinema_id = %v and roww = %v", id, i)
+		err = db.Select(&n[i], sqlStr3)
+		if err != nil {
+			zap.L().Error(sqlStr3)
+			return nil, err
 		}
 	}
 	seatList.ID = id

@@ -11,7 +11,7 @@ import (
 
 //有关票务的持久化代码
 
-func SaleTicket(order *models.Order) (bool, error, float32) {
+func SaleTicket(order *models.Order) (bool, float32, error) {
 	day := time.Now().Day()
 	month := int(time.Now().Month())
 	year := time.Now().Year()
@@ -25,7 +25,7 @@ func SaleTicket(order *models.Order) (bool, error, float32) {
 
 	tx, err := db.Begin()
 	if err != nil {
-		return false, err, 0
+		return false, 0, err
 	}
 
 	defer func() {
@@ -48,19 +48,19 @@ func SaleTicket(order *models.Order) (bool, error, float32) {
 		err1 := db.Get(&ticket.Status, sqlStr1)
 		if err1 != nil || ticket.Status == 1 {
 			zap.L().Error(sqlStr1)
-			return false, err1, 0
+			return false, 0, err1
 		}
 		sqlStr := "update ticket set status = ? where id = ? and status = -1"
 		_, err := db.Exec(sqlStr, 1, ticket_id)
 		if err != nil {
 			zap.L().Error(sqlStr)
-			return false, err, 0
+			return false, 0, err
 		}
 		sqlStr3 := fmt.Sprintf("select showschdule.price from showschdule, ticket where ticket.id = %v and ticket.schedule_id = showschdule.id", ticket_id)
 		err3 := db.Get(&schdule.Price, sqlStr3)
 		if err3 != nil {
 			zap.L().Error(sqlStr3)
-			return false, err3, 0
+			return false, 0, err3
 		}
 		// discount
 		// sqlStr4 := fmt.Sprintf("select discount from user where id = %v", order.UserID)
@@ -76,12 +76,12 @@ func SaleTicket(order *models.Order) (bool, error, float32) {
 		_, err2 := db.Exec(sqlStr2, order_id, order.UserID, ticket_id, date, now, -1, TicketPrice)
 		if err2 != nil {
 			zap.L().Error(sqlStr)
-			return false, err2, 0
+			return false, 0, err2
 		}
 
 	}
 
-	return true, nil, TotalPrice
+	return true, TotalPrice, nil
 }
 
 func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
@@ -94,7 +94,7 @@ func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
 	return p, nil
 }
 
-func GetTicketByMovieIdAndDateDay(movie_id, date_day int64) ( *models.Ticks, error) {
+func GetTicketByMovieIdAndDateDay(movie_id, date_day int64) (*models.Ticks, error) {
 	p := new(models.Sche)
 	sqlStr := "select id from showschdule where movie_id = ? and date_day = ? and is_delete = -1"
 	err := db.Select(&p.Id, sqlStr, movie_id, date_day)
@@ -111,7 +111,7 @@ func GetTicketByMovieIdAndDateDay(movie_id, date_day int64) ( *models.Ticks, err
 	return p1, nil
 }
 
-func GetTicketByCinemaIdAndDateDay(cinema_id, date_day int64) ( *models.Ticks, error) {
+func GetTicketByCinemaIdAndDateDay(cinema_id, date_day int64) (*models.Ticks, error) {
 	p := new(models.Sche)
 	sqlStr := "select id from showschdule where cinema_id = ? and date_day = ? and is_delete = -1"
 	err := db.Select(&p.Id, sqlStr, cinema_id, date_day)
@@ -127,4 +127,3 @@ func GetTicketByCinemaIdAndDateDay(cinema_id, date_day int64) ( *models.Ticks, e
 	}
 	return p1, nil
 }
-
