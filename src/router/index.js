@@ -13,6 +13,7 @@ import MangerWelcome from '../views/MangerWelcome.vue'
 import MangerMovie from '../views/MangerMovie.vue'
 import MovieHall from '../views/MovieHall.vue'
 import MoviePlan from '../views/MoviePlan.vue'
+import DataStatistic from '../views/DataStatistic.vue'
 
 import Borad from '../views/Borad.vue'
 import Movie from '../views/Movie.vue'
@@ -36,6 +37,7 @@ const routes = [
       {path:'/manger_movie',component:MangerMovie},
       {path:'/moviehall',component: MovieHall},
       {path:'/movieplan',component: MoviePlan},
+      {path:'/datastatistic',component: DataStatistic},
 
 
     ]
