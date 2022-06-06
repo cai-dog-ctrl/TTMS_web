@@ -45,6 +45,7 @@ type ScoreRanking struct {
 	Name         string  `json:"name" db:"name"`
 	Score        float64 `json:"score" db:"score"`
 	CoverImgPath string  `json:"cover_img_path" db:"cover_img"`
+	RankImgPath  string  `json:"rank_img_path"`
 }
 
 type BoxOfficeRanking struct {
@@ -52,6 +53,7 @@ type BoxOfficeRanking struct {
 	Name         string  `json:"name" db:"name"`
 	BoxOffice    float64 `json:"box_office" db:"pf"`
 	CoverImgPath string  `json:"cover_img_path" db:"cover_img"`
+	RankImgPath  string  `json:"rank_img_path"`
 }
 
 type MovieList struct {
