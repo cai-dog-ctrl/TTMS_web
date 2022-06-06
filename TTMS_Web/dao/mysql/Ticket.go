@@ -85,12 +85,19 @@ func SaleTicket(order *models.Order) (bool, float32, error) {
 }
 
 func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
-	sqlStr := "select id, schedule_id, cinema_id, movie_id, seat_id, status from ticket where is_delete = -1"
+	sqlStr := "select id, schedule_id, cinema_id, movie_id, seat_id, status from ticket where is_delete = -1 and schedule_id = ?"
 	p := new(models.Ticks)
 	err := db.Select(&p.List, sqlStr, id)
 	if err != nil {
 		return nil, err
 	}
+
+	sqlStr1 := "select roww from cinema_info where id = ?"
+	err = db.Get(&p.RowNum, sqlStr1, p.List[0].CinemaId)
+	if err != nil {
+		return nil, err
+	}
+
 	return p, nil
 }
 
@@ -126,4 +133,30 @@ func GetTicketByCinemaIdAndDateDay(cinema_id, date_day int64) (*models.Ticks, er
 		return nil, err
 	}
 	return p1, nil
+}
+
+func Refund(ticket_id, user_id int64) error {
+
+	sqlStr1 := "update orfer_info set is_delete = 1 where user_id = ? and tocket_id = ? and is_delete = -1"
+	_, err := db.Exec(sqlStr1, user_id, ticket_id)
+	if err != nil {
+		zap.L().Error(sqlStr1)
+		return err
+	}
+
+	sqlStr2 := "update ticket set status = -1 where id = ?"
+	_, err = db.Exec(sqlStr2, ticket_id)
+	if err != nil {
+		sqlStr3 := "update orfer_info set is_delete = -1 where user_id = ? and tocket_id = ? and is_delete = -1"
+		_, err := db.Exec(sqlStr3, user_id, ticket_id)
+		if err != nil {
+			zap.L().Error(sqlStr3)
+			return err
+		}
+
+		zap.L().Error(sqlStr2)
+		return err
+	}
+
+	return nil
 }

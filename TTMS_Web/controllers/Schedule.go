@@ -4,6 +4,8 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
+	"strings"
+
 	//"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -121,9 +123,13 @@ func GetAllScheduleMsgByCinemaId(c *gin.Context) {
 // 根据电影ID和日期获取演出计划
 func GetAllScheduleByMovieIdandDay(c *gin.Context) {
 	movie_id := utils.ShiftToNum64(c.Query("movie_id"))
-	day := utils.ShiftToNum64(c.Query("date_day"))
+	day := c.Query("date_day")
 
-	p1, err := service.GetAllScheduleByMovieIdandDay(movie_id, day)
+	str_day  := strings.Split(day, "-")
+	date_day := utils.ShiftToNum(str_day[0])*10000 + utils.ShiftToNum(str_day[1])*100 + utils.ShiftToNum(str_day[2]) 
+
+
+	p1, err := service.GetAllScheduleByMovieIdandDay(movie_id, int64(date_day))
 
 	if err != nil {
 		zap.L().Error("service.GetAllScheduleByMovieIdandDay error", zap.Error(err))

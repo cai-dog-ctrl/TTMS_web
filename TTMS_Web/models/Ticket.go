@@ -22,6 +22,7 @@ type Tick struct {
 }
 
 type Ticks struct {
+	RowNum 	int 	`json:"row"`
 	Total 	int		`json:"total"`
 	List 	[]Tick 	`json:"list"`
 }
@@ -38,4 +39,8 @@ type TickRet struct {
 type TickRets struct {
 	Total 	int			`json:"total"`
 	List 	[]TickRet 	`json:"list"`
+}
+
+type TickRetss struct {
+	List 	[][]TickRet 	`json:"list"`
 }

@@ -29,7 +29,7 @@ type ScheduleRet struct {
 	ID         string  `json:"id"`
 	CinemaId   string  `json:"cinema_id"`
 	MovieId    string  `json:"movie_id"`
-	MovieName  string  `json:"name"`
+	MovieName  string  `json:"movie_name"`
 	DateDay    string  `json:"date_day"`
 	StartTime  string  `json:"start_time"`
 	EndTime    string  `json:"end_time"`
