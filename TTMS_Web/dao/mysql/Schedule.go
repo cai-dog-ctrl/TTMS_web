@@ -93,10 +93,8 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 
 		for _, it := range Sches.List {
 			if p.StartTime <= it.StartTime && p.EndTime > it.StartTime { //已有演出计划的开始时间在新演出计划的S-E之间
-				fmt.Println("BBB")
 				return false, nil
 			} else if p.StartTime > it.StartTime && p.StartTime < it.EndTime { //新演出计划的开始时间在已有演出计划的S-E之间
-				fmt.Println("CCC")
 				return false, nil
 			}
 		}
@@ -136,7 +134,7 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	}
 
 	Seats := new(models.Seats)
-	sqlStr2 := "select id, cinema_id, roww, coll, status from seat_info where status = 1 and cinema_id = ?"
+	sqlStr2 := "select id, cinema_id, roww, coll, status from seat_info where cinema_id = ?"
 	err = db.Select(&Seats.List, sqlStr2, p.CinemaId)
 	if err != nil {
 		fmt.Println("select error")
@@ -144,8 +142,15 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	}
 
 	for _, it := range Seats.List {
-		sqlStr3 := "insert into ticket (id, schedule_id, cinema_id, movie_id, seat_id) values (?, ?, ?, ?, ?)"
+		sqlStr3 := ""
 
+		if it.Status == 1{
+			sqlStr3 = "insert into ticket (id, schedule_id, cinema_id, movie_id, seat_id) values (?, ?, ?, ?, ?)"
+		}else if it.Status == 2 {
+			sqlStr3 = "insert into ticket (id, schedule_id, cinema_id, movie_id, seat_id, status) values (?, ?, ?, ?, ?, -2)"
+		}else if it.Status == 3 {
+			sqlStr3 = "insert into ticket (id, schedule_id, cinema_id, movie_id, seat_id, status) values (?, ?, ?, ?, ?, -3)"
+		}
 		id := snowflake.GenID()
 
 		rs, err := tx.Exec(sqlStr3, id, p.ID, p.CinemaId, p.MovieId, it.ID)
