@@ -49,11 +49,11 @@
 
             <!-- 分页区域 -->
             <div class="page">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="queryInfo.Page_num" :page-sizes="[2, 5, 10, 15]" :page-size="queryInfo.Num"
-                layout="total,sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
-        </div>
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                    :current-page="queryInfo.Page_num" :page-sizes="[2, 5, 10, 15]" :page-size="queryInfo.Num"
+                    layout="total,sizes, prev, pager, next, jumper" :total="total">
+                </el-pagination>
+            </div>
         </el-card>
 
         <!-- 添加用户的对话框 -->
@@ -123,7 +123,7 @@
 
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary">确定</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
             </div>
         </el-dialog>
 
@@ -134,6 +134,10 @@
 export default {
     data() {
         return {
+            seat: {
+                id: '',
+                flag:3,
+            },
             message_get: "拼命加载中",
             message_updata: "正在更改",
             loading: false,
@@ -228,10 +232,11 @@ export default {
                 }
             }
         },
-        point(id) {
+        async point(id) {
             for (let i = 0; i < this.map.length; i++) {
                 for (let j = 0; j < this.map[0].length; j++) {
                     if (id === this.map[i][j].id) {
+                        let t = this.map[i][j].status
                         if (this.map[i][j].status === 1) {
                             this.map[i][j].status = 2
                         } else if (this.map[i][j].status === 2) {
@@ -239,6 +244,16 @@ export default {
                         } else {
                             this.map[i][j].status = 1
                         }
+                        this.seat.id = id;
+                        this.seat["status"] = this.map[i][j].status
+                        const { data: res } = await this.$http.put('ModifySeat',
+                            this.seat
+                        )
+                        if (res.code != 1000) {
+                             this.map[i][j].status = t
+                            return this.$message.error('修改失败！');
+                        }
+                       
                     }
                 }
             }
