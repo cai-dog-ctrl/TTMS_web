@@ -62,6 +62,7 @@ type OrderData struct {
 	MovieName    string			`db:"name" json:"movie_name"`
 	CoverImgPath string			`db:"img" json:"move_img"`
 	TotalPrice   float32		`json:"movie_total_price"`
+	Rate  		 int 			`json:"rate"`
 }
 
 type OrderDataList struct {

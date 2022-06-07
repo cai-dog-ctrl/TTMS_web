@@ -180,7 +180,7 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 
 func GetAllScheduleByMovieId(page_num, page_size int, movie_id int64) (*models.ScheduleList, error) {
 	Sches := new(models.ScheduleList)
-	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, s.price, c.cinema_name, c.tag  from showschdule s,cinema_info c where s.movie_id = ? and c.is_delete = -1 and s.cinema_id = c.id limit ?,?"
+	sqlStr := "select s.id, s.cinema_id, s.movie_id, s.date_day, s.start_time, s.end_time, s.price, c.cinema_name, c.tag  from showschdule s,cinema_info c where s.is_delete = -1 and s.movie_id = ? and c.is_delete = -1 and s.cinema_id = c.id limit ?,?"
 	err := db.Select(&Sches.List, sqlStr, movie_id, (page_num-1)*page_size, page_size)
 
 	if err != nil {
