@@ -90,7 +90,7 @@ func GetAllMsg(c *gin.Context) {
 	pageSize := utils.ShiftToNum(c.Query("page_size"))
 	key_word := c.Query("key_word")
 
-	p1, err := service.GetAllMsg(pageNum,pageSize,key_word)
+	p1, err := service.GetAllMsg(pageNum, pageSize, key_word)
 
 	if err != nil {
 		zap.L().Error("service.GetAllMsg error", zap.Error(err))
@@ -103,7 +103,7 @@ func GetAllMsg(c *gin.Context) {
 
 // GetUserMsgById 获取所有信息
 func GetUserMsgById(c *gin.Context) {
-	p:=c.Param("id")
+	p := c.Param("id")
 	if p == "" {
 		ResponseError(c, CodeInvalidParams)
 		zap.L().Error("GetUserMsgById getid Error")
@@ -116,7 +116,7 @@ func GetUserMsgById(c *gin.Context) {
 		ResponseErrorWithMsg(c, CodeServerBusy, "获取失败")
 		return
 	}
-	id:=utils.ShiftToStringFromInt64(p1.ID)
+	id := utils.ShiftToStringFromInt64(p1.ID)
 	ResponseSuccess(c, gin.H{
 		"id":           id,
 		"username":     p1.Username,
@@ -148,11 +148,10 @@ func UpdateMsg(c *gin.Context) {
 	ResponseSuccess(c, "修改成功")
 }
 
-
-func GetPictureByFileName(c *gin.Context){
-	img:=c.Param("img")
-	if img==""{
-		ResponseError(c,CodeInvalidParams)
+func GetPictureByFileName(c *gin.Context) {
+	img := c.Param("img")
+	if img == "" {
+		ResponseError(c, CodeInvalidParams)
 		zap.L().Error("GetFile Vaild param")
 		return
 	}
