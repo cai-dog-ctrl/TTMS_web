@@ -6,8 +6,6 @@ import (
 	"TTMS/service"
 	"strings"
 
-	//"fmt"
-
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -75,13 +73,16 @@ func UpdateSchedule(c *gin.Context) {
 }
 
 func DeleteSchedule(c *gin.Context) {
-	id := utils.ShiftToNum64(c.Query("id"))
+	id := utils.ShiftToNum64(c.Param("id"))
 
-	err := service.DeleteSchedule(id)
+	ret, err := service.DeleteSchedule(id)
 	if err != nil {
 		zap.L().Error("service.DeleteSchedule error", zap.Error(err))
 		ResponseErrorWithMsg(c, CodeServerBusy, "删除失败")
 		return 
+	}else if !ret {
+		ResponseSuccess(c, "删除失败，票已售出")
+		return
 	}
 	ResponseSuccess(c, "删除成功")
 }
@@ -157,7 +158,7 @@ func GetAllScheduleDayByMovieId(c *gin.Context) {
 	ResponseSuccess(c, p1)
 }
 
-// 更加日期获取所有演出计划
+// 通过日期获取所有演出计划
 func GetAllScheduleMsgByDay(c *gin.Context) {
 	day := c.Query("date_day")
 
@@ -174,8 +175,8 @@ func GetAllScheduleMsgByDay(c *gin.Context) {
 
 
 func GetScheduleMsgById(c *gin.Context) {
-	ID := c.Query("id")
-
+	ID := c.Param("id")
+	// ID := c.Query("id")
 	p1, err := service.GetScheduleMsgById(ID)
 
 	if err != nil {
