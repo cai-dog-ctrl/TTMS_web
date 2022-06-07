@@ -69,6 +69,7 @@ export default {
         },
         logout() {
             window.sessionStorage.removeItem('token');
+            window.sessionStorage.removeItem('userid')
             this.IsLogin = false
         },
         toBorad() {

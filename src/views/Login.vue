@@ -79,7 +79,9 @@ export default {
                 if (res.code !== 1000) return this.$message.error('登录失败');
                 this.$message.success('登录成功');
                 window.sessionStorage.setItem("token", res.data.token);
-                window.sessionStorage.setItem("userid", res.data.userId);
+                window.sessionStorage.setItem("userid", res.data.userid);
+                console.log(res.data);
+
                 if(res.data.identity===1){
                     this.$router.push('/home');
                 }else{
