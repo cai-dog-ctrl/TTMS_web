@@ -99,7 +99,7 @@
                     </el-form-item>
                     <el-form-item label="封面图片" prop="name">
                         <el-upload v-model="addForm.file" class="upload-demo" drag
-                            action="http://127.0.0.1:8080/api/AddNewMovie" :data="addForm" name="img" :limit="1" ref="upload"
+                            action="http://127.0.0.1:8080/api/AddNewMovie" :data="addForm" name="img" :limit="2" ref="upload"
                             :auto-upload="false">
                             <i class="el-icon-upload"></i>
                             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
