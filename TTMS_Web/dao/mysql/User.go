@@ -3,17 +3,17 @@ package mysql
 import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
-	//"fmt"
 	//"github.com/gin-gonic/gin"
 )
 
 // GetUserByUsername 获取所有信息
 func GetUserByUsername(username string) (*models.User, error) {
 	user := new(models.User)
+	user.ID = 0
 	sqlStr := "select id, username, password, email, phone_number, identity, is_login, is_delete from user where username = ?"
 	err := db.Get(user, sqlStr, username)
 	if err != nil {
-		return nil, err
+		return user, err
 	}
 	return user, nil
 }
