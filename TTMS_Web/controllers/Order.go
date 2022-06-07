@@ -48,16 +48,48 @@ func PayMoneyByOrderID(c *gin.Context) {
 
 func CountAllSales(c *gin.Context) {
 
+	p, err := service.CountAllSales()
+	if err != nil {
+		zap.L().Error("service.CountAllSales ERROR", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, p)
 }
 
 func CountSalesByDay(c *gin.Context) {
 
+	day := c.Query("day")
+
+	p, err := service.CountSalesByDay(day)
+	if err != nil {
+		zap.L().Error("service.CountSalesByDay ERROR", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, p)
 }
 
 func CountSalesByMonth(c *gin.Context) {
+	month := c.Query("month")
 
+	p, err := service.CountSalesByMonth(month)
+	if err != nil {
+		zap.L().Error("service.CountSalesByMonth ERROR", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, p)
 }
 
 func CountSalesByYear(c *gin.Context) {
+	year := c.Query("year")
 
+	p, err := service.CountSalesByYear(year)
+	if err != nil {
+		zap.L().Error("service.CountSalesByYear ERROR", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, p)
 }

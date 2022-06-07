@@ -117,3 +117,35 @@ func GetOrderByID(id int64) (*models.OrderFrontRet, error) {
 	}
 	return &orderRet, nil
 }
+
+func CountAllSales() (*models.OrderDataList, error) {
+	sqlStr1 := "select id from showschdule"
+	p1 := new(models.MovieIds)
+	err := db.Select(&p1.IDS, sqlStr1)
+	if err != nil && len(p1.IDS) != 0{
+		return nil, err
+	}
+	p2 := new(models.OrderDataList)
+	// for _, it := range p1.IDS {
+
+	// }
+	return p2, nil
+}
+
+func CountSalesByDay(day string) (*models.OrderDataList, error) {
+	p2 := new(models.OrderDataList)
+	
+
+	return p2, nil
+}
+
+func CountSalesByMonth(month string) (*models.OrderDataList, error) {
+	p2 := new(models.OrderDataList)
+
+	return p2, nil
+}
+
+func CountSalesByYear(year string) (*models.OrderDataList, error) {
+	p2 := new(models.OrderDataList)
+	return p2, nil
+}
