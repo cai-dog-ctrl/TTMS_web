@@ -287,21 +287,24 @@ func UpdateSchedule(p *models.SCheduledata) (bool, error) {
 
 func DeleteSchedule(id int64) (bool ,error) {
 
-	sqlStr2 := "select count(id) from ticket where schedule_id = ?"
+	sqlStr2 := "select count(id) from ticket where schedule_id = ? and status = 1 and is_delete = -1"
 	ret := 0 
 	err := db.Get(ret, sqlStr2)
-	if err != nil && ret == 0{
+	if err != nil && ret != 0{
+		fmt.Println("don't delete this schedule,because ticket had saled, id = ", id)
 		return  false, nil
 	} 
 	sqlStr := "update showschdule set is_delete = 1 where id = ?"
 	_, err = db.Exec(sqlStr, id)
 	if err != nil {
+		fmt.Println("delete schedule in table failed")
 		return false,err
 	}
 
 	sqlStr1 := "update ticket set is_delete = 1 where schedule_id = ?"
 	_, err = db.Exec(sqlStr1, id)
 	if err != nil {
+		fmt.Println("delete this schedule's ticket fail")
 		return false, err
 	}
 
