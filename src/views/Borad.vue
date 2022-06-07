@@ -9,7 +9,7 @@
                         </div>
                         <div class="model_mix">
                             <div class="pic">
-                                <img src="https://p0.pipi.cn/mmdb/25bfd6020307e150c87e127cdd2e03061fbf6.jpg?imageView2/1/w/464/h/644"
+                                <img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+item.cover_img_path"
                                     alt="">
                             </div>
                             <div class="tex">
@@ -31,7 +31,7 @@
                         </div>
                         <div class="model_mix">
                             <div class="pic">
-                                <img src="https://p0.pipi.cn/mmdb/25bfd6020307e150c87e127cdd2e03061fbf6.jpg?imageView2/1/w/464/h/644"
+                                <img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+item.cover_img_path"
                                     alt="">
                             </div>
                             <div class="tex">
@@ -167,6 +167,7 @@ export default {
     height: 300px;
 
     img {
+        width: 216px;
         height: 300px;
     }
 }

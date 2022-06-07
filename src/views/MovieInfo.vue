@@ -3,7 +3,7 @@
     <div class="banner">
       <div class="flexa">
         <div class="imag"><img class="image"
-            src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644" alt="">
+            :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+movieInfo.cover_img_path" alt="">
         </div>
         <div class="name">
           <h1>{{ movieInfo.name }}</h1>

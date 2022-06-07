@@ -21,7 +21,7 @@
                 <h1>我的订单</h1>
             </div>
             <el-divider><i class="el-icon-mobile-phone"></i></el-divider>
-            <div class="order_items">
+            <div class="order_items" >
                 <div class="order_items_head">
                     <div class="order_items_time">
                         <span>2022-4-8</span>
@@ -63,8 +63,19 @@
 export default {
     data() {
         return {
-
+            page_num:1,
+            page_size:2,
+            query:{
+                ID:'',
+                Num:'3',
+                Page_num:'1',
+            },
+            orderList:{},
         }
+    },
+    created(){
+        
+        this.getOrderList();
     },
     methods: {
         goto_user() {
@@ -72,6 +83,17 @@ export default {
         },
         goto_order_info(id){
             this.$router.push('/orderInfo/'+id)
+        },
+        async getOrderList(){
+            this.query.ID=window.sessionStorage.getItem("userId")
+            if(this.query.ID==null){
+                return this.$message.error('获取信息失败')
+            }
+            console.log(this.query);
+            const { data: res }= await this.$http.get('GetOrderByUserID',{params:this.query})
+           
+            this.orderList=res.data.OrderFrontList
+            console.log(res);
         }
     }
 }
