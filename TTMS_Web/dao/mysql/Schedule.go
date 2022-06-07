@@ -346,18 +346,21 @@ func GetScheduleMsgById(ID int64) (*models.ScheduleOut, error) {
 	Sche := new(models.ScheduleOut)
 	err := db.Get(Sche, sqlStr, ID)
 	if err != nil {
-		return nil, err
+		fmt.Println("don't have this schedule", ID)
+		return nil, errors.New("don't have this schedule")
 	}
 
 	sqlStr = "select cinema_name, tag from cinema_info where id = ?"
 	err = db.Get(Sche, sqlStr, Sche.CinemaId)
 	if err != nil {
+		fmt.Println("BBB")
 		return nil, err
 	}
 
 	sqlStr = "select name from movie_info where id = ?"
 	err = db.Get(Sche, sqlStr, Sche.MovieId)
 	if err != nil {
+		fmt.Println("CCC")
 		return nil, err
 	}
 

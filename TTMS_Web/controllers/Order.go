@@ -59,7 +59,7 @@ func CountAllSales(c *gin.Context) {
 
 func CountSalesByDay(c *gin.Context) {
 
-	day := c.Query("day")
+	day := c.Param("day")
 
 	p, err := service.CountSalesByDay(day)
 	if err != nil {
@@ -71,7 +71,7 @@ func CountSalesByDay(c *gin.Context) {
 }
 
 func CountSalesByMonth(c *gin.Context) {
-	month := c.Query("month")
+	month := c.Param("month")
 
 	p, err := service.CountSalesByMonth(month)
 	if err != nil {
@@ -83,7 +83,7 @@ func CountSalesByMonth(c *gin.Context) {
 }
 
 func CountSalesByYear(c *gin.Context) {
-	year := c.Query("year")
+	year := c.Param("year")
 
 	p, err := service.CountSalesByYear(year)
 	if err != nil {

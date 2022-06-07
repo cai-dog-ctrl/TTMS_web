@@ -5,7 +5,7 @@ import (
 	"TTMS/pkg/utils"
 	"TTMS/service"
 	"strings"
-
+	"errors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -178,11 +178,13 @@ func GetScheduleMsgById(c *gin.Context) {
 	ID := c.Param("id")
 	// ID := c.Query("id")
 	p1, err := service.GetScheduleMsgById(ID)
-
+	if err == errors.New("don't have this schedule") {
+		ResponseErrorWithMsg(c, CodeServerBusy, "此电影已被删除")
+		return
+	}
 	if err != nil {
 		zap.L().Error("service.GetScheduleMsgById error", zap.Error(err))
 		ResponseErrorWithMsg(c, CodeServerBusy, "获取失败")
-
 		return
 	}
 	ResponseSuccess(c, p1)

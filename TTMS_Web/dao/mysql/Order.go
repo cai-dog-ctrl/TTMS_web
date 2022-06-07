@@ -121,18 +121,21 @@ func GetOrderByID(id int64) (*models.OrderFrontRet, error) {
 }
 
 func CountAllSales() (*models.OrderDataList, error) {
-	sqlStr1 := "select id, name, img from showschdule"
+	sqlStr1 := "select id, name, img from movie_info"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
-	if err != nil && len(p1.IDS) != 0{
+	if err != nil && len(p1.IDS) == 0{
+		fmt.Println("don't have schedules in table")
 		return nil, err
 	}
 	p2 := new(models.OrderDataList)
 	for _, it := range p1.IDS {
-		sqlStr2 := "select count(price) from order_info where movie_id = ?"
+		sqlStr2 := "select sum(price) from order_info where movie_id = ? and is_delete = -1 and status = 1"
 		p := new(models.OrderData)
+		p.TotalPrice = 0
 		err = db.Get(&p.TotalPrice, sqlStr2, it.Id)
-		if err != nil {
+		if err != nil && p.TotalPrice != 0{
+			fmt.Println( it.Id, "is" , p.TotalPrice)
 			return p2, err
 		}
 		p.CoverImgPath 	= it.CoverImgPath
@@ -144,7 +147,7 @@ func CountAllSales() (*models.OrderDataList, error) {
 }
 
 func CountSalesByDay(day string) (*models.OrderDataList, error) {
-	sqlStr1 := "select id, name, img from showschdule"
+	sqlStr1 := "select id, name, img from movie_info"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
 	if err != nil && len(p1.IDS) != 0{
@@ -153,7 +156,7 @@ func CountSalesByDay(day string) (*models.OrderDataList, error) {
 
 	p2 := new(models.OrderDataList)
 	for _, it := range p1.IDS {
-		sqlStr2 := "select count(price) from order_info where movie_id = ? and date = ? and status = 1"
+		sqlStr2 := "select sum(price) from order_info where movie_id = ? and date = ? and status = 1 and is_delete = -1"
 		p := new(models.OrderData)
 		p.TotalPrice = 0
 		err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day)
@@ -186,8 +189,9 @@ func CountSalesByMonth(month string) (*models.OrderDataList, error) {
 	for _, it := range p1.IDS {
 		sqlStr2 := "select count(price) from order_info where movie_id = ? and date > ? and date < ? and status = 1"
 		p := new(models.OrderData)
+		p.TotalPrice = 0
 		err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day_start, day_end)
-		if err != nil {
+		if err != nil && p.TotalPrice != 0{
 			return p2, err
 		}
 		p.CoverImgPath 	= it.CoverImgPath
