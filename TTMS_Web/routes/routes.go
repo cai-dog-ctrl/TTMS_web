@@ -70,8 +70,10 @@ func SetupRouter() *gin.Engine {
 	//sale
 	g.PUT("/SaleTicket", controllers.SaleTicket)
 	g.GET("/GetTicketByScheduleId", controllers.GetTicketByScheduleId)
-	g.GET("/GetTicketByMovieIdAndDateDay", controllers.GetTicketByMovieIdAndDateDay)
-	g.GET("/GetTicketByCinemaIdAndDateDay", controllers.GetTicketByCinemaIdAndDateDay)
+	g.PUT("/Refund", controllers.Refund)
+	// g.GET("/GetTicketByMovieIdAndDateDay", controllers.GetTicketByMovieIdAndDateDay)
+	// g.GET("/GetTicketByCinemaIdAndDateDay", controllers.GetTicketByCinemaIdAndDateDay)
+
 	
 	//cat and manage order
 	g.GET("/GetOrderByID/:ID", controllers.GetOrderByID)
