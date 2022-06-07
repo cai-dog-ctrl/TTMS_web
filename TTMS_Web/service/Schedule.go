@@ -368,9 +368,9 @@ func GetScheduleMsgById(ID string) (*models.ScheduleRet, error) {
 	end_time += ":"
 	end_time += utils.ShiftToStringFromInt64(int64(p.EndTime % 100))
 
-	p1.DateDay = utils.ShiftToStringFromInt64(p.DateDay)
-	p1.StartTime = utils.ShiftToStringFromInt64(p.StartTime)
-	p1.EndTime = utils.ShiftToStringFromInt64(p.EndTime)
+	p1.DateDay = date_day
+	p1.StartTime = start_time
+	p1.EndTime = end_time
 	p1.MovieId = utils.ShiftToStringFromInt64(p.MovieId)
 	p1.MovieName = p.MovieName
 	p1.Price = p.Price
