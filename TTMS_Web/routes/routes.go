@@ -40,6 +40,7 @@ func SetupRouter() *gin.Engine {
 	//manage movie
 	g.POST("/AddNewMovie", controllers.AddNewMovie)
 	g.PUT("/ModifyMovie", controllers.ModifyMovieByID)
+	g.POST("/UploadPicture", controllers.UploadPicture)
 
 	//manage cinema
 	g.GET("/GetCinemaByID/:ID", controllers.GetCinemaByID)
