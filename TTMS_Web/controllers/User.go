@@ -11,7 +11,7 @@ import (
 )
 
 //有关用户的controller代码
-const RootPath="./img/"
+// const RootPath="./img/"
 func Login(c *gin.Context){
 	p:=new(models.ParamsLogin)
 	fmt.Println(p)
@@ -153,5 +153,7 @@ func GetPictureByFileName(c *gin.Context){
 		zap.L().Error("GetFile Vaild param")
 		return
 	}
-	c.File(RootPath+img)
+	RootPath := GetCurrentPath()
+	Path := fmt.Sprintf("%v/img/%v", RootPath, img)
+	c.File(Path)
 }
