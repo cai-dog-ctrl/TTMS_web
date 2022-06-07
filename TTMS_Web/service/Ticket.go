@@ -30,6 +30,7 @@ func GetTicketByScheduleId(id int64) ( *models.TickRetss, error) {
 			MovieId: utils.ShiftToStringFromInt64(it.MovieId),
 			SeatId: utils.ShiftToStringFromInt64(it.SeatId),
 			Status:  it.Status,
+			Price: it.Price,
 		})
 	}
 

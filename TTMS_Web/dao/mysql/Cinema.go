@@ -134,11 +134,19 @@ func GetSeatByCinemaID(id int64) (*models.SeatList, error) {
 }
 
 func ModifySeat(p *models.ParamsModifySeat) error {
-	sqlStr := ("update seat_info set status = ? where id = ?")
-	_, err := db.Exec(sqlStr, p.Status, utils.ShiftToNum64(p.ID))
+	sqlStr := ("update seat_info set status = ?, flag = ? where id = ?")
+	_, err := db.Exec(sqlStr, p.Status, p.Flag, utils.ShiftToNum64(p.ID))
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
+	}
+	if p.Status == 2 {
+		sqlStr1 := "update ticket set status = ? where ticket.seat_id = ?"
+		_, err1 := db.Exec(sqlStr1, p.Status, utils.ShiftToNum64(p.ID))
+		if err != nil {
+			zap.L().Error(sqlStr1)
+			return err1
+		}
 	}
 	return nil
 }

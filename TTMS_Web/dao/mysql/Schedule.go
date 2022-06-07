@@ -256,7 +256,7 @@ func UpdateSchedule(p *models.SCheduledata) (bool, error) {
 		return false, nil
 	}
 
-	sqlStr := "select id, cinema_id, movie_id, date_day, start_time, end_time, s.price, from showschdule where is_delete = -1 and cinema_id = ? and date_day = ?"
+	sqlStr := "select id, cinema_id, movie_id, date_day, start_time, end_time, price from showschdule where is_delete = -1 and cinema_id = ? and date_day = ?"
 	Sches := new(models.ScheduleList)
 	err = db.Select(&Sches.List, sqlStr, p.CinemaId, p.DateDay)
 	if err != nil {
@@ -273,6 +273,11 @@ func UpdateSchedule(p *models.SCheduledata) (bool, error) {
 
 	sqlStr2 := "update showschdule set date_day=?, start_time=?, end_time=?, price=? where id = ?"
 	_, err = db.Exec(sqlStr2, p.DateDay, p.StartTime, end_time, p.Price, p.ID)
+	if err != nil {
+		return false, err
+	}
+	sqlStr3 := "update showschdule set date_day=?, start_time=?, end_time=?, price=? where id = ?"
+	_, err = db.Exec(sqlStr3, p.DateDay, p.StartTime, end_time, p.Price, p.ID)
 	if err != nil {
 		return false, err
 	}

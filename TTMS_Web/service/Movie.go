@@ -7,6 +7,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/snowflake"
 	"TTMS/pkg/utils"
+	"fmt"
 )
 
 func GetFrontPage(p *models.ParamsFrontPage) (*models.FrontPage, error) {
@@ -80,6 +81,9 @@ func GetScoreRankingList(num int, page_num int) (*models.ScoreRankingList, error
 	if err != nil {
 		return nil, err
 	}
+	for i, entry := range scoreRankingList.ScoreRankingList {
+		entry.RankImgPath = fmt.Sprintf("%v.png", i)
+	}
 	return scoreRankingList, nil
 }
 
@@ -87,6 +91,9 @@ func GetBoxOfficeRankingList(num int, page_num int) (*models.BoxOfficeRankingLis
 	boxOfficeRankingList, err := mysql.GetBoxOfficeRankingList(num, page_num)
 	if err != nil {
 		return nil, err
+	}
+	for i, entry := range boxOfficeRankingList.BoxOfficeRankingList {
+		entry.RankImgPath = fmt.Sprintf("%v.png", i)
 	}
 	return boxOfficeRankingList, nil
 }

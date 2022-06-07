@@ -4,6 +4,10 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
+	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -180,4 +184,25 @@ func GetMovieSort(c *gin.Context) {
 		"showing": showing,
 		"order":   order,
 	})
+}
+
+func UploadPicture(c *gin.Context) {
+	file, err := c.FormFile("f1")
+	if err != nil {
+		zap.L().Error("UploadPicture Error", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+	}
+	pwd := GetCurrentPath()
+	dst := fmt.Sprintf("%v/img/%v", pwd, file.Filename)
+	c.SaveUploadedFile(file, dst)
+	ResponseSuccess(c, "upload picture successfully.")
+}
+
+func GetCurrentPath() string {
+	if ex, err := os.Executable(); err == nil {
+		return filepath.Dir(ex)
+	} else {
+		zap.L().Error("GetCurrentPath Error", zap.Error(err))
+	}
+	return ""
 }

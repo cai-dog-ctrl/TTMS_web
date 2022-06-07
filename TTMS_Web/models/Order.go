@@ -57,3 +57,24 @@ type OrderFrontListRet struct {
 	Total          int
 	OrderFrontList []*OrderFrontRet
 }
+
+type OrderData struct {
+	MovieName    string			`db:"name" json:"movie_name"`
+	CoverImgPath string			`db:"img" json:"move_img"`
+	TotalPrice   float32		`json:"movie_total_price"`
+}
+
+type OrderDataList struct {
+	Total 	float32				`json:"all_total_price"`
+	List 	[]OrderData
+}
+
+type MovieId struct {
+	Id 				int64 		`db:"id" json:"id"`
+	MovieName   	string		`db:"name" json"movie_name"`
+	CoverImgPath 	string		`db:"img" json:"img"`
+}
+
+type MovieIds struct {
+	IDS 	[]MovieId 			`json:"IDS""`
+}

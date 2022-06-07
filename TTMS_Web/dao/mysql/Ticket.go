@@ -62,6 +62,13 @@ func SaleTicket(order *models.Order) (bool, float32, error) {
 			zap.L().Error(sqlStr3)
 			return false, 0, err3
 		}
+		sqlStr4 := fmt.Sprintf("select showschdule.movie_id from showschdule, ticket where ticket.id = %v and ticket.schedule_id = showschdule.id", ticket_id)
+		err4 := db.Get(&schdule.MovieId, sqlStr4)
+		if err4 != nil {
+			zap.L().Error(sqlStr4)
+			return false, 0, err4
+		}
+
 		// discount
 		// sqlStr4 := fmt.Sprintf("select discount from user where id = %v", order.UserID)
 		// err4 := db.Get(&schdule.Price, sqlStr4)
@@ -72,8 +79,9 @@ func SaleTicket(order *models.Order) (bool, float32, error) {
 		//
 		//TicketPrice = schdule.Price
 		TotalPrice += TicketPrice
-		sqlStr2 := "insert into order_info (id, user_id, ticket_id, date, time, is_delete, price, status) values(?, ?, ?, ?, ?, ?, ?, ?)"
-		_, err2 := db.Exec(sqlStr2, order_id, order.UserID, ticket_id, date, now, -1, TicketPrice, -1)
+		MovieId := schdule.MovieId
+		sqlStr2 := "insert into order_info (id, user_id, ticket_id, date, time, is_delete, price, status, movie_id) values(?, ?, ?, ?, ?, ?, ?, ?, ?)"
+		_, err2 := db.Exec(sqlStr2, order_id, order.UserID, ticket_id, date, now, -1, TicketPrice, -1, MovieId)
 		if err2 != nil {
 			zap.L().Error(sqlStr)
 			return false, 0, err2
@@ -85,7 +93,7 @@ func SaleTicket(order *models.Order) (bool, float32, error) {
 }
 
 func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
-	sqlStr := "select id, schedule_id, cinema_id, movie_id, seat_id, status from ticket where is_delete = -1 and schedule_id = ?"
+	sqlStr := "select t.id, t.schedule_id, t.cinema_id, t.movie_id, t.seat_id, t.status, s.price from ticket t, showschdule s where is_delete = -1 and schedule_id = ? and m.id = t.movie_id"
 	p := new(models.Ticks)
 	err := db.Select(&p.List, sqlStr, id)
 	if err != nil {

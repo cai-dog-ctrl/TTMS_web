@@ -19,6 +19,7 @@ type Tick struct {
 	MovieId			int64	`db:"movie_id" json:"movie_id"`
 	SeatId 			int64	`db:"seat_id" json:"seat_id"`
 	Status 			int 	`db:"status" json:"status"`
+	Price			float32 `db:"price" json:"price"`
 }
 
 type Ticks struct {
@@ -34,6 +35,7 @@ type TickRet struct {
 	MovieId			string	`json:"movie_id"`
 	SeatId 			string	`json:"seat_id"`
 	Status 			int 	`json:"status"`
+	Price			float32 `json:"price"`
 }
 
 type TickRets struct {

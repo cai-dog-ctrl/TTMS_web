@@ -40,6 +40,7 @@ func SetupRouter() *gin.Engine {
 	//manage movie
 	g.POST("/AddNewMovie", controllers.AddNewMovie)
 	g.PUT("/ModifyMovie", controllers.ModifyMovieByID)
+	g.POST("/UploadPicture", controllers.UploadPicture)
 
 	//manage cinema
 	g.GET("/GetCinemaByID/:ID", controllers.GetCinemaByID)
@@ -79,5 +80,9 @@ func SetupRouter() *gin.Engine {
 	g.GET("/GetOrderByID/:ID", controllers.GetOrderByID)
 	g.GET("/GetOrderByUserID", controllers.GetOrderByUserID)
 	g.GET("/PayMoneyByOrderID/:ID", controllers.PayMoneyByOrderID)
+	g.GET("/CountAllSales", controllers.CountAllSales)
+	g.GET("/CountSalesByDay", controllers.CountSalesByDay)
+	g.GET("/CountSalesByMonth", controllers.CountSalesByMonth)
+	g.GET("/CountSalesByYear", controllers.CountSalesByYear)
 	return r
 }

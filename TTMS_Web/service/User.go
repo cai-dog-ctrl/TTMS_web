@@ -15,8 +15,11 @@ import (
 func Login(p *models.ParamsLogin) (*models.User, error) {
 
 	p1, err := mysql.GetUserByUsername(p.Username)
-	if err != nil {
+	if err != nil && p1.ID != 0{
 		return nil, err
+	}
+	if err != nil && p1.ID == 0 {
+		return p1, errors.New("无此用户")
 	}
 	if p.Username == p1.Username && p.Password == p1.Password {
 		Token, err := jwt.GenToken(p1.ID, p1.Username)

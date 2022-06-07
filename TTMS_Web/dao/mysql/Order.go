@@ -4,6 +4,8 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"fmt"
+	"strings"
+
 	"go.uber.org/zap"
 )
 
@@ -36,7 +38,7 @@ func GetOrderByUserID(p *models.ParamsGetOrderByUserID) (*models.OrderFrontListR
 		return nil, err
 	}
 	for i, entry := range orderList.OrderFrontList {
-		sqlStr := fmt.Sprintf("select roww, coll, price from order_info, ticket, seat_info where order_info.id = %v and ticket.id = order_info.ticket_id and seat_info.id = ticket.seat_id", id)
+		sqlStr := fmt.Sprintf("select roww, coll, price from order_info, ticket, seat_info where order_info.id = %v and ticket.id = order_info.ticket_id and seat_info.id = ticket.seat_id", entry.OrderID)
 		err := db.Select(&orderList.OrderFrontList[i].SeatList, sqlStr)
 		if err != nil {
 			zap.L().Error(sqlStr)
@@ -116,4 +118,112 @@ func GetOrderByID(id int64) (*models.OrderFrontRet, error) {
 		ScheduleTime: start_time,
 	}
 	return &orderRet, nil
+}
+
+func CountAllSales() (*models.OrderDataList, error) {
+	sqlStr1 := "select id, name, img from showschdule"
+	p1 := new(models.MovieIds)
+	err := db.Select(&p1.IDS, sqlStr1)
+	if err != nil && len(p1.IDS) != 0{
+		return nil, err
+	}
+	p2 := new(models.OrderDataList)
+	for _, it := range p1.IDS {
+		sqlStr2 := "select count(price) from order_info where movie_id = ?"
+		p := new(models.OrderData)
+		err = db.Get(&p.TotalPrice, sqlStr2, it.Id)
+		if err != nil {
+			return p2, err
+		}
+		p.CoverImgPath 	= it.CoverImgPath
+		p.MovieName  	= it.MovieName
+		p2.List = append(p2.List, *p)
+		p2.Total += p.TotalPrice
+	}	
+	return p2, nil
+}
+
+func CountSalesByDay(day string) (*models.OrderDataList, error) {
+	sqlStr1 := "select id, name, img from showschdule"
+	p1 := new(models.MovieIds)
+	err := db.Select(&p1.IDS, sqlStr1)
+	if err != nil && len(p1.IDS) != 0{
+		return nil, err
+	}
+
+	p2 := new(models.OrderDataList)
+	for _, it := range p1.IDS {
+		sqlStr2 := "select count(price) from order_info where movie_id = ? and date = ? and status = 1"
+		p := new(models.OrderData)
+		p.TotalPrice = 0
+		err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day)
+		if err != nil && p.TotalPrice != 0{
+			return p2, err
+		}
+		p.CoverImgPath 	= it.CoverImgPath
+		p.MovieName  	= it.MovieName
+		p2.List = append(p2.List, *p)
+		p2.Total += p.TotalPrice
+	}	
+	return p2, nil
+}
+
+func CountSalesByMonth(month string) (*models.OrderDataList, error) {
+	sqlStr1 := "select id, name, img from showschdule"
+	p1 := new(models.MovieIds)
+	err := db.Select(&p1.IDS, sqlStr1)
+	if err != nil && len(p1.IDS) != 0{
+		return nil, err
+	}
+
+	strs := strings.Split(month, "-")
+	start := utils.ShiftToNum(strs[1]) -1
+	end   := utils.ShiftToNum(strs[1]) +1
+	day_start := strs[0] + "-" + utils.ShiftToStringFromInt64(int64(start)) + "-00"
+	day_end	  := strs[0] + "-" + utils.ShiftToStringFromInt64(int64(end)) 	+ "-00"
+ 
+	p2 := new(models.OrderDataList)
+	for _, it := range p1.IDS {
+		sqlStr2 := "select count(price) from order_info where movie_id = ? and date > ? and date < ? and status = 1"
+		p := new(models.OrderData)
+		err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day_start, day_end)
+		if err != nil {
+			return p2, err
+		}
+		p.CoverImgPath 	= it.CoverImgPath
+		p.MovieName  	= it.MovieName
+		p2.List = append(p2.List, *p)
+		p2.Total += p.TotalPrice
+	}	
+	return p2, nil
+}
+
+func CountSalesByYear(year string) (*models.OrderDataList, error) {
+	sqlStr1 := "select id, name, img from showschdule"
+	p1 := new(models.MovieIds)
+	err := db.Select(&p1.IDS, sqlStr1)
+	if err != nil && len(p1.IDS) != 0{
+		return nil, err
+	}
+
+	strs := strings.Split(year, "-")
+	start := utils.ShiftToNum(strs[0]) -1
+	end   := utils.ShiftToNum(strs[0]) +1
+	day_start := utils.ShiftToStringFromInt64(int64(start)) + "-00" + "-00"
+	day_end	  := utils.ShiftToStringFromInt64(int64(end)) 	+ "-00" + "-00"
+ 
+	p2 := new(models.OrderDataList)
+	for _, it := range p1.IDS {
+		sqlStr2 := "select count(price) from order_info where movie_id = ? and date > ? and date < ? and status = 1"
+		p := new(models.OrderData)
+		err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day_start, day_end)
+		if err != nil {
+			return p2, err
+		}
+		p.CoverImgPath 	= it.CoverImgPath
+		p.MovieName  	= it.MovieName
+		p2.List = append(p2.List, *p)
+		p2.Total += p.TotalPrice
+	}	
+	return p2, nil
 }
