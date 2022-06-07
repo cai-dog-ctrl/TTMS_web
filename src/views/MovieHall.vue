@@ -64,10 +64,12 @@
                     <el-input v-model="addForm.name"></el-input>
                 </el-form-item>
                 <el-form-item label="最大行" prop="row">
-                    <el-input v-model="addForm.roww"></el-input>
+                    <el-input-number v-model="addForm.row" @change="handleChange" :min="1" :max="10">
+                    </el-input-number>
                 </el-form-item>
                 <el-form-item label="最大列" prop="col">
-                    <el-input v-model="addForm.coll"></el-input>
+                    <el-input-number v-model="addForm.col" @change="handleChange" :min="1" :max="10">
+                    </el-input-number>
                 </el-form-item>
                 <el-form-item label="类型" prop="tag">
                     <el-input v-model="addForm.tag"></el-input>
@@ -99,7 +101,7 @@
                 <el-button type="primary" @click="editHallInfo">确 定</el-button>
             </span>
         </el-dialog>
-
+        <!-- 修改座位的对话框 -->
         <el-dialog title="座位信息" :visible.sync="dialogFormVisible" class="cinema_info">
 
             <el-card class="box-card" v-loading="loading" :element-loading-text="message_get">
@@ -169,20 +171,9 @@ export default {
                     { required: true, message: '请输入用户名', trigger: 'blur' },
                     { min: 3, max: 10, message: '用户名的长度在3到10之间', trigger: 'blur' }
                 ],
-
-                row: [
-                    { required: true, message: '请输入行数', trigger: 'blur' },
-                    { min: 1, max: 3, message: '行数在1至100之间', trigger: 'blur' }
-                ],
-
-                col: [
-                    { required: true, message: '请输入列数', trigger: 'blur' },
-                    { min: 1, max: 3, message: '列数在1至100之间', trigger: 'blur' }
-                ],
-
                 tag: [
                     { required: true, message: '请输入类型', trigger: 'blur' },
-                    { min: 3, max: 10, message: '类型名的长度在3到10之间', trigger: 'blur' }
+                    { min: 2, max: 10, message: '类型名的长度在2到10之间', trigger: 'blur' }
                 ]
 
             },

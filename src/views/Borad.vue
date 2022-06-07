@@ -16,7 +16,7 @@
                                 <span class="name">{{ item.name }}</span>
                             </div>
                             <div class="sco">
-                                <span>{{ item.box_office }}</span>
+                                <span class="pf">{{ item.box_office }}万</span>
                             </div>
                         </div>
                     </div>
@@ -172,9 +172,9 @@ export default {
 }
 
 .tex {
-    margin-left: 30px;
+    margin-left: 5px;
     margin-top: 140px;
-
+    width: 150px;
     .name {
         font-size: 25px;
     }
@@ -183,7 +183,10 @@ export default {
 .sco {
     margin-left: 380px;
     margin-top: 140px;
-
+    width: 70px;
+    .pf{
+        color: #EF4238;
+    }
     .name {
         font-size: 25px;
     }
