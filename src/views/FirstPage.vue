@@ -97,10 +97,10 @@
                             <div style="padding-top:20px;margin-left:20px;width:60px">
                                 <a class="borde_top_name">{{
                                         first_page_info.ScoreRankingList.ScoreRankingList[0].name
-                                }}</a><br>
+                                }}</a>
 
                             </div>
-                            <div style="margin-left:170px;padding-top: 25px;"><span class="borde_top_pf">{{
+                            <div style="margin-left:144px;padding-top: 25px;"><span class="borde_top_pf">{{
                                     first_page_info.ScoreRankingList.ScoreRankingList[0].score
                             }}分</span></div>
                         </div>
@@ -259,12 +259,15 @@ export default {
 
 .borde_top_name {
     font-size: 20px;
+    float: inline-start;
     margin-top: 20px;
 }
 
 .borde_top_pf {
+    float: right;
     color: #EF4238;
     font-size: 10px;
+    width: 45px;
 }
 
 .bored_item {
