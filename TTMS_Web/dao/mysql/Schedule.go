@@ -243,6 +243,7 @@ func UpdateSchedule(p *models.SCheduledata) (bool, error) {
 	T.Id = 0
 	err := db.Get(&T.Time, sqlStr1, p.MovieId)
 	if err != nil {
+		fmt.Println("don't have this movie id = ", p.MovieId)
 		return false, nil
 	}
 	T.Time += 10 //预留10分钟退场和进场
@@ -262,7 +263,7 @@ func UpdateSchedule(p *models.SCheduledata) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-
+	fmt.Println(Sches.List)
 	for _, it := range Sches.List {
 		if p.StartTime <= it.StartTime && end_time > it.StartTime { //已有演出计划的开始时间在新演出计划的S-E之间
 			return false, nil
@@ -284,20 +285,30 @@ func UpdateSchedule(p *models.SCheduledata) (bool, error) {
 	return true, nil
 }
 
-func DeleteSchedule(id int64) error {
+func DeleteSchedule(id int64) (bool ,error) {
+
+	sqlStr2 := "select count(id) from ticket where schedule_id = ? and status = 1 and is_delete = -1"
+	ret := 0 
+	err := db.Get(ret, sqlStr2)
+	if err != nil && ret != 0{
+		fmt.Println("don't delete this schedule,because ticket had saled, id = ", id)
+		return  false, nil
+	} 
 	sqlStr := "update showschdule set is_delete = 1 where id = ?"
-	_, err := db.Exec(sqlStr, id)
+	_, err = db.Exec(sqlStr, id)
 	if err != nil {
-		return err
+		fmt.Println("delete schedule in table failed")
+		return false,err
 	}
 
 	sqlStr1 := "update ticket set is_delete = 1 where schedule_id = ?"
 	_, err = db.Exec(sqlStr1, id)
 	if err != nil {
-		return err
+		fmt.Println("delete this schedule's ticket fail")
+		return false, err
 	}
 
-	return nil
+	return true, nil
 }
 
 func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheDay, error) {

@@ -244,18 +244,14 @@ func UpdateSchedule(p *models.ParamsUpdateScheduleMsg) (bool, error) {
 	return true, nil
 }
 
-func DeleteSchedule(id int64) error {
+func DeleteSchedule(id int64) (bool, error) {
 
 	err := mysql.RefreshSchedule()
 	if err != nil {
-		return errors.New("RefreshSchedule in serve.DeleteSchedule failed")
+		return false, errors.New("RefreshSchedule in serve.DeleteSchedule failed")
 	}
 
-	err = mysql.DeleteSchedule(id)
-	if err != nil {
-		return err
-	}
-	return nil
+	return mysql.DeleteSchedule(id)
 }
 
 func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheRets, error) {
