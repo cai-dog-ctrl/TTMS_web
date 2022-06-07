@@ -31,7 +31,8 @@
                         <span>西邮订单号:{{ item.order_id }}</span>
                     </div>
                     <div class="order_status">
-                        <div class="no_pay">(未支付)</div>
+                        <div class="no_pay" v-if="item.status===-1">(未支付)</div>
+                        <div class="yes_pay" v-if="item.status===1">(已支付)</div>
                     </div>
                 </div>
                 <div class="order_items_body">
@@ -104,7 +105,7 @@ export default {
                 this.$message.error("请登录后使用")
                 return
             }
-            const { data: res } = await this.$http.get('GetOrderByUserID/', { params: this.form })
+            const { data: res } = await this.$http.get('GetOrderByUserID', { params: this.form })
             if (res.code !== 1000) {
                 this.$message.error("获取订单信息失败")
                 this.$router.push("/home")
@@ -251,7 +252,9 @@ export default {
 .no_pay {
     color: #E42D23;
 }
-
+.yes_pay{
+    color: #3FDD6F;
+}
 .price {
     padding-top: 50px;
     width: 50px;
