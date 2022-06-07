@@ -105,13 +105,27 @@ func GetBoxOfficeRankingMovies(c *gin.Context) {
 
 func AddNewMovie(c *gin.Context) {
 	p := new(models.ParamsAddNewMovie)
-	err := c.ShouldBind(&p)
-	if err != nil {
-		ResponseError(c, CodeInvalidParams)
-		zap.L().Error("AddNewMovie ShouldBind Error", zap.Error(err))
-		return
+
+	form, _ := c.MultipartForm()
+	files := form.File["img"]
+	for idx, file := range files {
+		pwd := GetCurrentPath()
+		dst := fmt.Sprintf("%v/img/%v", pwd, file.Filename)
+		if idx == 0 {
+			p.CoverImgPath = file.Filename
+		} else if idx == 1 {
+			p.CarouselImgPath = file.Filename
+		}
+		c.SaveUploadedFile(file, dst)
 	}
-	err = service.AddNewMovie(p)
+	p.Name = c.PostForm("name")
+	p.Description = c.PostForm("description")
+	p.Tag = c.PostForm("tag")
+	p.Duration = utils.ShiftToNum(c.PostForm("duration"))
+	p.Up_time = c.PostForm("up_time")
+	p.Down_time = c.PostForm("down_time")
+	p.Zone = c.PostForm("zone")
+	err := service.AddNewMovie(p)
 	if err != nil {
 		ResponseError(c, CodeServerBusy)
 		zap.L().Error("service.AddNewMovie Error", zap.Error(err))
@@ -187,7 +201,7 @@ func GetMovieSort(c *gin.Context) {
 }
 
 func UploadPicture(c *gin.Context) {
-	file, err := c.FormFile("f1")
+	file, err := c.FormFile("img")
 	if err != nil {
 		zap.L().Error("UploadPicture Error", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
@@ -199,6 +213,6 @@ func UploadPicture(c *gin.Context) {
 }
 
 func GetCurrentPath() string {
-	path , _ := os.Getwd()
+	path, _ := os.Getwd()
 	return path
 }
