@@ -48,7 +48,8 @@
                             </el-table-column>
                             <el-table-column label="选座购票">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" round size="mini" @click="getticketOfSeatList(scope.row.id)">在线选票</el-button>
+                                    <el-button type="primary" round size="mini"
+                                        @click="getticketOfSeatList(scope.row.id)">在线选票</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -70,21 +71,26 @@
                                     <div v-if="ite.status === -1" class="ticofseatyes">{{ ind + 1 }}</div>
                                     <div v-if="ite.status === -2" class="ticofseatno">{{ ind + 1 }}</div>
                                     <div v-if="ite.status === -3" class="ticofseatblank"></div>
-                                    <div v-if="ite.status === 1" class="ticofseatsaled">{{ind + 1}}</div>
-                                    <div v-if="ite.status === 2" class="ticofseatselectbymyself">{{ind + 1}}</div>
+                                    <div v-if="ite.status === 1" class="ticofseatsaled">{{ ind + 1 }}</div>
+                                    <div v-if="ite.status === 2" class="ticofseatselectbymyself">{{ ind + 1 }}</div>
                                 </div>
                                 <br>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <span>111</span>
+                        <!-- <span>{{ this.tickets.id_list }}</span> -->
+                        <div class="palceInfo" v-for="item in this.place" :key="item">
+                        <span>{{ item.row }}排</span>
+                        <span>{{item.col}}座</span>
+                        </div>
+                        
                     </div>
                 </el-card>
 
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary">确定</el-button>
+                    <el-button type="primary" @click="updateTicket">确定</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -93,6 +99,8 @@
 </template>
 
 <script>
+import LoginVue from './Login.vue'
+
 export default {
     data() {
         return {
@@ -104,7 +112,7 @@ export default {
                 date_day: ""
             },
             tickets_query: {
-                id:""
+                id: ""
             },
             tableData: {},
             dateList: {},
@@ -113,6 +121,11 @@ export default {
             ticketOfSeatList: {},
 
             map: {},
+            tickets: {
+                id_list: [],
+                user_id: ''
+            },
+            place: [],
             loading: false,
             dialogFormVisible: false,
 
@@ -120,21 +133,52 @@ export default {
     },
     created() {
         this.getMovieInfo()
+        this.tickets.user_id = window.sessionStorage.userId
     },
     methods: {
         point(id) {
+
             for (let i = 0; i < this.map.length; i++) {
                 for (let j = 0; j < this.map[0].length; j++) {
                     if (id === this.map[i][j].id) {
                         if (this.map[i][j].status === -1) {
                             this.map[i][j].status = 2
-                        } 
-                        else if(this.map[i][j].status === 2) {
+                            this.tickets.id_list.push(this.map[i][j].id)
+                            // this.place.row.push(i + 1)
+                            // this.place.col.push(j + 1)
+                            // this.place.price.push(this.map[i][j].status)
+                            var tem={}
+                            tem.row=i+1
+                            tem.col=j+1
+                            tem.price=this.map[i][j].status
+                            this.place.push(tem)
+                        }
+                        else if (this.map[i][j].status === 2) {
                             this.map[i][j].status = -1
+                            console.log(this.map[i][j].id);
+                            for (let k = 0; k < this.tickets.id_list.length; k++) {
+                                if (this.tickets.id_list[k] === this.map[i][j].id) {
+                                    this.tickets.id_list.splice(k, 1)
+                                    this.place.splice(k, 1)
+                                }
+                            }
                         }
                     }
+
                 }
             }
+        },
+        async updateTicket() {
+            const { data: res } = await this.$http.put('SaleTicket', this.tickets)
+            console.log(res.code)
+            if (res.code !== 1000) {
+                this.$message.error("购票失败")
+                this.$router.push("/home")
+                return
+            }
+
+            this.$message.success("购票成功")
+            this.dialogFormVisible = false
         },
         async getMovieInfo() {
             var id = this.$route.params.id
@@ -148,8 +192,8 @@ export default {
             this.getdateList()
         },
         async getticketOfSeatList(ID) {
-            this.tickets_query.id=ID
-            const { data: res } = await this.$http.get('GetTicketByScheduleId', {params: this.tickets_query})
+            this.tickets_query.id = ID
+            const { data: res } = await this.$http.get('GetTicketByScheduleId', { params: this.tickets_query })
             if (res.code !== 1000) {
                 this.$message.error("获取票失败")
                 this.$router.push("/home")
@@ -157,7 +201,6 @@ export default {
             }
             this.map = res.data.list
             this.dialogFormVisible = true
-            console.log(this.map);
         },
         async getdateList() {
             var id = this.$route.params.id
@@ -187,7 +230,6 @@ export default {
                 return
             }
             this.schedule = res.data.list
-            console.log(this.schedule);
 
         }
     },
@@ -196,6 +238,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.palceInfo {
+    color: #409EFF;
+    margin-left: 30px;
+}
+
 .container {
     height: 100%;
 }
@@ -294,83 +341,81 @@ export default {
 
 
 .cinema {
-            border: 1px solid #000;
-            height: 400px;
-            width: 450px;
-            background: blanchedalmond;
-            left: 25%;
-            top: 20%;
-            border-radius: 8px;
-            float: left;
-        }
+    border: 1px solid #000;
+    height: 400px;
+    width: 450px;
+    background: blanchedalmond;
+    left: 25%;
+    top: 20%;
+    border-radius: 8px;
+    float: left;
+}
 
-        .seats {
-            margin-top: 50px;
-            margin-left: 20px;
-        }
+.seats {
+    margin-top: 50px;
+    margin-left: 20px;
+}
 
-        .screen {
-            height: 35px;
-            width: 150px;
-            background: white;
-            border-radius: 5px;
-            text-align: center;
-            margin: auto;
-            margin-top: 30px;
-        }
+.screen {
+    height: 35px;
+    width: 150px;
+    background: white;
+    border-radius: 5px;
+    text-align: center;
+    margin: auto;
+    margin-top: 30px;
+}
 
-        .ticofseatyes,
-        .ticofseatno,
-        .ticofseatblack,
-        .ticofseatsaled,
-        .ticofseatselectbymyself {
-            height: 25px;
-            width: 25px;
-            border-radius: 3px;
-            margin-top: 3px;
-            margin-left: 3px;
-            text-align: center;
-        }
+.ticofseatyes,
+.ticofseatno,
+.ticofseatblack,
+.ticofseatsaled,
+.ticofseatselectbymyself {
+    height: 25px;
+    width: 25px;
+    border-radius: 3px;
+    margin-top: 3px;
+    margin-left: 3px;
+    text-align: center;
+}
 
-        .ticofseatyes {
-            background: #fff;
-        }
+.ticofseatyes {
+    background: #fff;
+}
 
-        .ticofseatno {
-            background: red;
-        }
+.ticofseatno {
+    background: red;
+}
 
-        .ticofseatblack {
-            background: blanchedalmond;
-        }
+.ticofseatblack {
+    background: blanchedalmond;
+}
 
-        .ticofseatselectbymyself {
-            background: green;
-        }
+.ticofseatselectbymyself {
+    background: green;
+}
 
-        .row {
-            width: 450px;
-            margin-top: 8px;
-        }
+.row {
+    width: 450px;
+    margin-top: 8px;
+}
 
-        .aaa {
-            float: left;
-            margin-left: 5px;
+.aaa {
+    float: left;
+    margin-left: 5px;
+}
 
-        }
+.bbb {
+    cursor: pointer;
+}
 
-        .bbb {
-            cursor: pointer;
-        }
-
-        .ticket {
-            border: 1px solid #000;
-            height: 500px;
-            width: 350px;
-            background: blanchedalmond;
-            float: right;
-            margin-right: 150px;
-            margin-top: 80px;
-        }
-
+.ticket {
+    border: 1px solid #000;
+    height: 500px;
+    width: 350px;
+    background: blanchedalmond;
+    float: right;
+    margin-right: 150px;
+    margin-top: 80px;
+}
 </style>
