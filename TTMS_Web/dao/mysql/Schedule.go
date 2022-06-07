@@ -77,7 +77,6 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	sqlStr4 := "select count(id) from showschdule where cinema_id = ? and date_day = ? and is_delete = -1"
 	err = db.Get(&Sches.Total, sqlStr4, p.CinemaId, p.DateDay)
 	if err != nil {
-		fmt.Println("count :", err)
 		return false, err
 	}
 	//expected slice but got int
@@ -297,7 +296,7 @@ func DeleteSchedule(id int64) error {
 }
 
 func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheDay, error) {
-	sqlStr := "select date_day from showschdule where movie_id = ? and is_delete = -1"
+	sqlStr := "select date_day from showschdule where movie_id = ? and is_delete = -1 order by date_day"
 	Sches := new(models.ScheDay)
 	err := db.Select(&Sches.Time, sqlStr, movie_id)
 
