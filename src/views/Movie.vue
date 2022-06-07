@@ -188,12 +188,12 @@ export default {
 }
 
 .category_borde:hover {
-    color: blue;
+    color: #409EFF;
 }
 
 .category_borde_focus {
     color: #fff;
-    background-color: blue;
+    background-color: #409EFF;
     border-radius: 10px;
     padding-left: 5px;
     padding-right: 5px;
@@ -217,12 +217,12 @@ export default {
 }
 
 .zone_borde:hover {
-    color: blue;
+    color: #409EFF;
 }
 
 .zone_borde_focus {
     color: #fff;
-    background-color: blue;
+    background-color: #409EFF;
     border-radius: 10px;
     padding-left: 5px;
     padding-right: 5px;

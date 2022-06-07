@@ -7,12 +7,12 @@
                         alt="">
                 </div>
                 <div class="name">
-                    <h1>坏蛋联盟</h1>
-                    <span>喜剧&nbsp; &nbsp; &nbsp; 电影</span>
+                    <h1>{{ movieInfo.name }}</h1>
+                    <span>{{ movieInfo.tag }}&nbsp; &nbsp; &nbsp; 电影</span>
                     <br><br>
-                    <span>中国/100分钟</span>
+                    <span>中国/{{ movieInfo.duration }}分钟</span>
                     <br><br>
-                    <span>2022-4-29 西安邮电大学上映</span>
+                    <span>{{ movieInfo.up_Time }} 西安邮电大学上映</span>
                     <br><br>
                     <div class="btns">
                         <el-button type="info" size="small" icon="el-icon-bell"> 想看 &nbsp;&nbsp;&nbsp; </el-button>
@@ -21,10 +21,10 @@
                 </div>
                 <div style="margin-top:120px;margin-left: 80px;">
                     <div class="score" style="color:#fff">西邮评分<h1 style="color:#FFC600;font-size:30px;margin-top:10px">
-                            9.1</h1>
+                            {{ movieInfo.score }}</h1>
                     </div>
                     <div class="pf" style="color:#fff">累计票房<br>
-                        <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">26.3亿</h1>
+                        <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.box_office }}亿</h1>
                     </div>
                 </div>
             </div>
@@ -63,6 +63,7 @@
 export default {
     data() {
         return {
+            movieInfo: {},
             tableData: [{
                 date: '2016-05-02',
                 type: '3D',
@@ -87,7 +88,22 @@ export default {
             dateList: ['2022-10-09', '2022-10-23']
         }
     },
+    created() {
+    this.getMovieInfo()
+  },
     methods: {
+        async getMovieInfo() {
+            var id = this.$route.params.id
+            const { data: res } = await this.$http.get('GetMovieInfoByID/' + id)
+            if (res.code !== 1000) {
+                this.$message.error("获取电影详情失败")
+                this.$router.push("/home")
+                return
+            }
+            this.movieInfo = res.data.movie
+            this.recommend = res.data.relevantMovies
+            console.log(res.data.movie);
+        },
         async GetDateList() {
             var id = this.$route.params.id
             const { data: res } = await this.$http.get('getalldcheduledaybymovieid/' + id)
@@ -95,7 +111,7 @@ export default {
                 this.$message.error("获取演出计划失败")
                 return
             }
-            
+
         }
     }
 }

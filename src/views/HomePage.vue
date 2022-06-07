@@ -11,6 +11,7 @@
                 <el-menu-item :index="url1" class="left1" @click="toFirstPage">首页</el-menu-item>
                 <el-menu-item :index="url2" class="left1" @click="tomovie">电影</el-menu-item>
                 <el-menu-item :index="url3" class="left1" @click="toBorad">榜单</el-menu-item>
+                <el-menu-item :index="url4" class="left1" @click="User">订单</el-menu-item>
                 <el-dropdown>
                     <img class="img" src="https://p0.meituan.net/movie/7dd82a16316ab32c8359debdb04396ef2897.png" alt="">
                     <el-dropdown-menu slot="dropdown">
@@ -45,6 +46,7 @@ export default {
             url1: "FisrtPage",
             url2: "borad",
             url3: "movie",
+            url4: "userInfo",
             IsLogin: false,
             token: ''
         }
@@ -59,6 +61,9 @@ export default {
         //alert(this.token);
     },
     methods: {
+        User(){
+            this.$router.push('/order');
+        },
         login() {
             this.$router.push('/login');
         },

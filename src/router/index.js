@@ -16,7 +16,9 @@ import MoviePlan from '../views/MoviePlan.vue'
 
 import Borad from '../views/Borad.vue'
 import Movie from '../views/Movie.vue'
-
+import User from '../views/User.vue'
+import Order from '../views/Order.vue'
+import OrderInfo from '../views/OrderInfo.vue'
 Vue.use(VueRouter)
 
 
@@ -86,6 +88,18 @@ const routes = [
       {
         path: "/movie",
         component: Movie
+      },
+      {
+        path:"/user",
+        component:User
+      },
+      {
+        path:"/order",
+        component:Order,
+      },
+      {
+        path:"/orderInfo/:id",
+        component:OrderInfo
       }
     ]
   }

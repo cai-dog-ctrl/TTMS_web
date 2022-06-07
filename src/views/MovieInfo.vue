@@ -15,17 +15,21 @@
           <br><br>
           <div class="btns">
             <el-button type="info" size="small" icon="el-icon-bell"> 想看 &nbsp;&nbsp;&nbsp; </el-button>
-            <el-button type="info" size="small" icon="el-icon-star-off"> 评分&nbsp;&nbsp;&nbsp; </el-button>
+            <el-button type="info" size="small" icon="el-icon-star-off" @click="openRate(movieInfo.id)">
+              评分&nbsp;&nbsp;&nbsp; </el-button>
           </div>
           <br>
           <div class="buy_btn" @click="buyTickets(movieInfo.id)">特惠购票</div>
         </div>
         <div style="margin-top:120px;margin-left: 80px;">
-          <div class="score" style="color:#fff">西邮评分<h1 style="color:#FFC600;font-size:30px;margin-top:10px">
-              {{ movieInfo.score }}</h1>
+          <div class="score" style="color:#fff">西邮评分
           </div>
+          <br>
+          <el-rate v-model="movieInfo.score" :colors="colors" disabled show-score text-color="#ff9900">
+          </el-rate>
+          <br>
           <div class="pf" style="color:#fff">累计票房<br>
-            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.boxoffice }}亿</h1>
+            <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.box_office }}亿</h1>
           </div>
         </div>
 
@@ -71,6 +75,17 @@
         </el-card>
       </div>
     </div>
+    <el-dialog title="提示" :visible.sync="rateDialogVisible" width="20%" center>
+      <div class="block">
+        <span class="demonstration">请打分</span>
+        <el-rate v-model="value2" :colors="colors">
+        </el-rate>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="rateDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="rateDialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 
 </template>
@@ -85,13 +100,20 @@ export default {
       { "name": "这个杀手冷不冷", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.4 },
       { "name": "这个杀手有点冷", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.3 },
       { "name": "这个杀手冷死了", "img": "https://p0.pipi.cn/mmdb/25bfd6877e15bfc7ed9257a2a0ba131a9d2fb.jpg?imageView2/1/w/464/h/644", "socre": 4.1 },],
-      movieInfo: {}
+      movieInfo: {},
+      rateDialogVisible: false,
+      value1: null,
+      value2: null,
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900']
     }
   },
   created() {
     this.getMovieInfo()
   },
   methods: {
+    openRate(id) {
+      this.rateDialogVisible = true
+    },
     async getMovieInfo() {
       var id = this.$route.params.id
       const { data: res } = await this.$http.get('GetMovieInfoByID/' + id)
@@ -101,7 +123,7 @@ export default {
         return
       }
       this.movieInfo = res.data.movie
-      this.recommend=res.data.relevantMovies
+      this.recommend = res.data.relevantMovies
       console.log(res.data.movie);
     },
 

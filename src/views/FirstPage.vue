@@ -118,13 +118,7 @@
         </div>
 
 
-        <el-drawer title="我是标题" :visible.sync="movie_info_drawer" :with-header="false" size="80%">
-            <div>
-                <div class="drawer_picture">
-                    <el-image style="width: 432px; height: 600px" :src="url"></el-image>
-                </div>
-            </div>
-        </el-drawer>
+       
     </el-row>
 </template>
 <script>
@@ -132,6 +126,7 @@ export default {
 
     data() {
         return {
+            
             form: {
                 CarouselNum: 3,
                 ShowingNum: 6,
@@ -195,6 +190,9 @@ export default {
             this.first_page_info = res.data
 
         },
+        openRate(id){
+
+        }
 
     }
 
