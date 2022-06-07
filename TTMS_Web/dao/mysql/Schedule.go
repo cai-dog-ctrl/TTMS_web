@@ -329,3 +329,26 @@ func GetAllScheduleMsgByDay(day int64) (*models.ScheduleList, error) {
 	}
 	return Sches, nil
 }
+
+func GetScheduleMsgById(ID int64) (*models.ScheduleOut, error) {
+	sqlStr := "select id, cinema_id, movie_id, date_day, start_time, end_time, price from showschdule  where is_delete = -1 and id = ?"
+	Sche := new(models.ScheduleOut)
+	err := db.Get(Sche, sqlStr, ID)
+	if err != nil {
+		return nil, err
+	}
+
+	sqlStr = "select cinema_name, tag from cinema_info where id = ?"
+	err = db.Get(Sche, sqlStr, Sche.CinemaId)
+	if err != nil {
+		return nil, err
+	}
+
+	sqlStr = "select name from movie_info where id = ?"
+	err = db.Get(Sche, sqlStr, Sche.MovieId)
+	if err != nil {
+		return nil, err
+	}
+
+	return Sche, nil
+}

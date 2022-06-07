@@ -171,3 +171,18 @@ func GetAllScheduleMsgByDay(c *gin.Context) {
 	}
 	ResponseSuccess(c, p1)
 }
+
+
+func GetScheduleMsgById(c *gin.Context) {
+	ID := c.Query("id")
+
+	p1, err := service.GetScheduleMsgById(ID)
+
+	if err != nil {
+		zap.L().Error("service.GetScheduleMsgById error", zap.Error(err))
+		ResponseErrorWithMsg(c, CodeServerBusy, "获取失败")
+
+		return
+	}
+	ResponseSuccess(c, p1)
+}
