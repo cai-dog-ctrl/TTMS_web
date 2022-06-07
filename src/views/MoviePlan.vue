@@ -61,7 +61,7 @@
                             </el-time-picker>
                         </el-form-item>
                         <el-form-item label="票价">
-                            <el-input-number v-model="addForm.price" @change="handleChange" :min="10" :max="100">
+                            <el-input-number v-model="addForm.price" @change="handleChange" :min="10" :max="1000">
                             </el-input-number>
                         </el-form-item>
                     </el-form>
@@ -120,7 +120,7 @@
                             </el-time-picker>
                         </el-form-item>
                         <el-form-item label="票价">
-                            <el-input-number v-model="editForm.price" @change="handleChange" :min="10" :max="100">
+                            <el-input-number v-model="editForm.price" @change="handleChange" :min="10" :max="1000">
                             </el-input-number>
                         </el-form-item>
                     </el-form>
@@ -227,17 +227,16 @@ export default {
             editDialogVisible: false,
             // 查询到的演出计划信息对象
             editForm: {
-                id: '',
-                cinema_id: '',
-                movie_id: '',
-                date_day: '',
-                start_time: '',
-                price: '',
+                // id: '',
+                // cinema_id: '',
+                // movie_id: '',
+                // date_day: '',
+                // start_time: '',
+                // price: '',
             },
 
             schedulelist: [],
             checkDialogVisible: false,
-
             editDialogVisible1: false,
         }
     },
@@ -254,20 +253,18 @@ export default {
 
         },
         async bbb(id) {
+            // this.queryInfo3.id = id
+            const { data: res } = await this.$http.get('GetScheduleMsgById/' + id)
 
-            this.queryInfo3.id = id
-
-            const { data: res } = await this.$http.get('GetScheduleMsgById', {
-                params: this.queryInfo3
-            })
             console.log(id);
             if (res.code !== 1000) {
                 return this.$message.error('获取演出计划失败！')
             }
 
             this.editForm = res.data
+            console.log(this.editForm);
             this.editDialogVisible1 = true
-            this.editForm.movie_id = id
+            // this.editForm.movie_id = movie_id
 
         },
 
@@ -295,7 +292,6 @@ export default {
         },
         // 监听pagesize
         handleSizeChange(newSize) {
-
 
             this.queryInfo.Num = newSize
             this.get_firstPage()
@@ -330,6 +326,7 @@ export default {
 
         async showEditDialog(id) {
             this.queryInfo2.movie_id = id
+            // this.queryInfo3.id = id
             const { data: res } = await this.$http.get('getallschedulemsgbymovieid', {
                 params: this.queryInfo2
             })
@@ -353,7 +350,6 @@ export default {
         //修改演出计划表单
         async editUserInfo() {
             const { data: res } = await this.$http.put('updateSchedule',
-                // this.editForm
                 {
                     id: this.editForm.id,
                     cinema_id: this.editForm.cinema_id,
@@ -368,14 +364,13 @@ export default {
                 this.$message.error("修改信息失败")
                 return
             }
-            // this.get_firstPage()
-            this.bbb(id)
             this.$message.success('修改信息成功')
             this.editDialogVisible1 = false
+             this.bbb(id)
         },
 
         async deleteMoviePlan(id) {
-            this.queryInfo3.id = id
+            // this.queryInfo3.id = id
             const confirmResult = await this.$confirm('此操作将永久删除该计划, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -384,21 +379,20 @@ export default {
             if (confirmResult !== 'confirm') {
                 return this.$message.info('已取消删除')
             }
-            const { data: res } = await this.$http.get('GetScheduleMsgById', {
-                params: this.queryInfo3.id
-            })
+            const { data: res } = await this.$http.get('GetScheduleMsgById/' + id)
+            console.log(res.code);
             if (res.code !== 1000) {
-                this.$message.error("删除失败")
+                this.$message.error("获取失败")
                 return
             }
-            res.data.movie["is_delete"] = 1;
-            const { data: res2 } = await this.$http.put('deleteschedule', res.data.id)
+            // res.data.id["is_delete"] = 1;
+            const { data: res2 } = await this.$http.put('deleteschedule/' + id )
+            console.log(res2.code);
             if (res2.code !== 1000) {
-                this.$message.error("修改信息失败")
+                this.$message.error("删除计划失败！")
                 return
             }
-            this.schedulelist = res.data.list
-            this.total = res.data.Total
+            this.editForm = res.data
             this.$message.success('删除成功')
         },
 
