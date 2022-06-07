@@ -14,17 +14,10 @@ import (
 // const RootPath="./img/"
 func Login(c *gin.Context){
 	p:=new(models.ParamsLogin)
-<<<<<<< HEAD
-	fmt.Println(p)
-	err := c.ShouldBind(&p)
-	if err != nil {
-		ResponseError(c, CodeInvalidParams)
-=======
 	//fmt.Println(p)
 	err:=c.ShouldBind(&p)
 	if err!=nil{
 		ResponseError(c,CodeInvalidParams)
->>>>>>> 6d4bad3732f772e7a3c44b5350feb6e790a2e8cf
 		zap.L().Error("Login ShouldBind Error", zap.Error(err))
 		return
 	}
