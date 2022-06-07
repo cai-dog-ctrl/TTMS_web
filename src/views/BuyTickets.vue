@@ -80,11 +80,14 @@
                     </div>
                     <div>
                         <!-- <span>{{ this.tickets.id_list }}</span> -->
-                        <div class="palceInfo" v-for="item in this.place" :key="item">
-                        <span>{{ item.row }}排</span>
-                        <span>{{item.col}}座</span>
+                        <div class="palce" v-for="item in this.place" :key="item">
+                            <div class="palceInfo">
+                                <span>{{ item.row }}排</span>
+                                <span>{{ item.col }}座</span>
+                            </div>
+
                         </div>
-                        
+
                     </div>
                 </el-card>
 
@@ -147,10 +150,10 @@ export default {
                             // this.place.row.push(i + 1)
                             // this.place.col.push(j + 1)
                             // this.place.price.push(this.map[i][j].status)
-                            var tem={}
-                            tem.row=i+1
-                            tem.col=j+1
-                            tem.price=this.map[i][j].status
+                            var tem = {}
+                            tem.row = i + 1
+                            tem.col = j + 1
+                            tem.price = this.map[i][j].status
                             this.place.push(tem)
                         }
                         else if (this.map[i][j].status === 2) {
@@ -238,9 +241,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.palceInfo {
-    color: #409EFF;
-    margin-left: 30px;
+.palce {
+    color: #fff;
+    margin-left: 500px;
+    border:#409EFF solid 1px;
+    margin-top: 10px;
+    width: 62px;
+    border-radius: 15px;
+    background-color: #409EFF;
+    span {
+        margin-left: 5px;
+    }
 }
 
 .container {
@@ -381,6 +392,7 @@ export default {
 
 .ticofseatyes {
     background: #fff;
+    cursor: pointer;
 }
 
 .ticofseatno {
@@ -393,6 +405,7 @@ export default {
 
 .ticofseatselectbymyself {
     background: green;
+    cursor: pointer;
 }
 
 .row {
@@ -403,10 +416,6 @@ export default {
 .aaa {
     float: left;
     margin-left: 5px;
-}
-
-.bbb {
-    cursor: pointer;
 }
 
 .ticket {
