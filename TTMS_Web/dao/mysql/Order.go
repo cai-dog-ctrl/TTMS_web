@@ -23,13 +23,13 @@ func GetOrderByUserID(p *models.ParamsGetOrderByUserID) (*models.OrderFrontListR
 	orderList := new(models.OrderFrontList)
 	orderListRet := new(models.OrderFrontListRet)
 
-	sqlStr0 := fmt.Sprintf("select count(*) from order_info where user_id = %v", id)
+	sqlStr0 := fmt.Sprintf("select count(distinct id) from order_info where user_id = %v", id)
 	err0 := db.Get(&orderListRet.Total, sqlStr0)
 	if err0 != nil {
 		zap.L().Error(sqlStr0)
 		return nil, err0
 	}
-	sqlStr := fmt.Sprintf("select order_info.id, order_info.date, order_info.status, movie.name, movie.cover_img, cinema_info.name, showschedule.date_day, showschedule.start_time from order_info, movie_info, showschedule where order_info.user_id = %v and order_info.ticket_id = ticket.id and ticket.movie_id = movie_info.id and ticket.schedule_id = showschedule.id and ticket.cinema_id = cinema_info.id limit %v, %v", id, startIdx, p.Num)
+	sqlStr := fmt.Sprintf("select distinct order_info.id, order_info.date, order_info.status, movie_info.name, movie_info.cover_img, cinema_info.cinema_name, showschdule.date_day, showschdule.start_time from order_info, movie_info, cinema_info,showschdule, ticket where order_info.user_id = %v and order_info.ticket_id = ticket.id and ticket.movie_id = movie_info.id and ticket.schedule_id = showschdule.id and ticket.cinema_id = cinema_info.id limit %v, %v", id, startIdx, p.Num)
 	err := db.Select(&orderList.OrderFrontList, sqlStr)
 	if err != nil {
 		zap.L().Error(sqlStr)
@@ -76,8 +76,8 @@ func GetOrderByUserID(p *models.ParamsGetOrderByUserID) (*models.OrderFrontListR
 
 func GetOrderByID(id int64) (*models.OrderFrontRet, error) {
 	order := new(models.OrderFront)
-	sqlStr := fmt.Sprintf("select order_info.id, order_info.date, order_info.status, movie.name, movie.cover_img, cinema_info.name, showschedule.date_day, showschedule.start_time from order_info, movie_info, showschedule where order_info.id = %v and order_info.ticket_id = ticket.id and ticket.movie_id = movie_info.id and ticket.schedule_id = showschedule.id and ticket.cinema_id = cinema_info.id", id)
-	err := db.Get(&order, sqlStr)
+	sqlStr := fmt.Sprintf("select order_info.id, order_info.date, order_info.status, movie_info.name, movie_info.cover_img, cinema_info.cinema_name, showschdule.date_day, showschdule.start_time from order_info, movie_info, cinema_info, showschdule, ticket where order_info.id = %v and order_info.ticket_id = ticket.id and ticket.movie_id = movie_info.id and ticket.schedule_id = showschdule.id and ticket.cinema_id = cinema_info.id", id)
+	err := db.Get(order, sqlStr)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return nil, err

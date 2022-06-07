@@ -27,7 +27,7 @@ func GetOrderByID(c *gin.Context) {
 	p.ID = c.Param("ID")
 	order, err := service.GetOrderByID(p)
 	if err != nil {
-		zap.L().Error("service.GetOrderByUserID ERROR", zap.Error(err))
+		zap.L().Error("service.GetOrderByID ERROR", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
 		return
 	}

@@ -76,7 +76,7 @@ func SetupRouter() *gin.Engine {
 
 	
 	//cat and manage order
-	g.GET("/GetOrderByID", controllers.GetOrderByID)
+	g.GET("/GetOrderByID/:ID", controllers.GetOrderByID)
 	g.GET("/GetOrderByUserID/", controllers.GetOrderByUserID)
 	g.GET("/PayMoneyByOrderID/:ID", controllers.PayMoneyByOrderID)
 	return r
