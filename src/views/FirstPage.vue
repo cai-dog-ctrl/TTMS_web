@@ -17,7 +17,7 @@
                     </span>
                     <div v-for="item in first_page_info.ShowingList.ShowingList" :key="item.id" class="movie">
                         <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                            <img :src="'https://127.0.0.1:8080/api/getpicturebyfilename/'+item.cover_img_path"
+                            <img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+item.cover_img_path"
                                 class="image" @click="gotoinfo(item.id)">
                             <div style="padding: 14px;">
                                 <span>{{ item.name }}</span>
@@ -40,7 +40,7 @@
                     </span>
                     <div v-for="item in first_page_info.ComingList.ComingList" :key="item.id" class="movie">
                         <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                            <img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+item.cover_img_path"
                                 class="image" @click="gotoinfo(item.id)">
                             <div style="padding: 14px;">
                                 <span>{{ item.name }} |</span><span> 预售</span>
@@ -60,7 +60,7 @@
                         <div class="borde_top"
                             @click="gotoinfo(first_page_info.BoxOfficeRankingList.BoxOfficeRankingList[0].id)">
                             <div><img
-                                    src="https://p0.pipi.cn/mmdb/25bfd69a030c7eaf330e13fb0b08a6695f6f7.jpg?imageView2/1/w/464/h/644"
+                                    :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+first_page_info.BoxOfficeRankingList.BoxOfficeRankingList[0].cover_img_path"
                                     alt="" class="bored_top_img"></div>
 
                             <div style="padding-top:20px;margin-left:20px;width:60px">
@@ -91,7 +91,7 @@
                     <div class="bored" style="margin-top:15px">
                         <div class="borde_top"
                             @click="gotoinfo(first_page_info.ScoreRankingList.ScoreRankingList[0].id)">
-                            <div><img :src="src_url" class="bored_top_img"
+                            <div><img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+first_page_info.ScoreRankingList.ScoreRankingList[0].cover_img_path" class="bored_top_img"
                                     @click="gotoinfo(first_page_info.ScoreRankingList.ScoreRankingList[0].id)"></div>
 
                             <div style="padding-top:20px;margin-left:20px;width:60px">

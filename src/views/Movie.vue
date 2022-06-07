@@ -38,7 +38,7 @@
         <div class="card">
             <div v-for="item in MovieInfo.movieList" :key="item.id" class="movie">
                 <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                    <img :src=" 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
+                    <img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+item.cover_img_path"
                         class="image" @click="gotoinfo(item.id)">
                     <div style="padding: 14px;">
                         <div class="text">
@@ -282,7 +282,9 @@ export default {
 }
 
 .image {
-
+    height: 235px;
+    width: 236px;
+    overflow: hidden;
     cursor: pointer;
     position: relative;
 }

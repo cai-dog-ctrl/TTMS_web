@@ -117,7 +117,7 @@ export default {
                     "children": [
                         {
                             "id": 111,
-                            "authName": "统计列表",
+                            "authName": "数据报表",
                             "path": "datastatistic",
                             "children": [],
                             "order": null

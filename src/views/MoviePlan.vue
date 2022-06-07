@@ -43,7 +43,6 @@
                         </el-form-item>
                         <el-form-item label="演出日期">
                             <div class="block">
-                                <!-- <span class="demonstration">默认</span> -->
                                 <el-date-picker v-model="addForm.date_day" type="date" placeholder="选择日期"
                                     value-format="yyyy-MM-dd">
                                 </el-date-picker>
@@ -52,13 +51,13 @@
                         <el-form-item label="开始时间">
                             <el-time-picker v-model="addForm.start_time" :picker-options="{
                                 selectableRange: '00:00:00 - 23:59:59'
-                            }" placeholder="任意时间点" value-format="hh:mm">
+                            }" placeholder="任意时间点" value-format="HH:mm">
                             </el-time-picker>
                         </el-form-item>
                         <el-form-item label="结束时间">
                             <el-time-picker v-model="addForm.end_time" :picker-options="{
                                 selectableRange: '00:00:00 - 23:59:59'
-                            }" placeholder="任意时间点" value-format="hh:mm">
+                            }" placeholder="任意时间点" value-format="HH:mm">
                             </el-time-picker>
                         </el-form-item>
                         <el-form-item label="票价">
@@ -75,40 +74,8 @@
 
                 <!-- 修改演出计划的对话框 -->
                 <el-dialog title="修改演出计划" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
-                    <!-- 内容主体区 -->
-                    <!-- <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
-                        <el-form-item label="影厅">
-                            <el-select v-model="editForm.cinema_id" placeholder="影厅名称">
-                                <el-option v-for="item in cinemalist" :key="item.name" :label="item.name"
-                                    :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="演出日期">
-                            <div class="block">
-                                <el-date-picker v-model="editForm.date_day" type="date" placeholder="选择日期"
-                                    value-format="yyyy-MM-dd">
-                                </el-date-picker>
-                            </div>
-                        </el-form-item>
-                        <el-form-item label="开始时间">
-                            <el-time-picker v-model="editForm.start_time" :picker-options="{
-                                selectableRange: '00:00:00 - 23:59:59'
-                            }" placeholder="任意时间点" value-format="hh:mm">
-                            </el-time-picker>
-                        </el-form-item>
-                        <el-form-item label="结束时间">
-                            <el-time-picker v-model="editForm.end_time" :picker-options="{
-                                selectableRange: '00:00:00 - 23:59:59'
-                            }" placeholder="任意时间点" value-format="hh:mm">
-                            </el-time-picker>
-                        </el-form-item>
-                        <el-form-item label="票价">
-                            <el-input-number v-model="editForm.price" @change="handleChange" :min="10" :max="100">
-                            </el-input-number>
-                        </el-form-item>
-                    </el-form> -->
                     <el-table :data="schedulelist">
+                        <el-table-column type="index"></el-table-column>
                         <el-table-column prop="cinema_name" label="影厅名称">
                         </el-table-column>
                         <el-table-column prop="date_day" label="演出日期">
@@ -121,32 +88,24 @@
                         </el-table-column>
                         <el-table-column label="操作" width="180px">
                             <template slot-scope="scope">
-                                <el-button type="primary" size="mini" icon="el-icon-edit" @click= "bbb(item.id)">
+                                <el-button type="primary" size="mini" icon="el-icon-edit" @click="bbb(scope.row.id)">
                                     修改
                                 </el-button>
                             </template>
                         </el-table-column>
-
-
                     </el-table>
                     <!--底部区域-->
                     <span slot="footer" class="dialog-footer">
                         <el-button @click="editDialogVisible = false">确 定</el-button>
-                        <!-- <el-button type="primary" @click="editUserInfo">确 定</el-button> -->
                     </span>
 
                 </el-dialog>
+
                 <!-- 修改演出计划 -->
                 <el-dialog title="修改演出计划" :visible.sync="editDialogVisible1" width="50%" @close="editDialogClosed1">
                     <!-- 内容主体区 -->
+
                     <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
-                        <el-form-item label="影厅">
-                            <el-select v-model="editForm.cinema_id" placeholder="影厅名称">
-                                <el-option v-for="item in cinemalist" :key="item.name" :label="item.name"
-                                    :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
                         <el-form-item label="演出日期">
                             <div class="block">
                                 <el-date-picker v-model="editForm.date_day" type="date" placeholder="选择日期"
@@ -157,13 +116,7 @@
                         <el-form-item label="开始时间">
                             <el-time-picker v-model="editForm.start_time" :picker-options="{
                                 selectableRange: '00:00:00 - 23:59:59'
-                            }" placeholder="任意时间点" value-format="hh:mm">
-                            </el-time-picker>
-                        </el-form-item>
-                        <el-form-item label="结束时间">
-                            <el-time-picker v-model="editForm.end_time" :picker-options="{
-                                selectableRange: '00:00:00 - 23:59:59'
-                            }" placeholder="任意时间点" value-format="hh:mm">
+                            }" placeholder="任意时间点" value-format="HH:mm">
                             </el-time-picker>
                         </el-form-item>
                         <el-form-item label="票价">
@@ -183,6 +136,7 @@
                 <el-dialog title="查询演出计划" :visible.sync="checkDialogVisible" width="50%" @close="checkDialogClosed">
                     <!-- 内容主体区 -->
                     <el-table :data="schedulelist">
+                        <el-table-column type="index"></el-table-column>
                         <el-table-column prop="cinema_name" label="影厅名称">
                         </el-table-column>
                         <el-table-column prop="date_day" label="演出日期">
@@ -195,7 +149,8 @@
                         </el-table-column>
                         <el-table-column label="操作" width="180px">
                             <template slot-scope="scope">
-                                <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteMoviePlan">
+                                <el-button type="danger" size="mini" icon="el-icon-delete"
+                                    @click="deleteMoviePlan(scope.row.id)">
                                     删除
                                 </el-button>
                             </template>
@@ -250,6 +205,9 @@ export default {
 
                 movie_id: ''
             },
+            queryInfo3: {
+                id: ''
+            },
             cinemalist: [],
             total: '',
 
@@ -268,7 +226,14 @@ export default {
             // 控制修改用户对话框的显示与隐藏
             editDialogVisible: false,
             // 查询到的演出计划信息对象
-            editForm: {},
+            editForm: {
+                id: '',
+                cinema_id: '',
+                movie_id: '',
+                date_day: '',
+                start_time: '',
+                price: '',
+            },
 
             schedulelist: [],
             checkDialogVisible: false,
@@ -288,7 +253,19 @@ export default {
             this.addForm.movie_id = id
 
         },
-        bbb(id) {
+        async bbb(id) {
+
+            this.queryInfo3.id = id
+
+            const { data: res } = await this.$http.get('GetScheduleMsgById', {
+                params: this.queryInfo3
+            })
+            console.log(id);
+            if (res.code !== 1000) {
+                return this.$message.error('获取演出计划失败！')
+            }
+
+            this.editForm = res.data
             this.editDialogVisible1 = true
             this.editForm.movie_id = id
 
@@ -373,11 +350,12 @@ export default {
             this.refs.editFormRef.resetFields()
 
         },
-        //修改用户表单的预验证
+        //修改演出计划表单
         async editUserInfo() {
             const { data: res } = await this.$http.put('updateSchedule',
                 // this.editForm
                 {
+                    id: this.editForm.id,
                     cinema_id: this.editForm.cinema_id,
                     movie_id: this.editForm.movie_id,
                     date_day: this.editForm.date_day,
@@ -391,11 +369,13 @@ export default {
                 return
             }
             // this.get_firstPage()
+            this.bbb(id)
             this.$message.success('修改信息成功')
             this.editDialogVisible1 = false
         },
 
-        async deleteMoviePlan() {
+        async deleteMoviePlan(id) {
+            this.queryInfo3.id = id
             const confirmResult = await this.$confirm('此操作将永久删除该计划, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -404,8 +384,8 @@ export default {
             if (confirmResult !== 'confirm') {
                 return this.$message.info('已取消删除')
             }
-            const { data: res } = await this.$http.get('getallschedulemsgbymovieid', {
-                params: this.movie_id
+            const { data: res } = await this.$http.get('GetScheduleMsgById', {
+                params: this.queryInfo3.id
             })
             if (res.code !== 1000) {
                 this.$message.error("删除失败")
@@ -417,7 +397,8 @@ export default {
                 this.$message.error("修改信息失败")
                 return
             }
-            this.get_firstPage()
+            this.schedulelist = res.data.list
+            this.total = res.data.Total
             this.$message.success('删除成功')
         },
 
