@@ -14,7 +14,7 @@ import (
 // const RootPath="./img/"
 func Login(c *gin.Context){
 	p:=new(models.ParamsLogin)
-	fmt.Println(p)
+	//fmt.Println(p)
 	err:=c.ShouldBind(&p)
 	if err!=nil{
 		ResponseError(c,CodeInvalidParams)
