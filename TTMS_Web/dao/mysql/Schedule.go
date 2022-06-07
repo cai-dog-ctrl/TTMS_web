@@ -133,7 +133,7 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	}
 
 	Seats := new(models.Seats)
-	sqlStr2 := "select id, cinema_id, roww, coll, status from seat_info where cinema_id = ? "
+	sqlStr2 := "select id, cinema_id, roww, coll, status from seat_info where cinema_id = ? order by id"
 	err = db.Select(&Seats.List, sqlStr2, p.CinemaId)
 	if err != nil {
 		fmt.Println("select error")
