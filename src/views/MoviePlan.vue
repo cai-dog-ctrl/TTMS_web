@@ -279,6 +279,7 @@ export default {
 
     created() {
         this.get_firstPage()
+        this.getCinemaList()
     },
 
     methods: {

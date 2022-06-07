@@ -21,14 +21,14 @@
                 <h1>我的订单</h1>
             </div>
             <el-divider><i class="el-icon-mobile-phone"></i></el-divider>
-            <div class="order_items">
+            <div class="order_items" v-for="item in this.orderInfo.OrderFrontList" :key="item.index">
                 <div class="order_items_head">
                     <div class="order_items_time">
-                        <span>2022-4-8</span>
+                        <span>{{ item.date }}</span>
 
                     </div>
                     <div class="order_items_id">
-                        <span>西邮订单号:13888888888</span>
+                        <span>西邮订单号:{{ item.order_id }}</span>
                     </div>
                     <div class="order_status">
                         <div class="no_pay">(未支付)</div>
@@ -41,21 +41,28 @@
                     </div>
                     <div class="descirption">
                         <div class="movie_name">
-                            《电影名》
+                            《{{ item.movie_name }}》
                         </div>
                         <div class="cinema">
-                            &nbsp; 3号ALPD激光
+                            &nbsp; 3号ALPD激光{{ item.cinema_name }}
                         </div>
 
                     </div>
                     <div class="price">
-                        ￥57.2
+                        ￥{{ item.price }}
                     </div>
                     <div class="detail_information">
                         <a href="#" @click="goto_order_info(id)">查看详情</a>
                     </div>
                 </div>
             </div>
+            <div class="page">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                    :current-page="form.Page_num" :page-sizes="[2, 1]" :page-size="form.Num"
+                    layout="total,sizes, prev, pager, next, jumper" :total="orderInfo.Total">
+                </el-pagination>
+            </div>
+
         </div>
     </div>
 </template>
@@ -63,15 +70,49 @@
 export default {
     data() {
         return {
-
+            currentPage: 1,
+            form: {
+                ID: '',
+                Num: '2',
+                Page_num: '1'
+            },
+            orderInfo: {}
         }
     },
+    created() {
+        this.getOrderByUserId()
+    },
     methods: {
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+            this.form.Num = val
+            this.getOrderByUserId()
+        },
+        handleCurrentChange(val) {
+            console.log(`当前页: ${val}`);
+            this.form.Page_num = val
+            this.getOrderByUserId()
+        },
         goto_user() {
             this.$router.push('/user')
         },
-        goto_order_info(id){
-            this.$router.push('/orderInfo/'+id)
+        goto_order_info(id) {
+            this.$router.push('/orderInfo/' + id)
+        },
+        async getOrderByUserId() {
+            this.form.ID = window.sessionStorage.userid
+            if (this.form.ID === '') {
+                this.$message.error("请登录后使用")
+                return
+            }
+            const { data: res } = await this.$http.get('GetOrderByUserID/', { params: this.form })
+            if (res.code !== 1000) {
+                this.$message.error("获取订单信息失败")
+                this.$router.push("/home")
+                return
+            }
+            this.orderInfo = res.data
+
         }
     }
 }
@@ -211,16 +252,25 @@ export default {
 .no_pay {
     color: #E42D23;
 }
-.price{
+
+.price {
     padding-top: 50px;
     width: 50px;
 }
-.detail_information{
+
+.detail_information {
     padding-top: 50px;
     margin-left: 210px;
-    a{
+
+    a {
         color: #000;
-    
+
     }
+}
+
+.page {
+    margin-top: 20px;
+    text-align: center;
+    margin: auto;
 }
 </style>

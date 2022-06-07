@@ -20,8 +20,13 @@
                     </div>
                 </div>
                 <div style="margin-top:120px;margin-left: 80px;">
-                    <div class="score" style="color:#fff">西邮评分<h1 style="color:#FFC600;font-size:30px;margin-top:10px">
-                            {{ movieInfo.score }}</h1>
+                    <div class="score" style="color:#fff">
+                        <div class="score" style="color:#fff">西邮评分
+                        </div>
+                        <br>
+                        <el-rate v-model="movieInfo.score" :colors="colors" disabled show-score text-color="#ff9900">
+                        </el-rate>
+                        <br>
                     </div>
                     <div class="pf" style="color:#fff">累计票房<br>
                         <h1 style="color:#F3E7FF;font-size:30px;margin-top:8px">{{ movieInfo.box_office }}亿</h1>
@@ -59,7 +64,8 @@
             </div>
             <el-dialog title="票信息" :visible.sync="dialogFormVisible" class="cinema_info">
 
-                <el-card class="box-card" v-loading="loading" :element-loading-text="message_get">
+                <el-card class="box-card" v-loading="loading" :element-loading-text="message_get"
+                    element-loading-text="正在生成订单">
                     <div class="cinema">
                         <div class="screen">荧幕</div>
                         <div class="seats">
@@ -172,6 +178,9 @@ export default {
             }
         },
         async updateTicket() {
+            this.tickets.user_id = window.sessionStorage.userid
+            console.log(this.tickets);
+            this.loading = true
             const { data: res } = await this.$http.put('SaleTicket', this.tickets)
             console.log(res.code)
             if (res.code !== 1000) {
@@ -179,8 +188,10 @@ export default {
                 this.$router.push("/home")
                 return
             }
-
+            this.loading = false
             this.$message.success("购票成功")
+            this.tickets.id_list = []
+            this.place = []
             this.dialogFormVisible = false
         },
         async getMovieInfo() {
@@ -244,11 +255,12 @@ export default {
 .palce {
     color: #fff;
     margin-left: 500px;
-    border:#409EFF solid 1px;
+    border: #409EFF solid 1px;
     margin-top: 10px;
-    width: 62px;
+    width: 68px;
     border-radius: 15px;
     background-color: #409EFF;
+
     span {
         margin-left: 5px;
     }

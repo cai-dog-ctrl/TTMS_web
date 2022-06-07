@@ -38,7 +38,7 @@
         <div class="card">
             <div v-for="item in MovieInfo.movieList" :key="item.id" class="movie">
                 <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                    <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                    <img :src=" 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
                         class="image" @click="gotoinfo(item.id)">
                     <div style="padding: 14px;">
                         <div class="text">
@@ -134,7 +134,7 @@ export default {
             this.MovieInfo = res2.data;
         },
         gotoinfo(id) {
-            this.$router.push('/movie/' + id);
+            this.$router.push('/movieinfo/' + id);
         },
         sort(index) {
             if (index === 0) {
