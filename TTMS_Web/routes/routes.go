@@ -80,5 +80,9 @@ func SetupRouter() *gin.Engine {
 	g.GET("/GetOrderByID/:ID", controllers.GetOrderByID)
 	g.GET("/GetOrderByUserID/", controllers.GetOrderByUserID)
 	g.GET("/PayMoneyByOrderID/:ID", controllers.PayMoneyByOrderID)
+	g.GET("/CountAllSales", controllers.CountAllSales)
+	g.GET("/CountSalesByDay", controllers.CountSalesByDay)
+	g.GET("/CountSalesByMonth", controllers.CountSalesByMonth)
+	g.GET("/CountSalesByYear", controllers.CountSalesByYear)
 	return r
 }

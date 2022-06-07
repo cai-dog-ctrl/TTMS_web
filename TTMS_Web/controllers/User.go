@@ -22,19 +22,22 @@ func Login(c *gin.Context){
 		return
 	}
 	p1, err := service.Login(p)
-	if p1.IsLogin == -1 && p1.IsDelete == 1 {
-		ResponseErrorWithMsg(c, CodeInvalidPassword, "登录失败")
-		return
-	}
 	if err != nil {
 		if err == errors.New("登录失败") {
 			ResponseErrorWithMsg(c, CodeInvalidPassword, "登录失败")
+			return
+		}else if p1.ID == 0 {
+			ResponseErrorWithMsg(c, CodeInvalidPassword, "无此用户")
 			return
 		} else {
 			zap.L().Error("Login Service error", zap.Error(err))
 			ResponseError(c, CodeServerBusy)
 			return
 		}
+	}
+	if p1.IsLogin == -1 && p1.IsDelete == 1 {
+		ResponseErrorWithMsg(c, CodeInvalidPassword, "登录失败")
+		return
 	}
 	ResponseSuccess(c, gin.H{
 		"username": p1.Username,
