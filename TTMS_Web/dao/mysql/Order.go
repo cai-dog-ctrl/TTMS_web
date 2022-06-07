@@ -36,7 +36,7 @@ func GetOrderByUserID(p *models.ParamsGetOrderByUserID) (*models.OrderFrontListR
 		return nil, err
 	}
 	for i, entry := range orderList.OrderFrontList {
-		sqlStr := fmt.Sprintf("select roww, coll, price from order_info, ticket, seat_info where order_info.id = %v and ticket.id = order_info.ticket_id and seat_info.id = ticket.seat_id", id)
+		sqlStr := fmt.Sprintf("select roww, coll, price from order_info, ticket, seat_info where order_info.id = %v and ticket.id = order_info.ticket_id and seat_info.id = ticket.seat_id", entry.OrderID)
 		err := db.Select(&orderList.OrderFrontList[i].SeatList, sqlStr)
 		if err != nil {
 			zap.L().Error(sqlStr)
