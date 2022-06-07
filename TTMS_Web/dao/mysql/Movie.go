@@ -108,8 +108,8 @@ func GetMovieInfoByID(id int64) (*models.MovieInfo, error) {
 }
 
 func InsertMovie(p *models.MovieInfo) error {
-	sqlStr := "insert into movie_info (id, name, description, tag, movie_time, date, score, pf, img, is_delete, cover_img, down_time, zone) values (?, ?, ?, ?, ?, ?, 0, 0, ?, -1, ?, ?, ?)"
-	_, err := db.Exec(sqlStr, p.Id, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.CarouselImgPath, p.CoverImgPath, p.Down_time, p.Zone)
+	sqlStr := "insert into movie_info (id, name, description, tag, movie_time, date, score, pf, is_delete, down_time, zone) values (?, ?, ?, ?, ?, ?, 0, 0, -1, ?, ?)"
+	_, err := db.Exec(sqlStr, p.Id, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.Down_time, p.Zone)
 	if err != nil {
 		zap.L().Error(sqlStr)
 		return err

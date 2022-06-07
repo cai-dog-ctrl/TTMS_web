@@ -13,7 +13,7 @@ import (
 //有关演出计划的业务逻辑代码
 
 //AddSchedule 添加演出计划
-func AddSchedule(p *models.ParamAddSchedule) (bool ,error) {
+func AddSchedule(p *models.ParamAddSchedule) (bool, error) {
 
 	err := mysql.RefreshSchedule()
 	if err != nil {
@@ -25,17 +25,17 @@ func AddSchedule(p *models.ParamAddSchedule) (bool ,error) {
 	Sche.CinemaId = utils.ShiftToNum64(p.CinemaId)
 	Sche.MovieId = utils.ShiftToNum64(p.MovieId)
 
-	str_day  := strings.Split(p.DateDay, "-")
-	date_day := utils.ShiftToNum(str_day[0])*10000 + utils.ShiftToNum(str_day[1])*100 + utils.ShiftToNum(str_day[2]) 
+	str_day := strings.Split(p.DateDay, "-")
+	date_day := utils.ShiftToNum(str_day[0])*10000 + utils.ShiftToNum(str_day[1])*100 + utils.ShiftToNum(str_day[2])
 
-	str_start_time 	:= strings.Split(p.StartTime, ":")
-	start_time 		:= str_start_time[0] + str_start_time[1]
+	str_start_time := strings.Split(p.StartTime, ":")
+	start_time := str_start_time[0] + str_start_time[1]
 
 	Sche.DateDay = int64(date_day)
 	Sche.StartTime = utils.ShiftToNum64(start_time)
 	Sche.Price = p.Price
 
-  	ret, err := mysql.InsertSchedule(Sche)
+	ret, err := mysql.InsertSchedule(Sche)
 	if err != nil {
 		return false, err
 	}
@@ -61,13 +61,13 @@ func AddSchedule(p *models.ParamAddSchedule) (bool ,error) {
 // }
 
 func GetAllScheduleMsgByMovieId(page_num, page_size int, movie_id int64) (*models.ScheduleRetList, error) {
-	
+
 	err := mysql.RefreshSchedule()
 	if err != nil {
 		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleMsgByMovieId failed")
 	}
 
-	p1, err := mysql.GetAllScheduleByMovieId(page_num,page_size,movie_id)
+	p1, err := mysql.GetAllScheduleByMovieId(page_num, page_size, movie_id)
 	if err != nil {
 		return nil, err
 	}
@@ -94,16 +94,16 @@ func GetAllScheduleMsgByMovieId(page_num, page_size int, movie_id int64) (*model
 		end_time += utils.ShiftToStringFromInt64(int64(it.EndTime % 100))
 
 		ret.List = append(ret.List, models.ScheduleRet{
-			ID: utils.ShiftToStringFromInt64(it.ID),
-			CinemaId: utils.ShiftToStringFromInt64(it.CinemaId),
-			MovieId: utils.ShiftToStringFromInt64(it.MovieId),
-			MovieName: it.MovieName,
-			DateDay: date_day,
-			StartTime: start_time,
-			EndTime: end_time,
-			Price: it.Price,
+			ID:         utils.ShiftToStringFromInt64(it.ID),
+			CinemaId:   utils.ShiftToStringFromInt64(it.CinemaId),
+			MovieId:    utils.ShiftToStringFromInt64(it.MovieId),
+			MovieName:  it.MovieName,
+			DateDay:    date_day,
+			StartTime:  start_time,
+			EndTime:    end_time,
+			Price:      it.Price,
 			CinemaName: it.CinemaName,
-			Type: it.Type,
+			Type:       it.Type,
 		})
 	}
 
@@ -111,14 +111,14 @@ func GetAllScheduleMsgByMovieId(page_num, page_size int, movie_id int64) (*model
 }
 
 func GetAllScheduleMsgByCinemaId(page_num, page_size int, cinema_id int64) (*models.ScheduleRetList, error) {
-	
+
 	err := mysql.RefreshSchedule()
 	if err != nil {
 		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleMsgByCinemaId failed")
 	}
-	
-	p1, err := mysql.GetAllScheduleByCinemaId(page_num,page_size,cinema_id)
-	
+
+	p1, err := mysql.GetAllScheduleByCinemaId(page_num, page_size, cinema_id)
+
 	if err != nil {
 		return nil, err
 	}
@@ -145,29 +145,29 @@ func GetAllScheduleMsgByCinemaId(page_num, page_size int, cinema_id int64) (*mod
 		end_time += utils.ShiftToStringFromInt64(int64(it.EndTime % 100))
 
 		ret.List = append(ret.List, models.ScheduleRet{
-			ID: utils.ShiftToStringFromInt64(it.ID),
-			CinemaId: utils.ShiftToStringFromInt64(it.CinemaId),
-			MovieId: utils.ShiftToStringFromInt64(it.MovieId),
-			MovieName: it.MovieName,
-			DateDay: date_day,
-			StartTime: start_time,
-			EndTime: end_time,
-			Price: it.Price,
+			ID:         utils.ShiftToStringFromInt64(it.ID),
+			CinemaId:   utils.ShiftToStringFromInt64(it.CinemaId),
+			MovieId:    utils.ShiftToStringFromInt64(it.MovieId),
+			MovieName:  it.MovieName,
+			DateDay:    date_day,
+			StartTime:  start_time,
+			EndTime:    end_time,
+			Price:      it.Price,
 			CinemaName: it.CinemaName,
-			Type: it.Type,
+			Type:       it.Type,
 		})
 	}
 
 	return ret, nil
 }
 
-func GetAllScheduleByMovieIdandDay(movie_id, day int64) ( *models.ScheduleRetList, error) {
-	
+func GetAllScheduleByMovieIdandDay(movie_id, day int64) (*models.ScheduleRetList, error) {
+
 	err := mysql.RefreshSchedule()
 	if err != nil {
 		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleByMovieIdandDay failed")
 	}
-	
+
 	p1, err := mysql.GetAllScheduleByMovieIdandDay(movie_id, day)
 
 	if err != nil {
@@ -196,50 +196,49 @@ func GetAllScheduleByMovieIdandDay(movie_id, day int64) ( *models.ScheduleRetLis
 		end_time += utils.ShiftToStringFromInt64(int64(it.EndTime % 100))
 
 		ret.List = append(ret.List, models.ScheduleRet{
-			ID: utils.ShiftToStringFromInt64(it.ID),
-			CinemaId: utils.ShiftToStringFromInt64(it.CinemaId),
-			MovieId: utils.ShiftToStringFromInt64(it.MovieId),
-			MovieName: it.MovieName,
-			DateDay: date_day,
-			StartTime: start_time,
-			EndTime: end_time,
-			Price: it.Price,
+			ID:         utils.ShiftToStringFromInt64(it.ID),
+			CinemaId:   utils.ShiftToStringFromInt64(it.CinemaId),
+			MovieId:    utils.ShiftToStringFromInt64(it.MovieId),
+			MovieName:  it.MovieName,
+			DateDay:    date_day,
+			StartTime:  start_time,
+			EndTime:    end_time,
+			Price:      it.Price,
 			CinemaName: it.CinemaName,
-			Type: it.Type,
+			Type:       it.Type,
 		})
 	}
 
 	return ret, nil
 }
 
-
 func UpdateSchedule(p *models.ParamsUpdateScheduleMsg) (bool, error) {
-	
+
 	err := mysql.RefreshSchedule()
 	if err != nil {
 		return false, errors.New("RefreshSchedule in serve.UpdateSchedule failed")
 	}
-	
+
 	Sch := new(models.SCheduledata)
-	Sch.ID 			= utils.ShiftToNum64(p.ID)
-	Sch.CinemaId 	= utils.ShiftToNum64(p.CinemaId)
-	Sch.MovieId 	= utils.ShiftToNum64(p.MovieId)
+	Sch.ID = utils.ShiftToNum64(p.ID)
+	Sch.CinemaId = utils.ShiftToNum64(p.CinemaId)
+	Sch.MovieId = utils.ShiftToNum64(p.MovieId)
 
-	str_day  := strings.Split(p.DateDay, "-")
-	date_day := str_day[0] + str_day[1] + str_day[2] 
+	str_day := strings.Split(p.DateDay, "-")
+	date_day := str_day[0] + str_day[1] + str_day[2]
 
-	str_start_time 	:= strings.Split(p.StartTime, ":")
-	start_time 		:= str_start_time[0] + str_start_time[1]
+	str_start_time := strings.Split(p.StartTime, ":")
+	start_time := str_start_time[0] + str_start_time[1]
 
-	Sch.DateDay		= utils.ShiftToNum64(date_day)
-	Sch.StartTime 	= utils.ShiftToNum64(start_time)
-	Sch.Price 		= p.Price
+	Sch.DateDay = utils.ShiftToNum64(date_day)
+	Sch.StartTime = utils.ShiftToNum64(start_time)
+	Sch.Price = p.Price
 
 	ret, err := mysql.UpdateSchedule(Sch)
 	if err != nil {
 		return false, err
 	}
-	if err == nil && !ret{
+	if err == nil && !ret {
 		return false, nil
 	}
 	return true, nil
@@ -260,12 +259,11 @@ func DeleteSchedule(id int64) error {
 }
 
 func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheRets, error) {
-	
+
 	err := mysql.RefreshSchedule()
 	if err != nil {
 		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleDayByMovieID failed")
 	}
-
 
 	p1, err := mysql.GetAllScheduleDayByMovieID(movie_id)
 	if err != nil {
@@ -287,7 +285,7 @@ func GetAllScheduleDayByMovieID(movie_id int64) (*models.ScheRets, error) {
 	}
 
 	return p, nil
-}	
+}
 
 func GetAllScheduleMsgByDay(day string) (*models.ScheduleRetList, error) {
 
@@ -296,8 +294,8 @@ func GetAllScheduleMsgByDay(day string) (*models.ScheduleRetList, error) {
 		return nil, errors.New("RefreshSchedule in serve.GetAllScheduleMsgByDay failed")
 	}
 
-	str_day  := strings.Split(day, "-")
-	date_day := utils.ShiftToNum(str_day[0])*10000 + utils.ShiftToNum(str_day[1])*100 + utils.ShiftToNum(str_day[2]) 
+	str_day := strings.Split(day, "-")
+	date_day := utils.ShiftToNum(str_day[0])*10000 + utils.ShiftToNum(str_day[1])*100 + utils.ShiftToNum(str_day[2])
 
 	day_int64 := int64(date_day)
 	p1, err := mysql.GetAllScheduleMsgByDay(day_int64)
@@ -327,18 +325,56 @@ func GetAllScheduleMsgByDay(day string) (*models.ScheduleRetList, error) {
 		end_time += utils.ShiftToStringFromInt64(int64(it.EndTime % 100))
 
 		p.List = append(p.List, models.ScheduleRet{
-			ID: utils.ShiftToStringFromInt64(it.ID),
-			CinemaId: utils.ShiftToStringFromInt64(it.CinemaId),
-			MovieId: utils.ShiftToStringFromInt64(it.MovieId),
-			MovieName: it.MovieName,
-			DateDay: date_day,
-			StartTime: start_time,
-			EndTime: end_time,
-			Price: it.Price,
+			ID:         utils.ShiftToStringFromInt64(it.ID),
+			CinemaId:   utils.ShiftToStringFromInt64(it.CinemaId),
+			MovieId:    utils.ShiftToStringFromInt64(it.MovieId),
+			MovieName:  it.MovieName,
+			DateDay:    date_day,
+			StartTime:  start_time,
+			EndTime:    end_time,
+			Price:      it.Price,
 			CinemaName: it.CinemaName,
-			Type: it.Type,
+			Type:       it.Type,
 		})
 	}
 	return p, nil
 
+}
+
+func GetScheduleMsgById(ID string) (*models.ScheduleRet, error) {
+	p, err := mysql.GetScheduleMsgById(utils.ShiftToNum64(ID))
+	if err != nil {
+		return nil, err
+	}
+
+	p1 := new(models.ScheduleRet)
+	p1.ID = utils.ShiftToStringFromInt64(p.ID)
+	p1.CinemaId = utils.ShiftToStringFromInt64(p.CinemaId)
+	p1.CinemaName = p.CinemaName
+
+	date_day := ""
+	date_day += utils.ShiftToStringFromInt64(int64(p.DateDay / 10000))
+	date_day += "-"
+	day_time := p.DateDay % 10000
+	date_day += utils.ShiftToStringFromInt64(int64(day_time / 100))
+	date_day += "-"
+	date_day += utils.ShiftToStringFromInt64(int64(day_time % 100))
+	start_time := ""
+	start_time += utils.ShiftToStringFromInt64(int64(p.StartTime / 100))
+	start_time += ":"
+	start_time += utils.ShiftToStringFromInt64(int64(p.StartTime % 100))
+	end_time := ""
+	end_time += utils.ShiftToStringFromInt64(int64(p.EndTime / 100))
+	end_time += ":"
+	end_time += utils.ShiftToStringFromInt64(int64(p.EndTime % 100))
+
+	p1.DateDay = date_day
+	p1.StartTime = start_time
+	p1.EndTime = end_time
+	p1.MovieId = utils.ShiftToStringFromInt64(p.MovieId)
+	p1.MovieName = p.MovieName
+	p1.Price = p.Price
+	p1.Type = p.Type
+
+	return p1, nil
 }

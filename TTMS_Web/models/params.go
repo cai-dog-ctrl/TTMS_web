@@ -89,8 +89,8 @@ type ParamsAddNewMovie struct {
 	Duration        int    `json:"duration" form:"duration" binding:"required"`
 	Up_time         string `json:"up_time" form:"up_time" binding:"required"`
 	Down_time       string `json:"down_time" form:"down_time" binding:"required"`
-	CoverImgPath    string `json:"cover_img_path" form:"cover_img_path" binding:"required"`
-	CarouselImgPath string `json:"carousel_img_path" form:"carousel_img_path" binding:"required"`
+	// CoverImgPath    string `json:"cover_img_path" form:"cover_img_path" binding:"required"`
+	// CarouselImgPath string `json:"carousel_img_path" form:"carousel_img_path" binding:"required"`
 	Zone            string `json:"zone" form:"zone" binding:"required"`
 }
 

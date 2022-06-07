@@ -6,7 +6,7 @@ import (
 	"TTMS/service"
 	"fmt"
 	"os"
-	"path/filepath"
+	// "path/filepath"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -199,10 +199,6 @@ func UploadPicture(c *gin.Context) {
 }
 
 func GetCurrentPath() string {
-	if ex, err := os.Executable(); err == nil {
-		return filepath.Dir(ex)
-	} else {
-		zap.L().Error("GetCurrentPath Error", zap.Error(err))
-	}
-	return ""
+	path , _ := os.Getwd()
+	return path
 }

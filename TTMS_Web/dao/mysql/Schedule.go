@@ -74,7 +74,7 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	// 	return errors.New("the show time has expired, please reschedule")
 	// }
 	Sches := new(models.ScheduleList)
-	sqlStr4 := "select count(id) from showschdule where cinema_id = ? and date_day = ? and is_delete = -1"
+	sqlStr4 := "select count(id) from showschdule where cinema_id = ? and date_day = ? and is_delete = -1 order by id"
 	err = db.Get(&Sches.Total, sqlStr4, p.CinemaId, p.DateDay)
 	if err != nil {
 		return false, err
@@ -133,7 +133,7 @@ func InsertSchedule(p *models.ScheduleIn) (bool, error) {
 	}
 
 	Seats := new(models.Seats)
-	sqlStr2 := "select id, cinema_id, roww, coll, status from seat_info where cinema_id = ?"
+	sqlStr2 := "select id, cinema_id, roww, coll, status from seat_info where cinema_id = ? order by id"
 	err = db.Select(&Seats.List, sqlStr2, p.CinemaId)
 	if err != nil {
 		fmt.Println("select error")
@@ -328,4 +328,27 @@ func GetAllScheduleMsgByDay(day int64) (*models.ScheduleList, error) {
 		return nil, err
 	}
 	return Sches, nil
+}
+
+func GetScheduleMsgById(ID int64) (*models.ScheduleOut, error) {
+	sqlStr := "select id, cinema_id, movie_id, date_day, start_time, end_time, price from showschdule  where is_delete = -1 and id = ?"
+	Sche := new(models.ScheduleOut)
+	err := db.Get(Sche, sqlStr, ID)
+	if err != nil {
+		return nil, err
+	}
+
+	sqlStr = "select cinema_name, tag from cinema_info where id = ?"
+	err = db.Get(Sche, sqlStr, Sche.CinemaId)
+	if err != nil {
+		return nil, err
+	}
+
+	sqlStr = "select name from movie_info where id = ?"
+	err = db.Get(Sche, sqlStr, Sche.MovieId)
+	if err != nil {
+		return nil, err
+	}
+
+	return Sche, nil
 }
