@@ -40,6 +40,7 @@ func Login(c *gin.Context){
 		"username": p1.Username,
 		"token":    p1.Token,
 		"identity": p1.Identity,
+		"userid": 	p1.ID,
 	})
 }
 
