@@ -70,7 +70,6 @@
 export default {
     data() {
         return {
-            currentPage: 1,
             form: {
                 ID: '',
                 Num: '2',
