@@ -6,8 +6,8 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/snowflake"
 	"TTMS/pkg/utils"
+	"errors"
 	"fmt"
-
 	"go.uber.org/zap"
 )
 
@@ -75,6 +75,17 @@ func ModifyCinema(p *models.CinemaInfo) error {
 }
 
 func DeleteCinemaByID(id int64) error {
+	is := 0
+	sqlStr2 := fmt.Sprintf("select count(*) from showschdule where cinema_id = %v and is_delete != 1", id)
+	err2 := db.Get(&is, sqlStr2)
+	if err2 != nil {
+		zap.L().Error(sqlStr2)
+		return err2
+	}
+	if is != 0 {
+		return errors.New("schedule exist, delete failed")
+	}
+
 	sqlStr := "delete from cinema_info where id = ?"
 	_, err := db.Exec(sqlStr, id)
 	if err != nil {
@@ -136,7 +147,7 @@ func GetSeatByCinemaID(id int64) (*models.SeatList, error) {
 func ModifySeat(p *models.ParamsModifySeat) error {
 	sqlStr := ("update seat_info set status = ?, flag = ? where id = ?")
 	_, err := db.Exec(sqlStr, p.Status, p.Flag, utils.ShiftToNum64(p.ID))
-	if err != nil {
+	if err != nil {	
 		zap.L().Error(sqlStr)
 		return err
 	}
