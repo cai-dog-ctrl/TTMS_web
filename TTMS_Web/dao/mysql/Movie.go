@@ -5,10 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"time"
+	"sync"
 
 	"go.uber.org/zap"
 )
 
+var mutex sync.Mutex
 //有关电影的持久化代码
 
 func GetCarouselList(num int) (*models.CarouselList, error) {
@@ -110,11 +112,25 @@ func GetMovieInfoByID(id int64) (*models.MovieInfo, error) {
 }
 
 func InsertMovie(p *models.MovieInfo) error {
-	sqlStr := "insert into movie_info (id, name, description, tag, movie_time, date, score, pf, img, is_delete, cover_img, down_time, zone) values (?, ?, ?, ?, ?, ?, 0, 0, ?, -1, ?, ?, ?)"
-	_, err := db.Exec(sqlStr, p.Id, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.CarouselImgPath, p.CoverImgPath, p.Down_time, p.Zone)
-	if err != nil {
-		zap.L().Error(sqlStr)
-		return err
+	mutex.Lock()
+	defer mutex.Unlock()
+	movie := new(models.MovieInfo)
+	sqlStr1 := fmt.Sprintf("select id, name, description, tag, movie_time, date, score, pf, cover_img, is_delete, img, down_time, zone from movie_info where name = '%v'", p.Name)
+	err1 := db.Get(movie, sqlStr1)
+	if err1 == nil{
+		if p.CoverImgPath != "" {
+			movie.CoverImgPath = p.CoverImgPath
+		} else if p.CarouselImgPath != "" {
+			movie.CarouselImgPath = p.CarouselImgPath
+		}
+		return ModifyMovie(movie)
+	} else {
+		sqlStr := "insert into movie_info (id, name, description, tag, movie_time, date, score, pf, img, is_delete, cover_img, down_time, zone) values (?, ?, ?, ?, ?, ?, 0, 0, ?, -1, ?, ?, ?)"
+		_, err := db.Exec(sqlStr, p.Id, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.CarouselImgPath, p.CoverImgPath, p.Down_time, p.Zone)
+		if err != nil {
+			zap.L().Error(sqlStr)
+			return err
+		}
 	}
 	return nil
 }
