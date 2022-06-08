@@ -328,9 +328,10 @@ export default {
 }
 
 .image {
-
+    height: 200px;
     cursor: pointer;
     position: relative;
     width: 200px;
+    overflow: hidden;
 }
 </style>
