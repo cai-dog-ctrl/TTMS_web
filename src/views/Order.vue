@@ -37,7 +37,7 @@
                 </div>
                 <div class="order_items_body">
                     <div class="imag">
-                        <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                        <img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/' + item.cover_img_path"
                             alt="" class="image">
                     </div>
                     <div class="descirption">
