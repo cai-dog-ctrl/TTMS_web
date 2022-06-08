@@ -121,11 +121,11 @@ func GetOrderByID(id int64) (*models.OrderFrontRet, error) {
 }
 
 func CountAllSales() (*models.OrderDataList, error) {
-	sqlStr1 := "select id, name, img from movie_info"
+	sqlStr1 := "select id, name, img from movie_info order by id"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
 	if err != nil && len(p1.IDS) == 0{
-		fmt.Println("don't have schedules in table")
+		fmt.Println("don't have movie in table")
 		return nil, err
 	}
 	p2 := new(models.OrderDataList)
@@ -147,7 +147,7 @@ func CountAllSales() (*models.OrderDataList, error) {
 }
 
 func CountSalesByDay(day string) (*models.OrderDataList, error) {
-	sqlStr1 := "select id, name, img from movie_info"
+	sqlStr1 := "select id, name, img from movie_info order by id"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
 	if err != nil && len(p1.IDS) != 0{
@@ -172,7 +172,7 @@ func CountSalesByDay(day string) (*models.OrderDataList, error) {
 }
 
 func CountSalesByMonth(month string) (*models.OrderDataList, error) {
-	sqlStr1 := "select id, name, img from showschdule"
+	sqlStr1 := "select id, name, img from movie_info order by id"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
 	if err != nil && len(p1.IDS) != 0{
@@ -180,17 +180,23 @@ func CountSalesByMonth(month string) (*models.OrderDataList, error) {
 	}
 
 	strs := strings.Split(month, "-")
-	start := utils.ShiftToNum(strs[1]) -1
+	start := utils.ShiftToNum(strs[1])
 	end   := utils.ShiftToNum(strs[1]) +1
-	day_start := strs[0] + "-" + utils.ShiftToStringFromInt64(int64(start)) + "-00"
-	day_end	  := strs[0] + "-" + utils.ShiftToStringFromInt64(int64(end)) 	+ "-00"
+	// day_start := strs[0] + "-" + utils.ShiftToStringFromInt64(int64(start)) + "-00"
+	// day_end	  := strs[0] + "-" + utils.ShiftToStringFromInt64(int64(end)) 	+ "-00"
+
+	day_start := fmt.Sprintf("%v-%02v-%02v", strs[0], utils.ShiftToStringFromInt64(int64(start)), "00")
+	day_end := fmt.Sprintf("%v-%02v-%02v", strs[0], utils.ShiftToStringFromInt64(int64(end)), "00")
  
 	p2 := new(models.OrderDataList)
 	for _, it := range p1.IDS {
-		sqlStr2 := "select count(price) from order_info where movie_id = ? and date > ? and date < ? and status = 1"
+		//sqlStr2 := "select sum(price) from order_info where movie_id = ? and date > '?' and date < '?' and status = 1 and is_delete = -1"
+		sqlStr2 := fmt.Sprintf("select sum(price) from order_info where movie_id = %v and date > '%v' and date < '%v' and status = 1 and is_delete = -1", it.Id, day_start, day_end)
 		p := new(models.OrderData)
+		// fmt.Println(sqlStr2)
 		p.TotalPrice = 0
-		err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day_start, day_end)
+		//err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day_start, day_end)
+		err = db.Get(&p.TotalPrice, sqlStr2)
 		if err != nil && p.TotalPrice != 0{
 			return p2, err
 		}
@@ -203,7 +209,7 @@ func CountSalesByMonth(month string) (*models.OrderDataList, error) {
 }
 
 func CountSalesByYear(year string) (*models.OrderDataList, error) {
-	sqlStr1 := "select id, name, img from showschdule"
+	sqlStr1 := "select id, name, img from movie_info order by id"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
 	if err != nil && len(p1.IDS) != 0{
@@ -211,17 +217,22 @@ func CountSalesByYear(year string) (*models.OrderDataList, error) {
 	}
 
 	strs := strings.Split(year, "-")
-	start := utils.ShiftToNum(strs[0]) -1
+	start := utils.ShiftToNum(strs[0])
 	end   := utils.ShiftToNum(strs[0]) +1
-	day_start := utils.ShiftToStringFromInt64(int64(start)) + "-00" + "-00"
-	day_end	  := utils.ShiftToStringFromInt64(int64(end)) 	+ "-00" + "-00"
- 
+	// day_start := utils.ShiftToStringFromInt64(int64(start)) + "-00" + "-00"
+	// day_end	  := utils.ShiftToStringFromInt64(int64(end)) 	+ "-00" + "-00"
+
+	day_start := fmt.Sprintf("%v-%02v-%02v", utils.ShiftToStringFromInt64(int64(start)), "00", "00")
+	day_end := fmt.Sprintf("%v-%02v-%02v", utils.ShiftToStringFromInt64(int64(end)), "00", "00")
+
 	p2 := new(models.OrderDataList)
 	for _, it := range p1.IDS {
-		sqlStr2 := "select count(price) from order_info where movie_id = ? and date > ? and date < ? and status = 1"
+		// sqlStr2 := "select sum(price) from order_info where movie_id = ? and date > ? and date < ? and status = 1 and is_delete = -1"
+		sqlStr2 := fmt.Sprintf("select sum(price) from order_info where movie_id = %v and date > '%v' and date < '%v' and status = 1 and is_delete = -1", it.Id, day_start, day_end)
 		p := new(models.OrderData)
-		err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day_start, day_end)
-		if err != nil {
+		p.TotalPrice = 0
+		err = db.Get(&p.TotalPrice, sqlStr2)
+		if err != nil && p.TotalPrice != 0 {
 			return p2, err
 		}
 		p.CoverImgPath 	= it.CoverImgPath
