@@ -53,7 +53,7 @@
                         ￥{{ item.price }}
                     </div>
                     <div class="detail_information">
-                        <a href="#" @click="goto_order_info(id)">查看详情</a>
+                        <a href="#" @click="goto_order_info(item.order_id)">查看详情</a>
                     </div>
                 </div>
             </div>

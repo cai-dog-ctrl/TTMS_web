@@ -49,7 +49,6 @@ export default {
     },
     methods: {
     },
-    此时页面上的元素已经渲染完毕了
    // mounted() {
     //     // 基于准备好的dom，初始化echarts实例
     //     var myChart = echarts.init(document.getElementById('main'))
