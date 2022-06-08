@@ -4,6 +4,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
+	"errors"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -73,8 +74,12 @@ func DeleteCinemaByID(c *gin.Context) {
 	p.ID = c.Param("ID")
 	err := service.DeleteCinemaByID(p)
 	if err != nil {
-		zap.L().Error("service.DeleteCinemaByID ERROR", zap.Error(err))
-		ResponseError(c, CodeServerBusy)
+		if err == errors.New("schedule exist, delete failed") {
+			ResponseErrorWithMsg(c, CodeServerBusy, "schedules exist, delete failed")
+		} else {
+			zap.L().Error("service.DeleteCinemaByID ERROR", zap.Error(err))
+			ResponseError(c, CodeServerBusy)
+		}
 		return
 	}
 	ResponseSuccess(c, "delete cinema successful.")

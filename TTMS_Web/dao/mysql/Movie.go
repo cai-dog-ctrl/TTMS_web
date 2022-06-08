@@ -2,9 +2,11 @@ package mysql
 
 import (
 	"TTMS/models"
+	"errors"
 	"fmt"
-	"go.uber.org/zap"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 //有关电影的持久化代码
@@ -118,6 +120,18 @@ func InsertMovie(p *models.MovieInfo) error {
 }
 
 func ModifyMovie(p *models.MovieInfo) error {
+	is := 0
+	if p.IsDelete == 1 {
+		sqlStr1 := fmt.Sprintf("select count(*) from showschdule where movie_id = %v and is_delete != 1", p.Id)
+		err1 := db.Get(&is, sqlStr1)
+		if err1 != nil {
+			zap.L().Error(sqlStr1)
+			return err1
+		}
+		if is != 0 {
+			return errors.New("schedule exist, delete failed")
+		}
+	}
 	sqlStr := "update movie_info set name = ?, description = ?, tag = ?, movie_time = ?, date = ?, score = ?, pf = ?, img = ?, is_delete = ?, cover_img = ?, down_time = ?, zone = ? where id = ?"
 	_, err := db.Exec(sqlStr, p.Name, p.Description, p.Tag, p.Duration, p.Up_time, p.Score, p.BoxOffice, p.CarouselImgPath, p.IsDelete, p.CoverImgPath, p.Down_time, p.Zone, p.Id)
 	if err != nil {

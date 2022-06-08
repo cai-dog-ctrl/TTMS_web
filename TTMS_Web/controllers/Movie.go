@@ -4,6 +4,7 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
+	"errors"
 	"fmt"
 	"os"
 	// "path/filepath"
@@ -105,15 +106,14 @@ func GetBoxOfficeRankingMovies(c *gin.Context) {
 
 func AddNewMovie(c *gin.Context) {
 	p := new(models.ParamsAddNewMovie)
-
 	form, _ := c.MultipartForm()
 	files := form.File["img"]
-	for idx, file := range files {
+	for _, file := range files {
 		pwd := GetCurrentPath()
 		dst := fmt.Sprintf("%v/img/%v", pwd, file.Filename)
-		if idx == 0 {
+		if file.Filename[1] == 'o' {
 			p.CoverImgPath = file.Filename
-		} else if idx == 1 {
+		} else if file.Filename[1] == 'a' {
 			p.CarouselImgPath = file.Filename
 		}
 		c.SaveUploadedFile(file, dst)
@@ -144,8 +144,12 @@ func ModifyMovieByID(c *gin.Context) {
 	}
 	err = service.ModifyMovieByID(p)
 	if err != nil {
-		ResponseError(c, CodeServerBusy)
-		zap.L().Error("service.ModifyMovieByID Error", zap.Error(err))
+		if err == errors.New("schedules exist, delete failed") {
+			ResponseErrorWithMsg(c, CodeServerBusy, "schedules exist, delete failed")
+		} else {
+			ResponseError(c, CodeServerBusy)
+			zap.L().Error("service.ModifyMovieByID Error", zap.Error(err))
+		}
 		return
 	}
 	ResponseSuccess(c, "modify movie successful.")
