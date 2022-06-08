@@ -5,10 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"time"
+	"sync"
 
 	"go.uber.org/zap"
 )
 
+var mutex sync.Mutex
 //有关电影的持久化代码
 
 func GetCarouselList(num int) (*models.CarouselList, error) {
@@ -110,6 +112,8 @@ func GetMovieInfoByID(id int64) (*models.MovieInfo, error) {
 }
 
 func InsertMovie(p *models.MovieInfo) error {
+	mutex.Lock()
+	defer mutex.Unlock()
 	movie := new(models.MovieInfo)
 	sqlStr1 := fmt.Sprintf("select id, name, description, tag, movie_time, date, score, pf, cover_img, is_delete, img, down_time, zone from movie_info where name = '%v'", p.Name)
 	err1 := db.Get(movie, sqlStr1)
