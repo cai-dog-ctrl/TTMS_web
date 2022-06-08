@@ -84,21 +84,22 @@ func SaleTicket(c *gin.Context) {
 		ResponseError(c, CodeInvalidParams)
 		zap.L().Error("SaleTicket ShouldBind Error", zap.Error(err))
 	}
-	is, price, err1 := service.SaleTicket(p)
+	is, id, price, err1 := service.SaleTicket(p)
 	if err1 != nil || !is {
 		ResponseError(c, CodeServerBusy)
 		zap.L().Error("service.SaleTicket Error", zap.Error(err))
 		return
 	}
 	ResponseSuccess(c, gin.H{
+		"OrderID":    utils.ShiftToStringFromInt64(id),
 		"TotalPrice": price,
 	})
 }
 
 // 退票
 func Refund(c *gin.Context) {
-	ticket_id 	:= c.Query("ticket_id")
-	user_id 	:= c.Query("user_id")
+	ticket_id := c.Query("ticket_id")
+	user_id := c.Query("user_id")
 
 	if ticket_id == "" || user_id == "" {
 		ResponseError(c, CodeInvalidParams)
@@ -112,6 +113,6 @@ func Refund(c *gin.Context) {
 		zap.L().Error("service.Refund Error", zap.Error(err))
 		return
 	}
-	
+
 	ResponseSuccess(c, "Refund ticket successful.")
 }

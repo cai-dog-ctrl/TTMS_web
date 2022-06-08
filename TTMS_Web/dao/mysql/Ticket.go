@@ -11,7 +11,7 @@ import (
 
 //有关票务的持久化代码
 
-func SaleTicket(order *models.Order) (bool, float32, error) {
+func SaleTicket(order *models.Order) (bool, int64, float32, error) {
 	day := time.Now().Day()
 	month := int(time.Now().Month())
 	year := time.Now().Year()
@@ -25,7 +25,7 @@ func SaleTicket(order *models.Order) (bool, float32, error) {
 
 	tx, err := db.Begin()
 	if err != nil {
-		return false, 0, err
+		return false, order_id, 0, err
 	}
 
 	defer func() {
@@ -48,25 +48,25 @@ func SaleTicket(order *models.Order) (bool, float32, error) {
 		err1 := db.Get(&ticket.Status, sqlStr1)
 		if err1 != nil || ticket.Status == 1 {
 			zap.L().Error(sqlStr1)
-			return false, 0, err1
+			return false, order_id, 0, err1
 		}
 		sqlStr := "update ticket set status = ? where id = ? and status = -1"
 		_, err := db.Exec(sqlStr, 1, ticket_id)
 		if err != nil {
 			zap.L().Error(sqlStr)
-			return false, 0, err
+			return false, order_id, 0, err
 		}
 		sqlStr3 := fmt.Sprintf("select showschdule.price from showschdule, ticket where ticket.id = %v and ticket.schedule_id = showschdule.id", ticket_id)
 		err3 := db.Get(&schdule.Price, sqlStr3)
 		if err3 != nil {
 			zap.L().Error(sqlStr3)
-			return false, 0, err3
+			return false, order_id, 0, err3
 		}
 		sqlStr4 := fmt.Sprintf("select showschdule.movie_id from showschdule, ticket where ticket.id = %v and ticket.schedule_id = showschdule.id", ticket_id)
 		err4 := db.Get(&schdule.MovieId, sqlStr4)
 		if err4 != nil {
 			zap.L().Error(sqlStr4)
-			return false, 0, err4
+			return false, order_id, 0, err4
 		}
 
 		// discount
@@ -84,12 +84,12 @@ func SaleTicket(order *models.Order) (bool, float32, error) {
 		_, err2 := db.Exec(sqlStr2, order_id, order.UserID, ticket_id, date, now, -1, TicketPrice, -1, MovieId)
 		if err2 != nil {
 			zap.L().Error(sqlStr)
-			return false, 0, err2
+			return false, order_id, 0, err2
 		}
 
 	}
 
-	return true, TotalPrice, nil
+	return true, order_id, TotalPrice, nil
 }
 
 func GetTicketByScheduleId(id int64) (*models.Ticks, error) {
