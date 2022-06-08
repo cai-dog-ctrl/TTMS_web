@@ -85,5 +85,6 @@ func SetupRouter() *gin.Engine {
 	g.GET("/CountSalesByDay/:day", controllers.CountSalesByDay)
 	g.GET("/CountSalesByMonth/:month", controllers.CountSalesByMonth)
 	g.GET("/CountSalesByYear/:year", controllers.CountSalesByYear)
+	g.GET("/RefundOrder/:id", controllers.RefundOrder)
 	return r
 }
