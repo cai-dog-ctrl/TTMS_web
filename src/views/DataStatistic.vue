@@ -8,7 +8,10 @@
         </el-breadcrumb>
         <!-- 卡片视图区 -->
         <el-card>
-           <div id="main" style="width: 600px;height:400px;"></div>
+            <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+            <div id="main" style="width: 600px;height:400px;">
+                
+            </div>
         </el-card>
     </div>
 </template>
