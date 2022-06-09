@@ -65,15 +65,10 @@ export default {
                             "id": 110,
                             "authName": "用户列表",
                             "path": "mangeruser",
-<<<<<<< HEAD
-                        }
-                    ],
-=======
                    
                         }
                     ],
                   
->>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                 },
                 {
                     "id": 103,
@@ -85,34 +80,6 @@ export default {
                             "authName": "影厅列表",
                             "path": "moviehall",
 <<<<<<< HEAD
-                            
-=======
-                          
->>>>>>> 1145525110d732ca675081c628ce6ff150df6801
-                        },
-
-                    ],
-                   
-                },
-                {
-                    "id": 101,
-                    "authName": "剧目管理",
-                    "path": "goods",
-                    "children": [
-                        {
-                            "id": 104,
-                            "authName": "剧目列表",
-                            "path": "manger_movie",
-                           
-                        },
-                        {
-                            "id": 115,
-                            "authName": "演出计划",
-                            "path": "movieplan",
-<<<<<<< HEAD
-                            
-=======
-                           
 >>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                         },
 
@@ -130,125 +97,3 @@ export default {
                             "path": "datastatistic",
                             
                         },
-                        {
-                            "id": 115,
-                            "authName": "统计图",
-                            "path": "datareport",
-                           
-                        },
-                        {
-                            "id":111,
-                            "authName": "日销售额",
-                            "path": "daydatastatistic",
-                        },
-                        {
-                            "id":111,
-                            "authName": "月销售额",
-                            "path": "monthdatastatistic",
-                        },
-                        {
-                            "id":111,
-                            "authName": "年销售额",
-                            "path": "yeardatastatistic",
-                        }
-                    ],
-<<<<<<< HEAD
-                   
-=======
-                    
->>>>>>> 1145525110d732ca675081c628ce6ff150df6801
-                },
-            ],
-            iconsObj: {
-                '125': 'el-icon-user-solid',
-                '103': 'el-icon-s-management',
-                '101': 'el-icon-video-camera-solid',
-                '102': 'el-icon-s-order',
-                '145': 'el-icon-s-marketing'
-            },
-            //是否折叠
-            isCollapse: false,
-            //被激活的链接地址
-            activePath: ''
-        }
-
-    },
-    created() {
-        // this.getMenuList()
-        this.activePath = window.sessionStorage.getItem('activePath')
-    },
-    methods: {
-        logout() {
-            window.sessionStorage.clear();
-            this.$router.push("/login");
-        },
-        //获取所有的菜单
-        async getMenuList() {
-            const { data: res } = await this.$http.get('menus')
-            if (res.list !== 1000) return this.$message.error(res.meta.msg)
-            this.menulist = res.data
-            console.log(res)
-        },
-        //点击按钮，切换菜单的折叠与展开
-        toggleCollapse() {
-            this.isCollapse = !this.isCollapse
-        },
-        //保存链接的激活状态
-        saveNavState(activePath) {
-            window.sessionStorage.setItem('activePath', activePath)
-            this.activePath = activePath
-
-        }
-    },
-
-};
-</script>
-
-<style lang="less" scoped>
-.home-container {
-    height: 100%;
-}
-
-.el-header {
-    background-color: #373d41;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 0;
-    align-items: center;
-    color: #fff;
-    font-size: 20px;
-
-    >div {
-        display: flex;
-        align-items: center;
-
-        span {
-            margin-left: 15px;
-        }
-    }
-}
-
-.el-aside {
-    background-color: #333744;
-
-    .el-menu {
-        border-right: none;
-    }
-
-}
-
-.el-main {
-    background-color: #eaedf1;
-}
-
-.toggle-button {
-    background-color: #4a5064;
-    font-size: 10px;
-    line-height: 24px;
-    color: #fff;
-    text-align: center;
-    letter-spacing: 0.2em;
-    cursor: pointer; //悬空变小手
-
-}
-</style>
