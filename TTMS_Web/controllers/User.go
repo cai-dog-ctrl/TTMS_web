@@ -26,6 +26,9 @@ func Login(c *gin.Context){
 		if err == errors.New("登录失败") {
 			ResponseErrorWithMsg(c, CodeInvalidPassword, "登录失败")
 			return
+		}else if p1==nil{
+			ResponseErrorWithMsg(c, CodeInvalidPassword, "登录失败")
+			return
 		}else if p1.ID == 0 {
 			ResponseErrorWithMsg(c, CodeInvalidPassword, "无此用户")
 			return
