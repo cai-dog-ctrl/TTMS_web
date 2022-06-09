@@ -47,13 +47,10 @@
                 </el-table-column>
             </el-table>
 
-            <!-- 分页区域 -->
-            <div class="page">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                    :current-page="queryInfo.Page_num" :page-sizes="[2, 5, 10, 15]" :page-size="queryInfo.Num"
-                    layout="total,sizes, prev, pager, next, jumper" :total="total">
-                </el-pagination>
-            </div>
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :current-page="queryInfo.Page_num" :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.Num"
+                layout="total,sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
         </el-card>
 
         <!-- 添加用户的对话框 -->
@@ -101,6 +98,7 @@
                 <el-button type="primary" @click="editHallInfo">确 定</el-button>
             </span>
         </el-dialog>
+        
         <!-- 修改座位的对话框 -->
         <el-dialog title="座位信息" :visible.sync="dialogFormVisible" class="cinema_info">
 
@@ -138,7 +136,7 @@ export default {
         return {
             seat: {
                 id: '',
-                flag:3,
+                flag: 3,
             },
             message_get: "拼命加载中",
             message_updata: "正在更改",
@@ -150,7 +148,7 @@ export default {
                 //当前的页数
                 Page_num: 1,
                 //当前每页有多少条数据
-                Num: 2
+                Num: 5,
             },
             cinemalist: [],
             total: '',
@@ -168,7 +166,7 @@ export default {
             //添加表单的验证规则对象
             addFormRules: {
                 name: [
-                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                    { required: true, message: '请输入影院名称', trigger: 'blur' },
                     { min: 3, max: 10, message: '用户名的长度在3到10之间', trigger: 'blur' }
                 ],
                 tag: [
@@ -185,7 +183,7 @@ export default {
             //修改表单的验证规则
             editFormRules: {
                 name: [
-                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                    { required: true, message: '请输入影院名称', trigger: 'blur' },
                     { min: 3, max: 10, message: '用户名的长度在3到10之间', trigger: 'blur' }
                 ],
 
@@ -241,10 +239,10 @@ export default {
                             this.seat
                         )
                         if (res.code != 1000) {
-                             this.map[i][j].status = t
+                            this.map[i][j].status = t
                             return this.$message.error('修改失败！');
                         }
-                       
+
                     }
                 }
             }
@@ -266,23 +264,24 @@ export default {
                 params: this.queryInfo
             })
             if (res.code != 1000) {
-                return this.$message.error('获取影厅列表失败！'); ``
+                return this.$message.error('获取影厅列表失败！'); ``    
 
             }
 
             this.cinemalist = res.data.cinemaList
             this.total = res.data.cinema_num
+            //console.log(res)
         },
 
         // 监听num
         handleSizeChange(newSize) {
-            // console.log(newSize)
+            //console.log(newSize)
             this.queryInfo.Num = newSize
             this.getCinemaList()
         },
         //监听页码值改变的事件
         handleCurrentChange(newPage) {
-            // console.log(newPage)
+            //console.log(newPage)
             this.queryInfo.Page_num = newPage
             this.getCinemaList()
 
@@ -320,10 +319,10 @@ export default {
             })
             // console.log(res.data.identity);
             if (res2.code !== 1000) {
-                return this.$message.error('删除用户失败！')
+                return this.$message.error('删除影院失败！')
             }
 
-            this.$message.success('删除用户成功！')
+            this.$message.success('删除影院成功！')
             this.getCinemaList()
 
         },

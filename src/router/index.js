@@ -14,6 +14,7 @@ import MangerMovie from '../views/MangerMovie.vue'
 import MovieHall from '../views/MovieHall.vue'
 import MoviePlan from '../views/MoviePlan.vue'
 import DataStatistic from '../views/DataStatistic.vue'
+import DataReport from '../views/DataReport.vue'
 
 import Borad from '../views/Borad.vue'
 import Movie from '../views/Movie.vue'
@@ -40,6 +41,7 @@ const routes = [
       {path:'/moviehall',component: MovieHall},
       {path:'/movieplan',component: MoviePlan},
       {path:'/datastatistic',component: DataStatistic},
+      {path:'/datareport',component: DataReport},
 
 
     ]
