@@ -79,7 +79,6 @@ export default {
                             "id": 111,
                             "authName": "影厅列表",
                             "path": "moviehall",
-                          
                         },
 
                     ],
@@ -100,7 +99,6 @@ export default {
                             "id": 115,
                             "authName": "演出计划",
                             "path": "movieplan",
-                           
                         },
 
                     ],
