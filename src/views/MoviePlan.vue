@@ -33,7 +33,7 @@
                 <!-- 添加演出计划的对话框 -->
                 <el-dialog title="添加演出计划" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
                     <!--内容主题区-->
-                    <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
+                    <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px" v-loading="loading" :element-loading-text="message_updata">
                         <el-form-item label="影厅">
                             <el-select v-model="addForm.cinema_id" placeholder="影厅名称">
                                 <el-option v-for="item in cinemalist" :key="item.name" :label="item.name"
@@ -240,6 +240,9 @@ export default {
             checkDialogVisible: false,
             editDialogVisible1: false,
 
+            message_updata: "正在添加演出计划",
+            loading: false,
+
         }
     },
 
@@ -316,7 +319,7 @@ export default {
         },
         //点击按钮，添加新演出计划
         async addPlan() {
-            
+            this.loading = true
             const { data: res } = await this.$http.post('addschedule', this.addForm)
 
             if (res.code !== 1000) {
@@ -324,6 +327,7 @@ export default {
             }
             this.$message.success('添加演出计划成功！')
             this.addDialogVisible = false
+            this.loading = false
         
 
 
@@ -420,7 +424,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .name {
-    width: 150px;
+    width: 160px;
+    font-size: 15px;
 }
 
 .score {

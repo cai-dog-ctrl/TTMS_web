@@ -148,7 +148,7 @@ export default {
                 //当前的页数
                 Page_num: 1,
                 //当前每页有多少条数据
-                Num: 5,
+                Num: 2,
             },
             cinemalist: [],
             total: '',
