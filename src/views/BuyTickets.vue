@@ -202,10 +202,13 @@ export default {
                 return
             }
             this.loading = false
-            this.$message.success("购票成功")
+            
             this.tickets.id_list = []
             this.place = []
             this.dialogFormVisible = false
+            //this.$router.push("/home")
+            this.$router.push('/orderInfo/'+res.data.OrderID)
+
         },
         async getMovieInfo() {
             var id = this.$route.params.id
