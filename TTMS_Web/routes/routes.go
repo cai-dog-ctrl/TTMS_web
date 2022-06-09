@@ -17,16 +17,11 @@ func SetupRouter() *gin.Engine {
 	g := r.Group("/api")
 	g.POST("/login", controllers.Login)
 	g.POST("/register", controllers.Register)
-	g.POST("/addadmin", controllers.AddAdmin)
 	g.GET("/getallmsg", controllers.GetAllMsg)
-	g.GET("/getusermsgbyid/:id", controllers.GetUserMsgById)
 	g.GET("/getpicturebyfilename/:img", controllers.GetPictureByFileName)
-	g.PUT("/updatemsg", controllers.UpdateMsg)
-	g.Use()
-	{
 
-	}
-	//cat front page / movie info / showing movies / coming movies / scoreRanking movies / boxofficeRanking movies
+
+	//movie
 	g.GET("/GetFrontPage", controllers.GetFrontPage)
 	g.GET("/GetMovieByName", controllers.GetMovieByName)
 	g.GET("/GetMovieInfoByID/:Id", controllers.GetMovieInfoByID)
@@ -36,6 +31,28 @@ func SetupRouter() *gin.Engine {
 	g.GET("/GetAllScoreRankingMovies", controllers.GetScoreRankingMovies)
 	g.GET("/GetAllBoxOfficeRankingMovies", controllers.GetBoxOfficeRankingMovies)
 	g.GET("/GetMovieSort", controllers.GetMovieSort)
+	
+	//schedule
+	g.GET("/getallschedulemsbyday", controllers.GetAllScheduleMsgByDay)
+	g.GET("/getallschedulemsgbymovieid", controllers.GetAllScheduleMsgByMovieId)
+	g.GET("/getallschedulemsgbycinemaid", controllers.GetAllScheduleMsgByCinemaId)
+	g.GET("/getallschedulebymovieidandday", controllers.GetAllScheduleByMovieIdandDay)
+
+
+	// order
+	g.GET("/CountAllSales", controllers.CountAllSales)
+	g.GET("/CountSalesByDay/:day", controllers.CountSalesByDay)
+	g.GET("/CountSalesByMonth/:month", controllers.CountSalesByMonth)
+	g.GET("/CountSalesByYear/:year", controllers.CountSalesByYear)
+	
+	g.Use(middleware.JWTAuthMiddleware())
+	{
+		g.GET("/getusermsgbyid/:id", controllers.GetUserMsgById)
+		g.POST("/addadmin", controllers.AddAdmin)
+		g.PUT("/updatemsg", controllers.UpdateMsg)
+	}
+	//cat front page / movie info / showing movies / coming movies / scoreRanking movies / boxofficeRanking movies
+
 
 	//manage movie
 	g.POST("/AddNewMovie", controllers.AddNewMovie)
@@ -61,12 +78,8 @@ func SetupRouter() *gin.Engine {
 	//manage schedule
 	g.POST("/addschedule", controllers.AddSchedule)
 	g.PUT("/updateSchedule", controllers.UpdateSchedule)
-	g.GET("/getallschedulemsgbymovieid", controllers.GetAllScheduleMsgByMovieId)
-	g.GET("/getallschedulemsgbycinemaid", controllers.GetAllScheduleMsgByCinemaId)
-	g.GET("/getallschedulebymovieidandday", controllers.GetAllScheduleByMovieIdandDay)
 	g.PUT("/deleteschedule/:id", controllers.DeleteSchedule)
 	g.GET("/getallscheduledaybymovieid", controllers.GetAllScheduleDayByMovieId)
-	g.GET("/getallschedulemsbyday", controllers.GetAllScheduleMsgByDay)
 	g.GET("/GetScheduleMsgById/:id", controllers.GetScheduleMsgById)
 
 	//sale
@@ -81,10 +94,7 @@ func SetupRouter() *gin.Engine {
 	g.GET("/GetOrderByID/:ID", controllers.GetOrderByID)
 	g.GET("/GetOrderByUserID", controllers.GetOrderByUserID)
 	g.GET("/PayMoneyByOrderID/:ID", controllers.PayMoneyByOrderID)
-	g.GET("/CountAllSales", controllers.CountAllSales)
-	g.GET("/CountSalesByDay/:day", controllers.CountSalesByDay)
-	g.GET("/CountSalesByMonth/:month", controllers.CountSalesByMonth)
-	g.GET("/CountSalesByYear/:year", controllers.CountSalesByYear)
+	
 	g.GET("/RefundOrder/:id", controllers.RefundOrder)
 	return r
 }
