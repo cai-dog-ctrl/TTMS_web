@@ -177,7 +177,6 @@ export default {
                         }
                         else if (this.map[i][j].status === 2) {
                             this.map[i][j].status = -1
-                            console.log(this.map[i][j].id);
                             for (let k = 0; k < this.tickets.id_list.length; k++) {
                                 if (this.tickets.id_list[k] === this.map[i][j].id) {
                                     this.tickets.id_list.splice(k, 1)
@@ -192,7 +191,6 @@ export default {
         },
         async updateTicket() {
             this.tickets.user_id = window.sessionStorage.userid
-            console.log(this.tickets);
             this.loading = true
             const { data: res } = await this.$http.put('SaleTicket', this.tickets)
             console.log(res.code)
@@ -201,14 +199,19 @@ export default {
                 this.$router.push("/home")
                 return
             }
+            console.log(res.data);
             this.loading = false
             
             this.tickets.id_list = []
             this.place = []
             this.dialogFormVisible = false
+<<<<<<< HEAD
             //this.$router.push("/home")
             this.$router.push('/orderInfo/'+res.data.OrderID)
 
+=======
+            this.$router.push('/orderInfo/'+res.data.OrderID)
+>>>>>>> 9c66744f733cbf5be302e23fd2460fb3d7df2e75
         },
         async getMovieInfo() {
             var id = this.$route.params.id

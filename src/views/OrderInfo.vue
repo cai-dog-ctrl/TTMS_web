@@ -28,8 +28,8 @@
                     <div class="time">{{ orderInfo.schedule_date }} {{ orderInfo.schedule_time }}</div>
                     <div class="ciname">{{ orderInfo.cinema_name }}</div>
                     <div class="seat">
-                        <span v-for="item in orderInfo.seat_list"
-                            :key="item">|{{ item.row + 1 }}行{{ item.col + 1 }}列|&nbsp;</span>
+                        <span v-for="item in orderInfo.seat_list" :key="item">|{{ item.row + 1 }}行{{ item.col + 1
+                        }}列|&nbsp;</span>
 
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="bottom_right">
                     总价：<span>98</span>
-                    <el-button type="success">点我支付哟~</el-button>
+                    <el-button type="success" @click="pay">点我支付哟~</el-button>
                 </div>
             </div>
         </div>
@@ -75,8 +75,8 @@
                     <div class="time">{{ orderInfo.schedule_date }} {{ orderInfo.schedule_time }}</div>
                     <div class="ciname">{{ orderInfo.cinema_name }}</div>
                     <div class="seat">
-                        <span v-for="item in orderInfo.seat_list"
-                            :key="item">|{{ item.row + 1 }}行{{ item.col + 1 }}列|&nbsp;</span>
+                        <span v-for="item in orderInfo.seat_list" :key="item">|{{ item.row + 1 }}行{{ item.col + 1
+                        }}列|&nbsp;</span>
                     </div>
                 </div>
             </div>
@@ -116,6 +116,19 @@ export default {
                 return
             }
             this.orderInfo = res.data
+        },
+        async pay() {
+            var ID = this.$route.params.id
+            console.log(ID);
+            const { data: res } = await this.$http.get('PayMoneyByOrderID/' + ID)
+            console.log(res.data);
+            if (res.code !== 1000) {
+                this.$message.error("支付失败")
+                return
+            }
+            this.$message.success("支付成功")
+            this.getOrderInfo()
+            this.$router.push('/order')
         }
     }
 }

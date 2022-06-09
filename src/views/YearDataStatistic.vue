@@ -4,7 +4,7 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>数据统计</el-breadcrumb-item>
-            <el-breadcrumb-item>数据报表</el-breadcrumb-item>
+            <el-breadcrumb-item>年销售额</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 卡片视图区 -->
         <el-card>
@@ -41,20 +41,22 @@ export default {
         }
     },
     created() {
-        this.getAllSale()
+        this.getAllSaleByYear()
     },
     methods: {
-        async getAllSale() {
-            const { data: res } = await this.$http.get('CountAllSales')
+        async getAllSaleByYear() {
+            var myDate = new Date((new Date).getTime());
+            var time = myDate.toJSON().split('T').join(' ').substr(0, 10);
+           const { data: res } = await this.$http.get('CountSalesByYear/' + time)
             if (res.code !== 1000) {
-                this.$message.error("获取总销售额列表失败")
+                this.$message.error("获取年销售额列表失败")
                 return
             }
-            this.$message.success("获取销售额成功")
+            this.$message.success("获取年销售额成功")
             this.sale = res.data.List
             this.totalPrice = res.data.all_total_price
-        }
-    },
+         }
+    }
 }
 </script>
 
