@@ -24,7 +24,7 @@ func SetupRouter() *gin.Engine {
 	//movie
 	g.GET("/GetFrontPage", controllers.GetFrontPage)
 	g.GET("/GetMovieByName", controllers.GetMovieByName)
-	g.GET("/GetMovieInfoByID/:Id", controllers.GetMovieInfoByID)
+
 	g.GET("/GetAllMovies", controllers.GetAllMovies)
 	g.GET("/GetAllShowingMovies", controllers.GetShowingMovies)
 	g.GET("/GetAllComingMovies", controllers.GetComingMovies)
@@ -47,6 +47,7 @@ func SetupRouter() *gin.Engine {
 	
 	g.Use(middleware.JWTAuthMiddleware())
 	{
+		g.GET("/GetMovieInfoByID/:Id", controllers.GetMovieInfoByID)
 		g.GET("/getusermsgbyid/:id", controllers.GetUserMsgById)
 		g.POST("/addadmin", controllers.AddAdmin)
 		g.PUT("/updatemsg", controllers.UpdateMsg)
