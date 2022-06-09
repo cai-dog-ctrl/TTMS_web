@@ -14,12 +14,9 @@ import MangerMovie from '../views/MangerMovie.vue'
 import MovieHall from '../views/MovieHall.vue'
 import MoviePlan from '../views/MoviePlan.vue'
 import DataStatistic from '../views/DataStatistic.vue'
-<<<<<<< HEAD
 import DataReport from '../views/DataReport.vue'
 
-=======
 import DayDataStatistic from '../views/DayDataStatistic.vue'
->>>>>>> 1145525110d732ca675081c628ce6ff150df6801
 import Borad from '../views/Borad.vue'
 import Movie from '../views/Movie.vue'
 import User from '../views/User.vue'

@@ -2,7 +2,7 @@
     <el-row>
         <el-carousel :interval="4000" type="card" height="260px">
             <el-carousel-item v-for="item in slideData" :key="item">
-                <h3 class="medium"><img :src="item.img" alt=""></h3>
+                <h3 class="medium"><img :src="item.img" alt="" class="image_top"></h3>
             </el-carousel-item>
         </el-carousel>
 
@@ -381,7 +381,9 @@ h1 {
     cursor: pointer;
     position: relative;
 }
-
+.image_top{
+    width: 700px;
+}
 .panel {
     margin-bottom: 0;
 }
