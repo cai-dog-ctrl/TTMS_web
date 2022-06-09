@@ -91,6 +91,8 @@
                 </div>
                 <div class="bottom_right">
                     总价：<span>{{orderInfo.price}}</span>
+                    <br>
+                    <el-button type="danger" @click="refond">退票</el-button>
                 </div>
             </div>
         </div>
@@ -116,13 +118,23 @@ export default {
                 return
             }
             this.orderInfo = res.data
-            console.log(this.orderInfo);
+        },
+        async refond() {
+            console.log(this.orderInfo.order_id);
+            const { data: res } = await this.$http.get('RefundOrder/' + this.orderInfo.order_id)
+            console.log(res.code);
+            if (res.code !== 1000) {
+                this.$message.error("退票失败")
+                return
+            }
+            this.$message.success("退票成功")
+            this.getOrderInfo()
+            this.$router.push('/order')
         },
         async pay() {
             var ID = this.$route.params.id
             console.log(ID);
             const { data: res } = await this.$http.get('PayMoneyByOrderID/' + ID)
-            console.log(res.data);
             if (res.code !== 1000) {
                 this.$message.error("支付失败")
                 return
@@ -146,7 +158,6 @@ export default {
     border-radius: 5px;
     background: #F7F7F7;
 }
-
 .order {
     margin-top: 10px;
     border: #e5e5e5 solid 1px;

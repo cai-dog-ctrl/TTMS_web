@@ -1,8 +1,8 @@
 <template>
     <el-row>
         <el-carousel :interval="4000" type="card" height="260px">
-            <el-carousel-item v-for="item in slideData" :key="item">
-                <h3 class="medium"><img :src="item.img" alt="" class="image_top"></h3>
+            <el-carousel-item v-for="item in first_page_info.CarouselList.CarouselList" :key="item">
+                <h3 class="medium"><img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+item.carousel_img_path" alt="" class="image_top" @click="gotoinfo(item.id)"></h3>
             </el-carousel-item>
         </el-carousel>
 
@@ -188,7 +188,7 @@ export default {
                 return
             }
             this.first_page_info = res.data
-
+            console.log(this.first_page_info);
         },
         openRate(id){
 

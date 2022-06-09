@@ -71,6 +71,7 @@ export default {
             window.sessionStorage.removeItem('token');
             window.sessionStorage.removeItem('userid')
             this.IsLogin = false
+            this.$router.push('/first');
         },
         toBorad() {
             this.$router.push('/borad');

@@ -72,7 +72,7 @@ export default {
                 zoneIndex: 0
             },
             form: {
-                Num: 8,
+                Num: 40,
                 Page_num: 1,
                 FlagOfType: '',
                 FlagOfZone: '',
