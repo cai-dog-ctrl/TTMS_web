@@ -44,7 +44,7 @@
                     <div class="bottom_left3">电话: 029-84192558/029-84192559</div>
                 </div>
                 <div class="bottom_right">
-                    总价：<span>98</span>
+                    总价：<span>{{orderInfo.price}}</span>
                     <el-button type="success" @click="pay">点我支付哟~</el-button>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                     <div class="bottom_left3">电话: 029-84192558/029-84192559</div>
                 </div>
                 <div class="bottom_right">
-                    总价：<span>98</span>
+                    总价：<span>{{orderInfo.price}}</span>
                 </div>
             </div>
         </div>
@@ -116,6 +116,7 @@ export default {
                 return
             }
             this.orderInfo = res.data
+            console.log(this.orderInfo);
         },
         async pay() {
             var ID = this.$route.params.id

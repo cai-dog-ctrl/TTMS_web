@@ -65,15 +65,10 @@ export default {
                             "id": 110,
                             "authName": "用户列表",
                             "path": "mangeruser",
-<<<<<<< HEAD
-                        }
-                    ],
-=======
                    
                         }
                     ],
                   
->>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                 },
                 {
                     "id": 103,
@@ -84,11 +79,7 @@ export default {
                             "id": 111,
                             "authName": "影厅列表",
                             "path": "moviehall",
-<<<<<<< HEAD
-                            
-=======
                           
->>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                         },
 
                     ],
@@ -109,11 +100,7 @@ export default {
                             "id": 115,
                             "authName": "演出计划",
                             "path": "movieplan",
-<<<<<<< HEAD
-                            
-=======
                            
->>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                         },
 
                     ],
@@ -152,11 +139,7 @@ export default {
                             "path": "yeardatastatistic",
                         }
                     ],
-<<<<<<< HEAD
-                   
-=======
                     
->>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                 },
             ],
             iconsObj: {
