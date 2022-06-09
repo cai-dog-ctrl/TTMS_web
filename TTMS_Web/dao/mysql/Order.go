@@ -32,7 +32,7 @@ func GetOrderByUserID(p *models.ParamsGetOrderByUserID) (*models.OrderFrontListR
 		zap.L().Error(sqlStr0)
 		return nil, err0
 	}
-	sqlStr := fmt.Sprintf("select distinct order_info.id, order_info.date, order_info.status, movie_info.name, movie_info.cover_img, cinema_info.cinema_name, showschdule.date_day, showschdule.start_time from order_info, movie_info, cinema_info,showschdule, ticket where order_info.user_id = %v and order_info.ticket_id = ticket.id and ticket.movie_id = movie_info.id and ticket.schedule_id = showschdule.id and ticket.cinema_id = cinema_info.id limit %v, %v", id, startIdx, p.Num)
+	sqlStr := fmt.Sprintf("select distinct order_info.id, order_info.date, order_info.status, movie_info.name, movie_info.cover_img, cinema_info.cinema_name, showschdule.date_day, showschdule.start_time from order_info, movie_info, cinema_info,showschdule, ticket where order_info.user_id = %v and order_info.ticket_id = ticket.id and ticket.movie_id = movie_info.id and ticket.schedule_id = showschdule.id and ticket.cinema_id = cinema_info.id order by id desc limit %v, %v", id, startIdx, p.Num)
 	err := db.Select(&orderList.OrderFrontList, sqlStr)
 	if err != nil {
 		zap.L().Error(sqlStr)
