@@ -162,7 +162,7 @@ func Refund(ticket_id, user_id int64) error {
 	sqlStr2 := "update ticket set status = -1 where id = ?"
 	_, err = db.Exec(sqlStr2, ticket_id)
 	if err != nil {
-		sqlStr3 := "update orfer_info set is_delete = -1 where user_id = ? and tocket_id = ? and is_delete = -1"
+		sqlStr3 := "update order_info set is_delete = -1 where user_id = ? and tocket_id = ? and is_delete = -1"
 		_, err := db.Exec(sqlStr3, user_id, ticket_id)
 		if err != nil {
 			zap.L().Error(sqlStr3)

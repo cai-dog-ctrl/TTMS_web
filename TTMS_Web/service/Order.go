@@ -87,3 +87,7 @@ func CountSalesByYear(year string) (*models.OrderDataList, error) {
 	}
 	return p, nil
 }
+
+func RefundOrder(Id string) (bool, error) {
+	return mysql.RefundOrder(utils.ShiftToNum64(Id))	
+}
