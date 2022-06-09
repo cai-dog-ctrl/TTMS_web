@@ -3,8 +3,7 @@
         <div class="banner">
             <div class="flexa">
                 <div class="imag"><img class="image"
-                        :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+movieInfo.cover_img_path"
-                        alt="">
+                        :src="'http://127.0.0.1:8080/api/getpicturebyfilename/' + movieInfo.cover_img_path" alt="">
                 </div>
                 <div class="name">
                     <h1>{{ movieInfo.name }}</h1>
@@ -16,7 +15,8 @@
                     <br><br>
                     <div class="btns">
                         <el-button type="info" size="small" icon="el-icon-bell"> 想看 &nbsp;&nbsp;&nbsp; </el-button>
-                        <el-button type="info" size="small" icon="el-icon-star-off"> 评分&nbsp;&nbsp;&nbsp; </el-button>
+                        <el-button type="info" size="small" icon="el-icon-star-off" @click="rateDialogVisible = true">
+                            评分&nbsp;&nbsp;&nbsp; </el-button>
                     </div>
                 </div>
                 <div style="margin-top:120px;margin-left: 80px;">
@@ -103,7 +103,17 @@
                 </div>
             </el-dialog>
         </div>
-
+        <el-dialog title="提示" :visible.sync="rateDialogVisible" width="20%" center>
+            <div class="block">
+                <span class="demonstration">请打分</span>
+                <el-rate v-model="value2" :colors="colors">
+                </el-rate>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="rateDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="rateScore">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -113,6 +123,9 @@ import LoginVue from './Login.vue'
 export default {
     data() {
         return {
+            value2: null,
+            colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+            rateDialogVisible: false,
             movie_query: {
                 movie_id: ""
             },
@@ -164,7 +177,6 @@ export default {
                         }
                         else if (this.map[i][j].status === 2) {
                             this.map[i][j].status = -1
-                            console.log(this.map[i][j].id);
                             for (let k = 0; k < this.tickets.id_list.length; k++) {
                                 if (this.tickets.id_list[k] === this.map[i][j].id) {
                                     this.tickets.id_list.splice(k, 1)
@@ -179,7 +191,6 @@ export default {
         },
         async updateTicket() {
             this.tickets.user_id = window.sessionStorage.userid
-            console.log(this.tickets);
             this.loading = true
             const { data: res } = await this.$http.put('SaleTicket', this.tickets)
             console.log(res.code)
@@ -188,11 +199,19 @@ export default {
                 this.$router.push("/home")
                 return
             }
+            console.log(res.data);
             this.loading = false
-            this.$message.success("购票成功")
+            
             this.tickets.id_list = []
             this.place = []
             this.dialogFormVisible = false
+<<<<<<< HEAD
+            //this.$router.push("/home")
+            this.$router.push('/orderInfo/'+res.data.OrderID)
+
+=======
+            this.$router.push('/orderInfo/'+res.data.OrderID)
+>>>>>>> 9c66744f733cbf5be302e23fd2460fb3d7df2e75
         },
         async getMovieInfo() {
             var id = this.$route.params.id
@@ -245,6 +264,11 @@ export default {
             }
             this.schedule = res.data.list
 
+        },
+
+        rateScore() {
+            this.$message.success('感谢您的评价')
+            this.rateDialogVisible = false
         }
     },
 }

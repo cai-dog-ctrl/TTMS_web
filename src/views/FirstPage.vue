@@ -63,13 +63,13 @@
                                     :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+first_page_info.BoxOfficeRankingList.BoxOfficeRankingList[0].cover_img_path"
                                     alt="" class="bored_top_img"></div>
 
-                            <div style="padding-top:20px;margin-left:20px;width:60px">
+                            <div style="padding-top:20px;margin-left:20px;width:100px">
                                 <a class="borde_top_name">{{
                                         first_page_info.BoxOfficeRankingList.BoxOfficeRankingList[0].name
                                 }}</a><br>
 
                             </div>
-                            <div style="padding-top: 25px;margin-left: 144px;"><span class="borde_top_pf">{{
+                            <div style="padding-top: 25px;margin-left: 114px;"><span class="borde_top_pf">{{
                                     first_page_info.BoxOfficeRankingList.BoxOfficeRankingList[0].box_office
                             }}万</span></div>
                         </div>
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="aside">
+                <div class="aside aside2">
                     <div class="label">
                         <h1>TOP</h1>
                         <span class="panel-more"><a href="http://localhost:8080/#/sborad">全部></a></span>
@@ -94,13 +94,13 @@
                             <div><img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+first_page_info.ScoreRankingList.ScoreRankingList[0].cover_img_path" class="bored_top_img"
                                     @click="gotoinfo(first_page_info.ScoreRankingList.ScoreRankingList[0].id)"></div>
 
-                            <div style="padding-top:20px;margin-left:20px;width:60px">
+                            <div style="padding-top:20px;margin-left:20px;width:100px">
                                 <a class="borde_top_name">{{
                                         first_page_info.ScoreRankingList.ScoreRankingList[0].name
                                 }}</a>
 
                             </div>
-                            <div style="margin-left:144px;padding-top: 25px;"><span class="borde_top_pf">{{
+                            <div style="margin-left:114px;padding-top: 25px;"><span class="borde_top_pf">{{
                                     first_page_info.ScoreRankingList.ScoreRankingList[0].score
                             }}分</span></div>
                         </div>
@@ -259,6 +259,7 @@ export default {
     font-size: 20px;
     float: inline-start;
     margin-top: 20px;
+    width: 100px;
 }
 
 .borde_top_pf {
@@ -375,7 +376,8 @@ h1 {
 }
 
 .image {
-
+    width: 235px;
+    height: 286px;
     cursor: pointer;
     position: relative;
 }
@@ -399,5 +401,8 @@ ul li {
     cursor: pointer;
     color: rgba(255, 255, 255, .8);
     font-size: 14px;
+}
+.aside2{
+    margin-top: 100px;
 }
 </style>

@@ -65,8 +65,15 @@ export default {
                             "id": 110,
                             "authName": "用户列表",
                             "path": "mangeruser",
+<<<<<<< HEAD
                         }
                     ],
+=======
+                   
+                        }
+                    ],
+                  
+>>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                 },
                 {
                     "id": 103,
@@ -77,7 +84,11 @@ export default {
                             "id": 111,
                             "authName": "影厅列表",
                             "path": "moviehall",
+<<<<<<< HEAD
                             
+=======
+                          
+>>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                         },
 
                     ],
@@ -98,7 +109,11 @@ export default {
                             "id": 115,
                             "authName": "演出计划",
                             "path": "movieplan",
+<<<<<<< HEAD
                             
+=======
+                           
+>>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                         },
 
                     ],
@@ -111,7 +126,7 @@ export default {
                     "children": [
                         {
                             "id": 111,
-                            "authName": "数据报表",
+                            "authName": "总销售额",
                             "path": "datastatistic",
                             
                         },
@@ -121,9 +136,27 @@ export default {
                             "path": "datareport",
                            
                         },
-
+                        {
+                            "id":111,
+                            "authName": "日销售额",
+                            "path": "daydatastatistic",
+                        },
+                        {
+                            "id":111,
+                            "authName": "月销售额",
+                            "path": "monthdatastatistic",
+                        },
+                        {
+                            "id":111,
+                            "authName": "年销售额",
+                            "path": "yeardatastatistic",
+                        }
                     ],
+<<<<<<< HEAD
                    
+=======
+                    
+>>>>>>> 1145525110d732ca675081c628ce6ff150df6801
                 },
             ],
             iconsObj: {
