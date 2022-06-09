@@ -3,9 +3,10 @@ package mysql
 import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
+	"errors"
 	"fmt"
 	"strings"
-
+	"time"
 	"go.uber.org/zap"
 )
 
@@ -21,7 +22,7 @@ func PayMoneyByOrderID(id int64) error {
 
 func GetOrderByUserID(p *models.ParamsGetOrderByUserID) (*models.OrderFrontListRet, error) {
 	id := utils.ShiftToNum64(p.ID)
-	startIdx := p.Num * (p.Page_num -1)
+	startIdx := p.Num * (p.Page_num - 1)
 	orderList := new(models.OrderFrontList)
 	orderListRet := new(models.OrderFrontListRet)
 
@@ -124,7 +125,7 @@ func CountAllSales() (*models.OrderDataList, error) {
 	sqlStr1 := "select id, name, img from movie_info order by id"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
-	if err != nil && len(p1.IDS) == 0{
+	if err != nil && len(p1.IDS) == 0 {
 		fmt.Println("don't have movie in table")
 		return nil, err
 	}
@@ -134,15 +135,15 @@ func CountAllSales() (*models.OrderDataList, error) {
 		p := new(models.OrderData)
 		p.TotalPrice = 0
 		err = db.Get(&p.TotalPrice, sqlStr2, it.Id)
-		if err != nil && p.TotalPrice != 0{
-			fmt.Println( it.Id, "is" , p.TotalPrice)
+		if err != nil && p.TotalPrice != 0 {
+			fmt.Println(it.Id, "is", p.TotalPrice)
 			return p2, err
 		}
-		p.CoverImgPath 	= it.CoverImgPath
-		p.MovieName  	= it.MovieName
+		p.CoverImgPath = it.CoverImgPath
+		p.MovieName = it.MovieName
 		p2.List = append(p2.List, *p)
 		p2.Total += p.TotalPrice
-	}	
+	}
 	return p2, nil
 }
 
@@ -150,7 +151,7 @@ func CountSalesByDay(day string) (*models.OrderDataList, error) {
 	sqlStr1 := "select id, name, img from movie_info order by id"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
-	if err != nil && len(p1.IDS) != 0{
+	if err != nil && len(p1.IDS) != 0 {
 		return nil, err
 	}
 
@@ -160,14 +161,14 @@ func CountSalesByDay(day string) (*models.OrderDataList, error) {
 		p := new(models.OrderData)
 		p.TotalPrice = 0
 		err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day)
-		if err != nil && p.TotalPrice != 0{
+		if err != nil && p.TotalPrice != 0 {
 			return p2, err
 		}
-		p.CoverImgPath 	= it.CoverImgPath
-		p.MovieName  	= it.MovieName
+		p.CoverImgPath = it.CoverImgPath
+		p.MovieName = it.MovieName
 		p2.List = append(p2.List, *p)
 		p2.Total += p.TotalPrice
-	}	
+	}
 	return p2, nil
 }
 
@@ -175,19 +176,19 @@ func CountSalesByMonth(month string) (*models.OrderDataList, error) {
 	sqlStr1 := "select id, name, img from movie_info order by id"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
-	if err != nil && len(p1.IDS) != 0{
+	if err != nil && len(p1.IDS) != 0 {
 		return nil, err
 	}
 
 	strs := strings.Split(month, "-")
 	start := utils.ShiftToNum(strs[1])
-	end   := utils.ShiftToNum(strs[1]) +1
+	end := utils.ShiftToNum(strs[1]) + 1
 	// day_start := strs[0] + "-" + utils.ShiftToStringFromInt64(int64(start)) + "-00"
 	// day_end	  := strs[0] + "-" + utils.ShiftToStringFromInt64(int64(end)) 	+ "-00"
 
 	day_start := fmt.Sprintf("%v-%02v-%02v", strs[0], utils.ShiftToStringFromInt64(int64(start)), "00")
 	day_end := fmt.Sprintf("%v-%02v-%02v", strs[0], utils.ShiftToStringFromInt64(int64(end)), "00")
- 
+
 	p2 := new(models.OrderDataList)
 	for _, it := range p1.IDS {
 		//sqlStr2 := "select sum(price) from order_info where movie_id = ? and date > '?' and date < '?' and status = 1 and is_delete = -1"
@@ -197,14 +198,14 @@ func CountSalesByMonth(month string) (*models.OrderDataList, error) {
 		p.TotalPrice = 0
 		//err = db.Get(&p.TotalPrice, sqlStr2, it.Id, day_start, day_end)
 		err = db.Get(&p.TotalPrice, sqlStr2)
-		if err != nil && p.TotalPrice != 0{
+		if err != nil && p.TotalPrice != 0 {
 			return p2, err
 		}
-		p.CoverImgPath 	= it.CoverImgPath
-		p.MovieName  	= it.MovieName
+		p.CoverImgPath = it.CoverImgPath
+		p.MovieName = it.MovieName
 		p2.List = append(p2.List, *p)
 		p2.Total += p.TotalPrice
-	}	
+	}
 	return p2, nil
 }
 
@@ -212,13 +213,13 @@ func CountSalesByYear(year string) (*models.OrderDataList, error) {
 	sqlStr1 := "select id, name, img from movie_info order by id"
 	p1 := new(models.MovieIds)
 	err := db.Select(&p1.IDS, sqlStr1)
-	if err != nil && len(p1.IDS) != 0{
+	if err != nil && len(p1.IDS) != 0 {
 		return nil, err
 	}
 
 	strs := strings.Split(year, "-")
 	start := utils.ShiftToNum(strs[0])
-	end   := utils.ShiftToNum(strs[0]) +1
+	end := utils.ShiftToNum(strs[0]) + 1
 	// day_start := utils.ShiftToStringFromInt64(int64(start)) + "-00" + "-00"
 	// day_end	  := utils.ShiftToStringFromInt64(int64(end)) 	+ "-00" + "-00"
 
@@ -235,10 +236,55 @@ func CountSalesByYear(year string) (*models.OrderDataList, error) {
 		if err != nil && p.TotalPrice != 0 {
 			return p2, err
 		}
-		p.CoverImgPath 	= it.CoverImgPath
-		p.MovieName  	= it.MovieName
+		p.CoverImgPath = it.CoverImgPath
+		p.MovieName = it.MovieName
 		p2.List = append(p2.List, *p)
 		p2.Total += p.TotalPrice
-	}	
+	}
 	return p2, nil
+}
+
+func RefundOrder(Id int64) (bool, error) {
+	p1 := new(models.ROrderList)
+
+	sqlStr1 := "select ticket_id, user_id from order_info where id = ? and is_delete = -1 and status = 1"
+	db.Select(&p1.OrderList, sqlStr1, Id)
+
+	sqlStr2 := "select schedule_id from ticket where id = ? and is_delete = -1 and status = 1"
+	db.Get(&p1.ScheduleId, sqlStr2)
+
+	sqlStr3 := "select end_time, date_day from showschdule where id = ? and is_delete = -1"
+	db.Get(&p1, sqlStr3)
+
+	day := time.Now().Day()
+	month := int(time.Now().Month())
+	year := time.Now().Year()
+	date := int64(year)*10000 + int64(month)*100 + int64(day)
+	hour := time.Now().Hour()
+	minute := time.Now().Minute()
+	now := int64(hour)*100 + int64(minute)
+
+	if p1.DateDay < date {
+		return false, errors.New("date 超时")
+	}
+	if p1.DateDay == date {
+		if p1.EndTime < now || p1.EndTime == now {
+			return false, errors.New("date 超时")
+		}
+	}
+
+	sqlStr4 := "update order_info set is_delete = 1 where id = ? and status = 1"
+	_, err := db.Exec(sqlStr4, Id)
+	if err != nil {
+		return false, errors.New("update order fail")
+	}
+	for _, it := range p1.OrderList {
+		sqlStr5 := "update ticket set status = -1 where id = ? and is_delete = -1"
+		_, err = db.Exec(sqlStr5, it.TicketID)
+		if err != nil {
+			return false, errors.New("update ticket fail")
+		}
+	}
+
+	return true, nil
 }

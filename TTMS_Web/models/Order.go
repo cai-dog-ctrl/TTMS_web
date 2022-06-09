@@ -79,3 +79,18 @@ type MovieId struct {
 type MovieIds struct {
 	IDS 	[]MovieId 			`json:"IDS""`
 }
+
+type ROrder struct {
+	
+	UserID   int64   `json:"user_id,string" db:"user_id"`
+	TicketID int64   `json:"ticket_id,string" db:"ticket_id"`
+
+	// Price    float32 `json:"price" db:"price"`
+}
+
+type ROrderList struct {
+	ScheduleId       	int64   	`json:"id" db:"schedule_id"`
+	DateDay  			int64		`json:"date_day" db:"date_day"`	
+	EndTime 		 	int64		`json:"end_time" db:"end_time"`
+	OrderList []ROrder    			`json:"order_list"`
+}

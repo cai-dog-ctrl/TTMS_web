@@ -4,6 +4,8 @@ import (
 	"TTMS/models"
 	"TTMS/pkg/utils"
 	"TTMS/service"
+	// "fmt"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -92,4 +94,17 @@ func CountSalesByYear(c *gin.Context) {
 		return
 	}
 	ResponseSuccess(c, p)
+}
+
+
+func RefundOrder(c *gin.Context) {
+	Id := c.Param("id")
+
+	ret, err := service.RefundOrder(Id)
+	if err != nil || !ret{
+		zap.L().Error("service.CountSalesByYear ERROR", zap.Error(err))
+		ResponseErrorWithMsg(c, CodeServerBusy, "取消订单失败")
+		return
+	}
+	ResponseSuccess(c, "取消订单")
 }
