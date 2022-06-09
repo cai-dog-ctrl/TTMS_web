@@ -110,5 +110,17 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-
+router.beforeEach((to, from, next) => {
+  //to 表示访问的路径
+  //from 表示从哪来
+  //next 是一个函数，表示放行
+  //next()   直接放行   next('/login')  放行到login路由
+  if (to.path === '/login') return next();
+  if (to.path === '/first') return next();
+  if (to.path === '/register') return next();
+  //获取token
+  const str = window.sessionStorage.getItem('token')
+  if (!str) return next('/login')
+  next();
+})
 export default router
