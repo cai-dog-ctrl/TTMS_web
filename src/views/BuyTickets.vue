@@ -205,13 +205,7 @@ export default {
             this.tickets.id_list = []
             this.place = []
             this.dialogFormVisible = false
-<<<<<<< HEAD
-            //this.$router.push("/home")
             this.$router.push('/orderInfo/'+res.data.OrderID)
-
-=======
-            this.$router.push('/orderInfo/'+res.data.OrderID)
->>>>>>> 9c66744f733cbf5be302e23fd2460fb3d7df2e75
         },
         async getMovieInfo() {
             var id = this.$route.params.id
