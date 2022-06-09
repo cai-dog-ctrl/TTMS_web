@@ -3,7 +3,7 @@
     <div class="banner">
       <div class="flexa">
         <div class="imag"><img class="image"
-            :src="'http://127.0.0.1:8080/api/getpicturebyfilename/'+movieInfo.cover_img_path" alt="">
+            :src="'http://127.0.0.1:8080/api/getpicturebyfilename/' + movieInfo.cover_img_path" alt="">
         </div>
         <div class="name">
           <h1>{{ movieInfo.name }}</h1>
@@ -65,7 +65,7 @@
 
           </div>
           <div v-for="item in recommend.ShowingList" :key="item" class="item">
-            <img :src="item.img" alt="">
+            <img :src="'http://127.0.0.1:8080/api/getpicturebyfilename/' + item.cover_img_path" alt="">
             <div style="height:30px;margin-top: 20px;margin-left: 10px;width: 180px;"><a class="recommend_a" href="#"
                 style="color:#219FFF;text-decoration:none">《 {{ item.name }} 》</a></div>
             <div style="margin-left:40px">
@@ -83,7 +83,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="rateDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="rateDialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="rateScore">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -123,11 +123,15 @@ export default {
         return
       }
       this.movieInfo = res.data.movie
-      this.recommend=res.data.relevantMovies
+      this.recommend = res.data.relevantMovies
     },
 
     buyTickets() {
       this.$router.push('/buytickets/' + this.movieInfo.id);
+    },
+    rateScore(){
+      this.$message.success('感谢您的评价')
+      this.rateDialogVisible=false
     }
   }
 }
