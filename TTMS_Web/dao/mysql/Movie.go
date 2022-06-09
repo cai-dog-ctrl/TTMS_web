@@ -15,7 +15,7 @@ var mutex sync.Mutex
 
 func GetCarouselList(num int) (*models.CarouselList, error) {
 	carouselList := new(models.CarouselList)
-	sqlStr := fmt.Sprintf("select id, img from movie_info limit 0, %v", num)
+	sqlStr := fmt.Sprintf("select id, img from movie_info order by id desc limit 0, %v", num)
 	err := db.Select(&carouselList.CarouselList, sqlStr)
 	if err != nil {
 		zap.L().Error(sqlStr)

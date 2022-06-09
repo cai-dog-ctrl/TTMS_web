@@ -221,3 +221,8 @@ func GetCurrentPath() string {
 	path, _ := os.Getwd()
 	return path
 }
+
+func SetScore(c *gin.Context) {
+	c.MustGet("userId")
+	
+}
