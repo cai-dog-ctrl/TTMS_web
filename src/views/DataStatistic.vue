@@ -7,7 +7,7 @@
             <el-breadcrumb-item>数据报表</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 卡片视图区 -->
-        <el-card>
+        <el-card v-loading="loading" :element-loading-text="message_update">
             <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
             <div id="main" style="width: 600px;height:auto;">
                 <div style="margin-left: 25px;"><span>总销售额：{{this.totalPrice}}元</span></div>
@@ -36,7 +36,10 @@ export default {
     data() {
         return {
             sale: {},
-            totalPrice: ''
+            totalPrice: '',
+
+            message_updata: "正在查询",
+            loading: false,
         }
     },
     created() {
@@ -44,6 +47,7 @@ export default {
     },
     methods: {
         async getAllSale() {
+            this.loading = true
             const { data: res } = await this.$http.get('CountAllSales')
             if (res.code !== 1000) {
                 this.$message.error("获取总销售额列表失败")
@@ -52,6 +56,7 @@ export default {
             this.$message.success("获取销售额成功")
             this.sale = res.data.List
             this.totalPrice = res.data.all_total_price
+            this.loading = false
         }
     },
 }
