@@ -14,12 +14,14 @@ import MangerMovie from '../views/MangerMovie.vue'
 import MovieHall from '../views/MovieHall.vue'
 import MoviePlan from '../views/MoviePlan.vue'
 import DataStatistic from '../views/DataStatistic.vue'
-
+import DayDataStatistic from '../views/DayDataStatistic.vue'
 import Borad from '../views/Borad.vue'
 import Movie from '../views/Movie.vue'
 import User from '../views/User.vue'
 import Order from '../views/Order.vue'
 import OrderInfo from '../views/OrderInfo.vue'
+import MonthDataStatistic from '../views/MonthDataStatistic.vue'
+import YearDataStatistic from '../views/YearDataStatistic.vue'
 Vue.use(VueRouter)
 
 
@@ -40,7 +42,9 @@ const routes = [
       {path:'/moviehall',component: MovieHall},
       {path:'/movieplan',component: MoviePlan},
       {path:'/datastatistic',component: DataStatistic},
-
+      {path:'/daydatastatistic',component: DayDataStatistic},
+      {path:'/monthdatastatistic',component: MonthDataStatistic},
+      {path:'/yeardatastatistic',component: YearDataStatistic}
 
     ]
 

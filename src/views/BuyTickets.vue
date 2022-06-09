@@ -164,7 +164,6 @@ export default {
                         }
                         else if (this.map[i][j].status === 2) {
                             this.map[i][j].status = -1
-                            console.log(this.map[i][j].id);
                             for (let k = 0; k < this.tickets.id_list.length; k++) {
                                 if (this.tickets.id_list[k] === this.map[i][j].id) {
                                     this.tickets.id_list.splice(k, 1)
@@ -179,7 +178,6 @@ export default {
         },
         async updateTicket() {
             this.tickets.user_id = window.sessionStorage.userid
-            console.log(this.tickets);
             this.loading = true
             const { data: res } = await this.$http.put('SaleTicket', this.tickets)
             console.log(res.code)
@@ -188,11 +186,13 @@ export default {
                 this.$router.push("/home")
                 return
             }
+            console.log(res.data);
             this.loading = false
             this.$message.success("购票成功")
             this.tickets.id_list = []
             this.place = []
             this.dialogFormVisible = false
+            this.$router.push('/orderInfo/'+res.data.OrderID)
         },
         async getMovieInfo() {
             var id = this.$route.params.id
