@@ -109,17 +109,17 @@ export default {
                     "authName": "数据统计",
                     "path": "data",
                     "children": [
+                         {
+                            "id": 115,
+                            "authName": "统计图",
+                            "path": "datareport",
+                           
+                        },
                         {
                             "id": 111,
                             "authName": "总销售额",
                             "path": "datastatistic",
                             
-                        },
-                        {
-                            "id": 115,
-                            "authName": "统计图",
-                            "path": "datareport",
-                           
                         },
                         {
                             "id":111,
