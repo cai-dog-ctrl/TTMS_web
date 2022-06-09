@@ -77,7 +77,7 @@ func SaleTicket(order *models.Order) (bool, int64, float32, error) {
 		// 	return false, err4, 0
 		// }
 		//
-		//TicketPrice = schdule.Price
+		TicketPrice = schdule.Price
 		TotalPrice += TicketPrice
 		MovieId := schdule.MovieId
 		sqlStr2 := "insert into order_info (id, user_id, ticket_id, date, time, is_delete, price, status, movie_id) values(?, ?, ?, ?, ?, ?, ?, ?, ?)"
