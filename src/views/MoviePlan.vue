@@ -88,7 +88,8 @@
                         </el-table-column>
                         <el-table-column label="操作" width="180px">
                             <template slot-scope="scope">
-                                <el-button type="primary" size="mini" icon="el-icon-edit" @click="bbb(scope.row.id, movie_id)">
+                                <el-button type="primary" size="mini" icon="el-icon-edit"
+                                    @click="bbb(scope.row.id, movie_id)">
                                     修改
                                 </el-button>
                             </template>
@@ -150,7 +151,7 @@
                         <el-table-column label="操作" width="180px">
                             <template slot-scope="scope">
                                 <el-button type="danger" size="mini" icon="el-icon-delete"
-                                    @click="deleteMoviePlan(scope.row.id,movie_id)">
+                                    @click="deleteMoviePlan(scope.row.id, movie_id)">
                                     删除
                                 </el-button>
                             </template>
@@ -238,6 +239,7 @@ export default {
             schedulelist: [],
             checkDialogVisible: false,
             editDialogVisible1: false,
+
         }
     },
 
@@ -252,12 +254,12 @@ export default {
             this.addForm.movie_id = id
 
         },
-        async bbb(id,movie_id) {
+        async bbb(id, movie_id) {
             // this.queryInfo3.id = id
             console.log(id);
             const { data: res } = await this.$http.get('GetScheduleMsgById/' + id)
 
-            
+
             if (res.code !== 1000) {
                 return this.$message.error('获取演出计划失败！')
             }
@@ -265,7 +267,7 @@ export default {
             this.editForm = res.data
             console.log(this.editForm);
             this.editDialogVisible1 = true
-            this.getScheduleList(movie_id)
+            // this.getScheduleList(movie_id)
             // this.editForm.movie_id = movie_id
 
         },
@@ -314,7 +316,7 @@ export default {
         },
         //点击按钮，添加新演出计划
         async addPlan() {
-
+            
             const { data: res } = await this.$http.post('addschedule', this.addForm)
 
             if (res.code !== 1000) {
@@ -322,13 +324,13 @@ export default {
             }
             this.$message.success('添加演出计划成功！')
             this.addDialogVisible = false
+        
 
 
         },
 
         async showEditDialog(id) {
             this.queryInfo2.movie_id = id
-            // this.queryInfo3.id = id
             const { data: res } = await this.$http.get('getallschedulemsgbymovieid', {
                 params: this.queryInfo2
             })
@@ -337,8 +339,6 @@ export default {
                 this.$message.error("获取信息失败")
                 return
             }
-
-            // this.editForm = res.data
             this.schedulelist = res.data.list
             this.total = res.data.Total
             this.editDialogVisible = true
@@ -371,7 +371,7 @@ export default {
             this.bbb(id)
         },
 
-        async deleteMoviePlan(id,movie_id) {
+        async deleteMoviePlan(id, movie_id) {
             // this.queryInfo3.id = id
             const confirmResult = await this.$confirm('此操作将永久删除该计划, 是否继续?', '提示', {
                 confirmButtonText: '确定',
