@@ -63,6 +63,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.el-card {
+    margin-top: 5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+}
 .sale_item {
     width: 90%;
     margin-top: 10px;
