@@ -19,7 +19,8 @@ func GetAllCinemas(num int, page_num int) (*models.CinemaList, error) {
 		zap.L().Error(sqlStr)
 		return nil, err
 	}
-	sqlStr1 := "select * from cinema_info"
+	startIdx := num * page_num
+	sqlStr1 := fmt.Sprintf("select * from cinema_info limit %v, %v", startIdx, num)
 	err = db.Select(&cinemaList.CinemaList, sqlStr1)
 	if err != nil {
 		zap.L().Error(sqlStr)
@@ -147,7 +148,7 @@ func GetSeatByCinemaID(id int64) (*models.SeatList, error) {
 func ModifySeat(p *models.ParamsModifySeat) error {
 	sqlStr := ("update seat_info set status = ?, flag = ? where id = ?")
 	_, err := db.Exec(sqlStr, p.Status, p.Flag, utils.ShiftToNum64(p.ID))
-	if err != nil {	
+	if err != nil {
 		zap.L().Error(sqlStr)
 		return err
 	}
