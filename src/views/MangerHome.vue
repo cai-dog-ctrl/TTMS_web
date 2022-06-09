@@ -65,11 +65,10 @@ export default {
                             "id": 110,
                             "authName": "用户列表",
                             "path": "mangeruser",
-                            "children": [],
-                            "order": null
+                   
                         }
                     ],
-                    "order": 1
+                  
                 },
                 {
                     "id": 103,
@@ -80,12 +79,11 @@ export default {
                             "id": 111,
                             "authName": "影厅列表",
                             "path": "moviehall",
-                            "children": [],
-                            "order": null
+                          
                         },
 
                     ],
-                    "order": 2
+                   
                 },
                 {
                     "id": 101,
@@ -96,19 +94,17 @@ export default {
                             "id": 104,
                             "authName": "剧目列表",
                             "path": "manger_movie",
-                            "children": [],
-                            "order": 1
+                           
                         },
                         {
                             "id": 115,
                             "authName": "演出计划",
                             "path": "movieplan",
-                            "children": [],
-                            "order": 2
+                           
                         },
 
                     ],
-                    "order": 3
+                   
                 },
                 {
                     "id": 102,
@@ -117,14 +113,27 @@ export default {
                     "children": [
                         {
                             "id": 111,
-                            "authName": "数据报表",
+                            "authName": "总销售额",
                             "path": "datastatistic",
-                            "children": [],
-                            "order": null
+                            
                         },
-
+                        {
+                            "id":111,
+                            "authName": "日销售额",
+                            "path": "daydatastatistic",
+                        },
+                        {
+                            "id":111,
+                            "authName": "月销售额",
+                            "path": "monthdatastatistic",
+                        },
+                        {
+                            "id":111,
+                            "authName": "年销售额",
+                            "path": "yeardatastatistic",
+                        }
                     ],
-                    "order": 2
+                    
                 },
             ],
             iconsObj: {
