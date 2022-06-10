@@ -330,7 +330,7 @@ export default {
         },
         //修改用户表单的预验证
         async editUserInfo() {
-            this.$refs.editFormRef.validate(async vaild => {
+            this.$refs.editFormRef.validate(async vaild => {    
 
                 if (!vaild) return
                 //发起修改用户信息的数据请求
