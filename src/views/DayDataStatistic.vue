@@ -64,8 +64,7 @@ export default {
 .sale_item {
     width: 90%;
     margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 300px;
     border: #E5E5E5 solid 1px;
     border-radius: 10px;
     height: 130px;

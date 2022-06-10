@@ -282,7 +282,7 @@ export default {
 }
 
 .image {
-    height: 235px;
+    height: 325px;
     width: 236px;
     overflow: hidden;
     cursor: pointer;
