@@ -37,7 +37,7 @@
                 <div class="schedule">
                     <div class="schedule_btu">
                         <div class="schedule_btu_word"><span>观影日期</span></div>
-                        <div class="schedule_btu_itme" v-for="item in dateList" :key="item">
+                        <div @click="getIndex(index),refineSchedule(item)" :class="dateIndex===index?'schedule_btu_itme_active':'schedule_btu_itme'" v-for="(item,index) in dateList" :key="index">
                             <span>{{ item.data_day }}</span>
                         </div>
                     </div>
@@ -150,7 +150,7 @@ export default {
             place: [],
             loading: false,
             dialogFormVisible: false,
-
+            dateIndex:0
         }
     },
     created() {
@@ -158,6 +158,14 @@ export default {
         this.tickets.user_id = window.sessionStorage.userId
     },
     methods: {
+        getIndex(index) {
+            this.dateIndex=index
+        },
+        refineSchedule(item) {
+            this.schedule_query.date_day=item.data_day
+            console.log(this.schedule_query);
+            this.getScheduleList()
+        },
         point(id) {
 
             for (let i = 0; i < this.map.length; i++) {
@@ -199,7 +207,6 @@ export default {
                 this.$router.push("/home")
                 return
             }
-            console.log(res.data);
             this.loading = false
             
             this.tickets.id_list = []
@@ -376,7 +383,13 @@ export default {
         padding-top: 2px;
     }
 
-    .schedule_btu_itme:hover {
+    .schedule_btu_itme_active {
+         text-align: center;
+        height: 25px;
+        width: 100px;
+        margin-left: 20px;
+        border-radius: 13px;
+        padding-top: 2px;
         color: #fff;
         background: #409EFF;
     }
