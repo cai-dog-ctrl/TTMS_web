@@ -7,7 +7,7 @@
             <el-breadcrumb-item>月销售额</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 卡片视图区 -->
-        <el-card>
+        <el-card v-loading="loading" :element-loading-text="message_update">
             <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
             <div id="main" style="width: 600px;height:auto;">
                 <div style="margin-left: 25px;"><span>总销售额：{{this.totalPrice}}元</span></div>
@@ -37,7 +37,10 @@ export default {
     data() {
         return {
             sale: {},
-            totalPrice: ''
+            totalPrice: '',
+
+            message_updata: "正在查询",
+            loading: false,
         }
     },
     created() {
@@ -45,6 +48,7 @@ export default {
     },
     methods: {
         async getAllSaleByMonth() {
+            this.loading = true
             var myDate = new Date((new Date).getTime());
             var time = myDate.toJSON().split('T').join(' ').substr(0, 10);
            const { data: res } = await this.$http.get('CountSalesByMonth/' + time)
@@ -55,12 +59,17 @@ export default {
             this.$message.success("获取月销售额成功")
             this.sale = res.data.List
             this.totalPrice = res.data.all_total_price
+            this.loading = false
          }
     }
 }
 </script>
 
 <style lang="less" scoped>
+.el-card {
+    margin-top: 5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+}
 .sale_item {
     width: 90%;
     margin-top: 10px;

@@ -1,14 +1,17 @@
 <template>
     <div>
-        <h3>
+        <h3 class="h3">
             Welcome
         </h3>
     </div>
 </template>
 <script>
-    export default{
+export default {
 
-    }
+}
 </script>
-<style>
+<style lang="less" scoped>
+.h3 {
+    font-size: 30px;
+}
 </style>

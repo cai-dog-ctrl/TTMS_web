@@ -425,7 +425,7 @@ export default {
 <style lang="less" scoped>
 .name {
     width: 160px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .score {
